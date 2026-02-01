@@ -52,6 +52,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
 
         setAssigneeId("");
         setAssigneeName("");
+        setNoAssigneeError(false);
     };
 
     // Submit form
@@ -60,8 +61,8 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
         e.preventDefault();
 
         if (formData.assignees.length === 0) {
-            setNoAssigneeError((prev) => !prev);
-            return
+            setNoAssigneeError(true);
+            return;
         }
 
         onCreate(formData as ITask);
@@ -78,6 +79,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
                 name: "Sandesh",
             },
         });
+        setNoAssigneeError(false);
     };
     return (
         <div className="bg-white p-6 rounded-xl shadow">
@@ -189,9 +191,11 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
                             </li>
                         ))}
                     </ul>
-                    {
-                        noAssingeeError && <p className="text-red-500 text-sm">Assignee is Required</p>
-                    }
+                    {noAssingeeError && (
+                        <p className="text-red-500 text-sm">
+                            Assignee is Required
+                        </p>
+                    )}
                 </div>
 
                 <button

@@ -4,6 +4,7 @@ This project is a full-stack real-time task management system built with Next.js
 ## Table of Content
 
 - [setup](#setup)
+- [Installation](#installation)
 - [Assingment 1](#assignment-1)
 - [Assingment 2](#assignment-2)
 - [Assingment 3](#assignment-3)
@@ -20,6 +21,59 @@ This turborepo includes the following packages and apps
 
 Each package/app is 100% Typescript
 
+
+## Installation
+**1. Prerequisites**
+```bash
+node >= 18
+pnpm
+MongoDB (running locally)
+```
+
+**2. Clone Repository**
+
+```bash
+git clone https://github.com/Sandesh-Ghimire0/intership-project.git
+```
+
+**3. Install Dependencies**<br>
+```bash
+pnpm install
+```
+
+**4. Add envs**
+```bash
+For web
+- cd apps/web
+- create .env.local file
+- add:
+    - NEXT_PUBLIC_API_URL=http://localhost:4000
+
+```
+
+```bash
+For api
+- cd apps/api
+- create .env file
+- add:
+    - PORT=4000
+    - MONGO_URI="mongodb://127.0.0.1:27017/taskmanager"
+
+```
+
+**5. Run Server**
+```bash
+pnpm turbo run dev
+```
+
+```bash
+localhost:3000 ---------> web
+localhost:4000 ---------> api
+```
+```md
+## Notes
+- Ensure MongoDB is running before starting the API
+```
 ## Assignment 1
 
 **Create a Monorepo structure**
