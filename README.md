@@ -1,4 +1,5 @@
 # Real-Time Task Management System
+This project is a full-stack real-time task management system built with Next.js, React, Tailwind CSS, and MongoDB, designed to mimic a lightweight Jira/Trello-style workflow.In this application, users can create task and assign it to multiple people. The application includes a dashboard where users can view all tasks at a glance, monitor their progress by status and priority, and quickly identify pending or overdue work. Features such as real-time task updates and activity logs ensure that changes like task creation, deletion, or status updates are immediately reflected in the UI, making it suitable for productivity tracking and collaborative task management.
 
 ## Table of Content
 
