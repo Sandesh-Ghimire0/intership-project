@@ -1,16 +1,23 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import { createTask, deleteTask } from "./api";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import { ITask } from "./type";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface TaskContainerProps {
-    initialTasks: ITask[]
+    initialTasks: ITask[];
 }
 
 const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
+    const searchParams = useSearchParams();
+    const isFormVisible = searchParams.get("showForm") === "true";
+
+    const router = useRouter();
+
     const [tasks, setTasks] = useState<ITask[]>(initialTasks);
 
     const handleCreate = async (taskData: ITask) => {
@@ -18,6 +25,7 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
         if (createdData.statusCode === 201) {
             setTasks((prev: ITask[]) => [...prev, createdData.data]); // use createdData not formData because it does not include property added by db automatically
             // like _id, createdAt etc
+            router.push("/tasks");
         }
     };
 
@@ -32,10 +40,19 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
     };
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <TaskForm onCreate={handleCreate} />
+        <div>
+            {isFormVisible && (
+                <div
+                    onClick={() => router.push("/tasks")}
+                    className="fixed inset-0 backdrop-blur-xl"
+                >
+                    <div onClick={(e)=>e.stopPropagation()}>
+                        <TaskForm onCreate={handleCreate} />
+                    </div>
+                </div>
+            )}
 
-            <div className="bg-white p-6 rounded-xl shadow">
+            <div>
                 <h2 className="text-lg font-semibold mb-4">Added Tasks</h2>
                 <TaskList tasks={tasks} onDelete={handleDelete} />
             </div>

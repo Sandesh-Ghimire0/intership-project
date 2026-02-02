@@ -14,7 +14,7 @@ const TaskList =  ({tasks, onDelete}:TaskListProps) => {
             {tasks.length === 0 ? (
                 <p className="text-gray-500">No tasks found.</p>
             ) : (
-                <div className="space-y-4">
+                <div className="grid grid-cols-4 gap-4 md:grid-cols-4">
                     {tasks?.map((task: ITask) => (
                         <div
                             key={task._id}

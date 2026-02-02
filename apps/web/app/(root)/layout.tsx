@@ -18,10 +18,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     />
                 </div>
 
-                {/* Create Task */}
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                {/* Create Task  */}
+                <Link href="/tasks?showForm=true" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
                     + Create Task
-                </button>
+                </Link> 
             </header>
 
             {/* BODY */}

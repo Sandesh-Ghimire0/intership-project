@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ITask } from "./type";
+import Link from "next/link";
 
 interface TaskFormProps {
     onCreate: (formData: ITask) => void;
@@ -82,7 +83,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
         setNoAssigneeError(false);
     };
     return (
-        <div className="bg-white p-6 rounded-xl shadow">
+        <div className="bg-white p-6 rounded-xl shadow fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <h2 className="text-lg font-semibold mb-4">Create Task</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -198,12 +199,20 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
                     )}
                 </div>
 
-                <button
-                    type="submit"
-                    className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-                >
-                    Create Task
-                </button>
+                <div className="flex gap-3">
+                    <Link
+                        href="/tasks"
+                        className="w-full bg-gray-600 text-white py-2 rounded hover:bg-gray-700 text-center "
+                    >
+                        Cancel
+                    </Link>
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 cursor-pointer"
+                    >
+                        Create Task
+                    </button>
+                </div>
             </form>
         </div>
     );

@@ -15,8 +15,8 @@ export default async function Tasks() {
     }
 
     return (
-        <div className="min-h-screen">
-            <h1 className="text-2xl font-bold mb-6">
+        <div>
+            <h1 className="text-2xl font-bold mb-6 relative">
                 Real-Time Task Management
             </h1>
 
