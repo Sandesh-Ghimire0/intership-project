@@ -1,33 +1,45 @@
-import axios from "axios"
-import { ITask } from "./type"
+import axios from "axios";
+import { IFormData, ITask } from "./type";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const fetchTask = async  (): Promise<ITask[] | undefined> => {
+export const fetchTask = async (): Promise<ITask[] | undefined> => {
     try {
-        const res = await axios.get(`${API_URL}/api/v1/task/tasks`)
-        return res.data.data
+        const res = await axios.get(`${API_URL}/api/v1/task/tasks`);
+        return res.data.data;
     } catch (error) {
-        console.log("ERROR :: fetching task",error)
-        return
+        console.log("ERROR :: fetching task", error);
+        return;
     }
-}
+};
 
-export const createTask = async (task:ITask) =>{
+export const createTask = async (task: IFormData) => {
     try {
-        const res = await axios.post(`${API_URL}/api/v1/task/tasks`,task)
-        return res.data
+        const res = await axios.post(`${API_URL}/api/v1/task/tasks`, task);
+        return res.data;
     } catch (error) {
-        console.log("ERROR :: creating task",error)
+        console.log("ERROR :: creating task", error);
     }
-}
+};
 
-
-export const deleteTask = async (id:string) =>{
+export const deleteTask = async (id: string) => {
     try {
-        const res = await axios.delete(`${API_URL}/api/v1/task/tasks/${id}`)
-        return res
+        const res = await axios.delete(`${API_URL}/api/v1/task/tasks/${id}`);
+        console.log(res.data);
+        return res;
     } catch (error) {
-        console.log("ERROR :: deleting task",error)
+        console.log("ERROR :: deleting task", error);
     }
-}
+};
+
+export const validateAssignee = async (username: string) => {
+    try {
+        const res = await axios.get(
+            `${API_URL}/api/v1/user/assignees/validate/${username}`,
+        );
+        return res;
+    } catch (error: any) {
+        console.log("ERROR :: validating assignee ", error);
+        return error.response;
+    }
+};

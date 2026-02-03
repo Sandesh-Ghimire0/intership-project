@@ -10,3 +10,17 @@ export interface ITask {
     createdAt: string;
     updatedAt: string;
 }
+
+
+export type Status = "todo" | "in_progress" | "done";
+export type Priority = "low" | "medium" | "high" | "critical";
+
+export interface IFormData {
+    title: string;
+    description: string;
+    status: Status;
+    priority: Priority;
+    dueDate: Date | string;
+    assignees: string[];
+    reporter: string;
+}

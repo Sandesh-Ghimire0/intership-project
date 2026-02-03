@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { createTask, deleteTask } from "./api";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
-import { ITask } from "./type";
+import { IFormData, ITask } from "./type";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
@@ -20,7 +20,7 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
 
     const [tasks, setTasks] = useState<ITask[]>(initialTasks);
 
-    const handleCreate = async (taskData: ITask) => {
+    const handleCreate = async (taskData: IFormData) => {
         const createdData = await createTask(taskData);
         if (createdData.statusCode === 201) {
             setTasks((prev: ITask[]) => [...prev, createdData.data]); // use createdData not formData because it does not include property added by db automatically
@@ -38,6 +38,10 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
             );
         }
     };
+
+    const handleValidateAssignee = ()=>{
+
+    }
 
     return (
         <div>

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { ITask } from "../types/type.js";
 
-const taskSchema = new mongoose.Schema(
+const taskSchema = new mongoose.Schema<ITask>(
     {
         title: {
             type: String,
@@ -34,39 +34,19 @@ const taskSchema = new mongoose.Schema(
             index: true,
         },
 
-        assignees: {
-            type: [
-                {
-                    id: {
-                        type: String,
-                        required: true,
-                    },
-                    name: {
-                        type: String,
-                        required: true,
-                        trim: true,
-                    },
-                },
-            ],
-            required: true,
-        },
+        assignees: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+            },
+        ],
 
         reporter: {
-            type: {
-                id: {
-                    type: String,
-                    required: true,
-                },
-                name: {
-                    type: String,
-                    required: true,
-                    trim: true,
-                },
-            },
-            required: true,
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"User"
         },
     },
     { timestamps: true },
 );
 
-export const Task = mongoose.model<ITask>("Task", taskSchema);
+export const Task = mongoose.model("Task", taskSchema);

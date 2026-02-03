@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Task } from "../models/task.model.js";
 import { ITask } from "../types/type.js";
+import { User } from "../models/user.model.js";
 
 const createTask = async (req: Request, res: Response) => {
     try {
@@ -12,7 +13,15 @@ const createTask = async (req: Request, res: Response) => {
             dueDate,
             assignees,
             reporter,
-        } = req.body as ITask;
+        } = req.body;
+
+        const users = await User.find({
+            username: { $in: assignees },
+        }).select("_id");
+        const assigneesId = users.map((user) => user._id);
+
+        const reporterObj = await User.findOne({ username: reporter });
+        const reporterId = reporterObj?._id;
 
         const task = await Task.create({
             title,
@@ -20,11 +29,15 @@ const createTask = async (req: Request, res: Response) => {
             status,
             priority,
             dueDate,
-            assignees,
-            reporter,
+            assignees: assigneesId,
+            reporter: reporterId,
         });
 
-        if (!task) {
+        const createdTask = await Task.findById(task._id)
+            .populate("assignees")
+            .populate("reporter");
+
+        if (!createdTask) {
             return res.status(400).json({
                 statusCode: 400,
                 message: "Failed to create the task",
@@ -35,7 +48,7 @@ const createTask = async (req: Request, res: Response) => {
             success: true,
             statusCode: 201,
             message: "task created successfully",
-            data: task,
+            data: createdTask,
         });
     } catch (error: any) {
         console.log(error);
@@ -48,7 +61,10 @@ const createTask = async (req: Request, res: Response) => {
 
 const fetchTask = async (req: Request, res: Response) => {
     try {
-        const tasks = await Task.find();
+        const tasks = await Task.find()
+            .populate("assignees")
+            .populate("reporter");
+            
         if (!tasks) {
             return res.status(400).json({
                 statusCode: 400,

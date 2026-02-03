@@ -1,24 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ITask } from "./type";
+import { IFormData, ITask, Priority, Status } from "./type";
 import Link from "next/link";
+import { validateAssignee } from "./api";
 
 interface TaskFormProps {
-    onCreate: (formData: ITask) => void;
-}
-
-type Status = "todo" | "in_progress" | "done";
-type Priority = "low" | "medium" | "high" | "critical";
-
-interface IFormData {
-    title: string;
-    description: string;
-    status: Status;
-    priority: Priority;
-    dueDate: Date | string;
-    assignees: { id: string; name: string }[];
-    reporter: { id: string; name: string };
+    onCreate: (formData: IFormData) => void;
 }
 
 const TaskForm = ({ onCreate }: TaskFormProps) => {
@@ -29,31 +17,30 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
         priority: "medium",
         dueDate: "",
         assignees: [],
-        reporter: {
-            id: "user-001",
-            name: "Sandesh",
-        },
+        reporter: "sandesh_dev",
     });
 
     const [assigneeName, setAssigneeName] = useState("");
-    const [assigneeId, setAssigneeId] = useState("");
-    const [noAssingeeError, setNoAssigneeError] = useState(false);
+    const [assingeeError, setAssigneeError] = useState(false);
 
     // Add assignee locally
-    const addAssignee = () => {
-        if (!assigneeId || !assigneeName) return;
+    const addAssignee = async () => {
+        if (!assigneeName) return;
 
-        setFormData((prev) => ({
-            ...prev,
-            assignees: [
-                ...prev.assignees,
-                { id: assigneeId, name: assigneeName },
-            ],
-        }));
+        const res = await validateAssignee(assigneeName);
+        if (res?.data?.success) {
+            setFormData((prev) => ({
+                ...prev,
+                assignees: [...prev.assignees, assigneeName],
+            }));
 
-        setAssigneeId("");
-        setAssigneeName("");
-        setNoAssigneeError(false);
+            setAssigneeName("");
+            setAssigneeError(false);
+        }else if(res?.status === 400){
+            setAssigneeError(true)
+        }
+
+        
     };
 
     // Submit form
@@ -62,11 +49,11 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
         e.preventDefault();
 
         if (formData.assignees.length === 0) {
-            setNoAssigneeError(true);
+            setAssigneeError(true);
             return;
         }
 
-        onCreate(formData as ITask);
+        onCreate(formData);
 
         setFormData({
             title: "",
@@ -75,12 +62,9 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
             priority: "medium",
             dueDate: "",
             assignees: [],
-            reporter: {
-                id: "user-001",
-                name: "Sandesh",
-            },
+            reporter: "sandesh_dev",
         });
-        setNoAssigneeError(false);
+        setAssigneeError(false);
     };
     return (
         <div className="bg-white p-6 rounded-xl shadow fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -163,14 +147,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
                     <div className="flex gap-2">
                         <input
                             type="text"
-                            placeholder="User ID"
-                            className="border rounded px-2 py-1 w-1/2"
-                            value={assigneeId}
-                            onChange={(e) => setAssigneeId(e.target.value)}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Name"
+                            placeholder="Username"
                             className="border rounded px-2 py-1 w-1/2"
                             value={assigneeName}
                             onChange={(e) => setAssigneeName(e.target.value)}
@@ -187,14 +164,12 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
 
                     <ul className="mt-2 text-sm">
                         {formData.assignees.map((a: any, idx) => (
-                            <li key={idx}>
-                                • {a.name} ({a.id})
-                            </li>
+                            <li key={idx}>• {a}</li>
                         ))}
                     </ul>
-                    {noAssingeeError && (
+                    {assingeeError && (
                         <p className="text-red-500 text-sm">
-                            Assignee is Required
+                            Assignee Not found
                         </p>
                     )}
                 </div>

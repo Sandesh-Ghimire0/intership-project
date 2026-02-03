@@ -8,6 +8,7 @@ interface TaskListProps {
 }
 
 const TaskList =  ({tasks, onDelete}:TaskListProps) => {
+    console.log("tasks ::",tasks)
     return (
         <div>
             <h2 className="text-lg font-semibold mb-4">Tasks</h2>
@@ -15,7 +16,7 @@ const TaskList =  ({tasks, onDelete}:TaskListProps) => {
                 <p className="text-gray-500">No tasks found.</p>
             ) : (
                 <div className="grid grid-cols-4 gap-4 md:grid-cols-4">
-                    {tasks?.map((task: ITask) => (
+                    {tasks?.map((task:any) => (
                         <div
                             key={task._id}
                             className="border rounded-lg p-4 bg-white shadow-sm"
@@ -54,7 +55,7 @@ const TaskList =  ({tasks, onDelete}:TaskListProps) => {
                             {/* REPORTER */}
                             {task.reporter && (
                                 <div className="text-sm mt-3">
-                                    <b>Reporter:</b> {task.reporter.name}
+                                    <b>Reporter:</b> {task.reporter.username}
                                 </div>
                             )}
 
@@ -66,7 +67,7 @@ const TaskList =  ({tasks, onDelete}:TaskListProps) => {
                                         {task.assignees.map(
                                             (a: any, idx: number) => (
                                                 <li key={idx}>
-                                                    {a.name} ({a.id})
+                                                    {a.username}
                                                 </li>
                                             ),
                                         )}

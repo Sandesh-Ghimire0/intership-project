@@ -52,7 +52,34 @@ const createUser = async function (req: Request, res: Response) {
     }
 };
 
+const validateAssingee = async (req: Request, res: Response) => {
+    try {
+        const { username } = req.params;
 
-export {
-    createUser
-}
+        if (!username) {
+            return res.status(400).json({
+                message: "Assignee username is required",
+            });
+        }
+
+        const assignee = await User.findOne({username});
+        if (!assignee) {
+            return res.status(400).json({
+                message: "Assignee does not exist",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Assginee validated successfully",
+            data: assignee,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            message: "Error occured while creating user",
+        });
+    }
+};
+
+export { createUser, validateAssingee };

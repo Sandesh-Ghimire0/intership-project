@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
 
 export interface ITask {
     title: string;
@@ -6,10 +6,9 @@ export interface ITask {
     status: "todo" | "in_progress" | "done";
     priority: "low" | "medium" | "high" | "critical";
     dueDate: Date;
-    assignees: { id: string; name: string }[];
-    reporter: { id: string; name: string };
+    assignees: mongoose.Types.ObjectId[];
+    reporter: mongoose.Types.ObjectId;
 }
-
 
 export interface IUser extends Document {
     username: string;
