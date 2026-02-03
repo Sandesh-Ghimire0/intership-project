@@ -13,7 +13,9 @@ app.get("/health", (_req: Request, res: Response) => {
 // ---------------------------------------------------------------------------------
 
 import taskRouter from "./routes/task.route.js";
+import userRouter from "./routes/user.route.js";
 
 app.use("/api/v1/task", taskRouter);
+app.use("/api/v1/user", userRouter)
 
 // localhost:4000/api/v1/task/tasks , {data}

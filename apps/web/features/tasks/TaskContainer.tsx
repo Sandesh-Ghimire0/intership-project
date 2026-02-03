@@ -44,7 +44,7 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
             {isFormVisible && (
                 <div
                     onClick={() => router.push("/tasks")}
-                    className="fixed inset-0 backdrop-blur-xl"
+                    className="fixed inset-0 backdrop-blur-sm"
                 >
                     <div onClick={(e)=>e.stopPropagation()}>
                         <TaskForm onCreate={handleCreate} />
