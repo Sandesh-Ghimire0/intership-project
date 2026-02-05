@@ -128,6 +128,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
                     </div>
                     <textarea
                         placeholder="Description"
+                        rows={5}
                         className="w-full border rounded px-3 py-2"
                         value={formData.description}
                         onChange={(e) =>
