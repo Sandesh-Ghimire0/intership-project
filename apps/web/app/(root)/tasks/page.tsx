@@ -16,10 +16,6 @@ export default async function Tasks() {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold mb-6 relative">
-                Real-Time Task Management
-            </h1>
-
             <TaskContainer initialTasks={tasks} />
         </div>
     );

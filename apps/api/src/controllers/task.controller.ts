@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Task } from "../models/task.model.js";
-import { ITask } from "../types/type.js";
 import { User } from "../models/user.model.js";
+import { AnyKeys } from "mongoose";
 
 const createTask = async (req: Request, res: Response) => {
     try {
@@ -15,10 +15,7 @@ const createTask = async (req: Request, res: Response) => {
             reporter,
         } = req.body;
 
-        const users = await User.find({
-            username: { $in: assignees },
-        }).select("_id");
-        const assigneesId = users.map((user) => user._id);
+        const assigneesId = assignees.map((a: any) => a._id);
 
         const reporterObj = await User.findOne({ username: reporter });
         const reporterId = reporterObj?._id;
@@ -64,7 +61,7 @@ const fetchTask = async (req: Request, res: Response) => {
         const tasks = await Task.find()
             .populate("assignees")
             .populate("reporter");
-            
+
         if (!tasks) {
             return res.status(400).json({
                 statusCode: 400,
@@ -120,9 +117,9 @@ const deleteTask = async (req: Request, res: Response) => {
 
 const updateTask = async (req: Request, res: Response) => {
     try {
-        const data = req.body;
+        const data = req.body
         const { id } = req.params;
-
+        
         if (!id || !data) {
             return res.status(400).json({
                 statusCode: 400,
@@ -130,10 +127,19 @@ const updateTask = async (req: Request, res: Response) => {
             });
         }
 
+        const { assignees, reporter } = req.body;
+        const assigneesId = assignees.map((a: any) => a._id);
+
+        const reporterId = reporter._id
+
+
+        data.assignees = assigneesId
+        data.reporter = reporterId
+
         const updatedTask = await Task.findByIdAndUpdate(id, data, {
             new: true, // return updated document
             runValidators: true, // validate against the model schema
-        });
+        }).populate("assignees").populate("reporter");
 
         if (!updatedTask) {
             return res.status(400).json({

@@ -1,12 +1,13 @@
-"use client";
+"use client"
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { IFormData, ITask, Priority, Status } from "./type";
-import Link from "next/link";
 import { validateAssignee } from "../users/api";
+import Link from "next/link";
 
-interface TaskFormProps {
-    onCreate: (formData: IFormData) => void;
+interface TaskEditFormProps {
+    task: any;
+    onUpdate: (data: IFormData) => void;
 }
 
 const initialAssigneeError = {
@@ -15,16 +16,8 @@ const initialAssigneeError = {
     doesNotExist: false,
 };
 
-const TaskForm = ({ onCreate }: TaskFormProps) => {
-    const [formData, setFormData] = useState<IFormData>({
-        title: "",
-        description: "",
-        status: "todo",
-        priority: "medium",
-        dueDate: "",
-        assignees: [],
-        reporter: "sandesh_dev",
-    });
+const TaskEditForm = ({ task, onUpdate }: TaskEditFormProps) => {
+    const [formData, setFormData] = useState<IFormData>(task as any);
 
     const [assigneeName, setAssigneeName] = useState("");
     const [assingeeError, setAssigneeError] = useState(initialAssigneeError);
@@ -37,10 +30,10 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
             (a: any) => a.username === assigneeName,
         );
         if (duplicateAssignee.length > 0) {
-            setAssigneeError({
+            setAssigneeError((prev) => ({
                 ...initialAssigneeError,
                 duplicate: true,
-            });
+            }));
 
             return;
         }
@@ -48,7 +41,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
         const res = await validateAssignee(assigneeName);
         const assignee = res?.data.data;
         if (res?.data?.success) {
-            setFormData((prev) => ({
+            setFormData((prev: any) => ({
                 ...prev,
                 assignees: [...prev.assignees, assignee],
             }));
@@ -72,7 +65,6 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
 
     // Submit form
     const handleSubmit = async (e: React.FormEvent) => {
-        console.log("task create click");
         e.preventDefault();
 
         if (formData.assignees.length === 0) {
@@ -83,27 +75,17 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
             return;
         }
 
-        onCreate(formData);
-
-        setFormData({
-            title: "",
-            description: "",
-            status: "todo",
-            priority: "medium",
-            dueDate: "",
-            assignees: [],
-            reporter: "sandesh_dev",
-        });
+        onUpdate(formData);
         setAssigneeError(initialAssigneeError);
     };
+
+    console.log(formData);
     return (
         <div className="bg-white p-6 rounded-xl shadow fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3xl">
-            <h2 className="text-lg font-semibold mb-4">Create Task</h2>
-
-            <form
-                onSubmit={handleSubmit}
-                className="space-y-4 flex flex-col gap-4"
-            >
+            <h2 className="text-lg font-semibold mb-4 text-center">
+                Edit Task
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <div className="block text-sm font-medium text-gray-700 mb-1">
                         Title:
@@ -111,7 +93,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
                     <input
                         type="text"
                         placeholder="Title"
-                        value={formData.title}
+                        defaultValue={formData.title}
                         className="w-full border rounded px-3 py-2"
                         onChange={(e) =>
                             setFormData({
@@ -129,7 +111,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
                     <textarea
                         placeholder="Description"
                         className="w-full border rounded px-3 py-2"
-                        value={formData.description}
+                        defaultValue={formData.description}
                         onChange={(e) =>
                             setFormData({
                                 ...formData,
@@ -146,7 +128,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
                         </div>
                         <select
                             className="border rounded px-3 py-2 w-full"
-                            value={formData.status}
+                            defaultValue={formData.status}
                             onChange={(e) =>
                                 setFormData({
                                     ...formData,
@@ -166,7 +148,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
                         </div>
                         <select
                             className="border rounded px-3 py-2 w-full"
-                            value={formData.priority}
+                            defaultValue={formData.priority}
                             onChange={(e) =>
                                 setFormData({
                                     ...formData,
@@ -193,7 +175,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
                             className="w-full border rounded-lg px-4 py-2.5 
                                     text-gray-900 
                                     "
-                            value={
+                            defaultValue={
                                 formData.dueDate
                                     ? new Date(formData.dueDate)
                                           .toISOString()
@@ -281,7 +263,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
                         type="submit"
                         className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 cursor-pointer"
                     >
-                        Create Task
+                        Edit Task
                     </button>
                 </div>
             </form>
@@ -289,4 +271,4 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
     );
 };
 
-export default TaskForm;
+export default TaskEditForm;

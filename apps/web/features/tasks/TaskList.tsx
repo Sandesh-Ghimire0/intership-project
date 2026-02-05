@@ -1,25 +1,31 @@
 "use client";
 
-import { ITask } from "./type";
+import Link from "next/link";
+import { IFormData, ITask, Priority, Status } from "./type";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { validateAssignee } from "../users/api";
 
 interface TaskListProps {
     tasks: ITask[];
-    onDelete: (id: string) => void
+    onDelete: (id: string) => void;
 }
 
-const TaskList =  ({tasks, onDelete}:TaskListProps) => {
-    console.log("tasks ::",tasks)
+const TaskList = ({ tasks, onDelete }: TaskListProps) => {
+    const searchParams = useSearchParams();
+    const editId = searchParams.get("edit");
+
     return (
         <div>
             <h2 className="text-lg font-semibold mb-4">Tasks</h2>
             {tasks.length === 0 ? (
                 <p className="text-gray-500">No tasks found.</p>
             ) : (
-                <div className="grid grid-cols-4 gap-4 md:grid-cols-4">
-                    {tasks?.map((task:any) => (
+                <div className="grid gap-4 grid-cols-3">
+                    {tasks?.map((task: any) => (
                         <div
                             key={task._id}
-                            className="border rounded-lg p-4 bg-white shadow-sm"
+                            className="border rounded-lg p-4 bg-white shadow-sm flex flex-col justify-between gap-1"
                         >
                             {/* TITLE */}
                             <h3 className="font-semibold text-lg">
@@ -66,9 +72,7 @@ const TaskList =  ({tasks, onDelete}:TaskListProps) => {
                                     <ul className="list-disc ml-5 mt-1">
                                         {task.assignees.map(
                                             (a: any, idx: number) => (
-                                                <li key={idx}>
-                                                    {a.username}
-                                                </li>
+                                                <li key={idx}>{a.username}</li>
                                             ),
                                         )}
                                     </ul>
@@ -97,12 +101,21 @@ const TaskList =  ({tasks, onDelete}:TaskListProps) => {
                                 </div>
                             )}
 
-                            <button
-                                onClick={() => onDelete(task._id)}
-                                className="px-4 py-2 bg-red-600 text-white"
-                            >
-                                Delete
-                            </button>
+                            <div className="flex justify-between">
+                                <button
+                                    onClick={() => onDelete(task._id)}
+                                    className="px-4 py-2 bg-red-600 text-white"
+                                >
+                                    Delete
+                                </button>
+
+                                <Link
+                                    href={`/tasks?edit=${task._id}`}
+                                    className="px-4 py-2 bg-blue-600 text-white"
+                                >
+                                    Edit
+                                </Link>
+                            </div>
                         </div>
                     ))}
                 </div>

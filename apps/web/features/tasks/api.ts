@@ -25,21 +25,19 @@ export const createTask = async (task: IFormData) => {
 export const deleteTask = async (id: string) => {
     try {
         const res = await axios.delete(`${API_URL}/api/v1/task/tasks/${id}`);
-        console.log(res.data);
         return res;
     } catch (error) {
         console.log("ERROR :: deleting task", error);
     }
 };
 
-export const validateAssignee = async (username: string) => {
-    try {
-        const res = await axios.get(
-            `${API_URL}/api/v1/user/assignees/validate/${username}`,
-        );
+export const updateTask = async (id: string, taskData:any) => {
+     try {
+        const res = await axios.put(`${API_URL}/api/v1/task/tasks/${id}`, taskData);
+        console.log(res.data)
         return res;
-    } catch (error: any) {
-        console.log("ERROR :: validating assignee ", error);
-        return error.response;
+    } catch (error) {
+        console.log("ERROR :: deleting task", error);
     }
-};
+}
+

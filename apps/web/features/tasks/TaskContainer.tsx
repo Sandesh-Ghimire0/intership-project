@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { createTask, deleteTask } from "./api";
+import { createTask, deleteTask, updateTask } from "./api";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import { IFormData, ITask } from "./type";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import TaskEditForm from "./TaskEditForm";
 
 interface TaskContainerProps {
     initialTasks: ITask[];
@@ -15,14 +16,17 @@ interface TaskContainerProps {
 const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
     const searchParams = useSearchParams();
     const isFormVisible = searchParams.get("showForm") === "true";
+    const editId = searchParams.get("edit") as string;
 
     const router = useRouter();
 
     const [tasks, setTasks] = useState<ITask[]>(initialTasks);
+    const editedTask = tasks.find((task) => task._id === editId) as ITask;
 
     const handleCreate = async (taskData: IFormData) => {
         const createdData = await createTask(taskData);
         if (createdData.statusCode === 201) {
+            console.log(createdData)
             setTasks((prev: ITask[]) => [...prev, createdData.data]); // use createdData not formData because it does not include property added by db automatically
             // like _id, createdAt etc
             router.push("/tasks");
@@ -39,25 +43,42 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
         }
     };
 
-    const handleValidateAssignee = ()=>{
+    const handleUpdate = async (taskData: any) => {
+        const res = await updateTask(editId, taskData);
+        const updatedTask = res?.data.data;
 
-    }
+        if (res?.status === 200) {
+            setTasks((prev: any) =>
+                prev.map((t: any) => (t._id === editId ? updatedTask : t)),
+            );
+            router.push("/tasks");
+        }
+    };
 
     return (
         <div>
-            {isFormVisible && (
+            {(isFormVisible || editId?.length > 0) && (
                 <div
                     onClick={() => router.push("/tasks")}
                     className="fixed inset-0 backdrop-blur-sm"
                 >
-                    <div onClick={(e)=>e.stopPropagation()}>
-                        <TaskForm onCreate={handleCreate} />
-                    </div>
+                    {editId?.length > 0 && (
+                        <div onClick={(e) => e.stopPropagation()}>
+                            <TaskEditForm
+                                task={editedTask}
+                                onUpdate={handleUpdate}
+                            />
+                        </div>
+                    )}
+                    {isFormVisible && (
+                        <div onClick={(e) => e.stopPropagation()}>
+                            <TaskForm onCreate={handleCreate} />
+                        </div>
+                    )}
                 </div>
             )}
 
             <div>
-                <h2 className="text-lg font-semibold mb-4">Added Tasks</h2>
                 <TaskList tasks={tasks} onDelete={handleDelete} />
             </div>
         </div>
