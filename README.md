@@ -115,3 +115,12 @@ pnpm turbo run dev
 - created interface [ITask](./apps/web/features/tasks/type.ts) and implemented across tasks [components and methods](./apps/web/features/tasks/)
 - created types for [formData](./apps/web/features/tasks/TaskForm.tsx)
 - created interface for props
+
+
+## Assignment 4
+
+**Dockerize the apps**
+
+
+- created Dockerfile for [api](./apps/api/Dockerfile) and [web](./apps/web/Dockerfile)
+- Added [scripts](./package.json) for pruning and dockerizing the apps with single command

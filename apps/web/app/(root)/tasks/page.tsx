@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';  // don't fetch the task during build
+
 import { fetchTask } from "@/features/tasks/api";
 import TaskContainer from "@/features/tasks/TaskContainer";
 
