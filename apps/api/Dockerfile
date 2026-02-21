@@ -17,7 +17,7 @@ COPY full/ .
 
 # 5. Build and Start
 RUN pnpm run build --filter=api
-EXPOSE 3000
+EXPOSE 4000
 CMD ["pnpm", "--filter=api", "run", "start"]
 
 

@@ -34,7 +34,6 @@ export const deleteTask = async (id: string) => {
 export const updateTask = async (id: string, taskData:any) => {
      try {
         const res = await axios.put(`${API_URL}/api/v1/task/tasks/${id}`, taskData);
-        console.log(res.data)
         return res;
     } catch (error) {
         console.log("ERROR :: deleting task", error);

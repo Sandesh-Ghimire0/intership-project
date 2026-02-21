@@ -10,10 +10,13 @@ export interface ITask {
     reporter: mongoose.Types.ObjectId;
 }
 
-export interface IUser extends Document {
+export interface IUser{
     username: string;
     email: string;
     password: string;
     role: string;
     description?: string;
 }
+
+type Name = string
+type Status = "todo" | "in_progress" | "done";

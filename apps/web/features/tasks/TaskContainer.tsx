@@ -26,7 +26,6 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
     const handleCreate = async (taskData: IFormData) => {
         const createdData = await createTask(taskData);
         if (createdData.statusCode === 201) {
-            console.log(createdData)
             setTasks((prev: ITask[]) => [...prev, createdData.data]); // use createdData not formData because it does not include property added by db automatically
             // like _id, createdAt etc
             router.push("/tasks");

@@ -1,165 +1,108 @@
 import { Request, Response } from "express";
 import { Task } from "../models/task.model.js";
 import { User } from "../models/user.model.js";
-import { AnyKeys } from "mongoose";
 
-const createTask = async (req: Request, res: Response) => {
-    try {
-        const {
-            title,
-            description,
-            status,
-            priority,
-            dueDate,
-            assignees,
-            reporter,
-        } = req.body;
+import { ApiError } from "../utils/apiError.js";
+import { ApiResponse } from "../utils/apiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
-        const assigneesId = assignees.map((a: any) => a._id);
+const createTask = asyncHandler(async (req: Request, res: Response) => {
+    const {
+        title,
+        description,
+        status,
+        priority,
+        dueDate,
+        assignees,
+        reporter,
+    } = req.body;
 
-        const reporterObj = await User.findOne({ username: reporter });
-        const reporterId = reporterObj?._id;
+    const assigneesId = assignees.map((a: any) => a._id);
 
-        const task = await Task.create({
-            title,
-            description,
-            status,
-            priority,
-            dueDate,
-            assignees: assigneesId,
-            reporter: reporterId,
-        });
+    const reporterObj = await User.findOne({ username: reporter });
+    const reporterId = reporterObj?._id;
 
-        const createdTask = await Task.findById(task._id)
-            .populate("assignees")
-            .populate("reporter");
+    const task = await Task.create({
+        title,
+        description,
+        status,
+        priority,
+        dueDate,
+        assignees: assigneesId,
+        reporter: reporterId,
+    });
 
-        if (!createdTask) {
-            return res.status(400).json({
-                statusCode: 400,
-                message: "Failed to create the task",
-            });
-        }
+    const createdTask = await Task.findById(task._id)
+        .populate("assignees")
+        .populate("reporter");
 
-        return res.status(201).json({
-            success: true,
-            statusCode: 201,
-            message: "task created successfully",
-            data: createdTask,
-        });
-    } catch (error: any) {
-        console.log(error);
-        return res.status(400).json({
-            statusCode: 400,
-            message: error.message,
-        });
+    if (!createdTask) {
+        throw new ApiError(400, "Failed to create the task");
     }
-};
 
-const fetchTask = async (req: Request, res: Response) => {
-    try {
-        const tasks = await Task.find()
-            .populate("assignees")
-            .populate("reporter");
+    return res
+        .status(201)
+        .json(new ApiResponse(201, createdTask, "task created successfully"));
+});
 
-        if (!tasks) {
-            return res.status(400).json({
-                statusCode: 400,
-                message: "Failed to fetch the tasks",
-            });
-        }
-        return res.status(200).json({
-            success: true,
-            message: "tasks fetched successfully",
-            data: tasks,
-        });
-    } catch (error: any) {
-        console.log(error);
-        return res.status(400).json({
-            statusCode: 400,
-            message: error.message,
-        });
+const fetchTask = asyncHandler(async (req: Request, res: Response) => {
+    const tasks = await Task.find().populate("assignees").populate("reporter");
+
+    if (!tasks) {
+        throw new ApiError(400, "Failed to fetch the tasks");
     }
-};
+    return res
+        .status(200)
+        .json(new ApiResponse(200, tasks, "tasks fetched successfully"));
+});
 
-const deleteTask = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params;
+const deleteTask = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
 
-        if (!id) {
-            return res.status(400).json({
-                statusCode: 400,
-                message: "Id is required",
-            });
-        }
-
-        const deletedTask = await Task.findByIdAndDelete(id);
-        if (!deletedTask) {
-            return res.status(400).json({
-                statusCode: 400,
-                message: "Task is not available",
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            statusCode: 200,
-            message: "task deleted successfully",
-        });
-    } catch (error: any) {
-        console.log(error);
-        return res.status(400).json({
-            statusCode: 400,
-            message: error.message,
-        });
+    if (!id) {
+        throw new ApiError(400, "Id is required");
     }
-};
 
-const updateTask = async (req: Request, res: Response) => {
-    try {
-        const data = req.body
-        const { id } = req.params;
-        
-        if (!id || !data) {
-            return res.status(400).json({
-                statusCode: 400,
-                message: "Id and data is required",
-            });
-        }
-
-        const { assignees, reporter } = req.body;
-        const assigneesId = assignees.map((a: any) => a._id);
-
-        const reporterId = reporter._id
-
-
-        data.assignees = assigneesId
-        data.reporter = reporterId
-
-        const updatedTask = await Task.findByIdAndUpdate(id, data, {
-            new: true, // return updated document
-            runValidators: true, // validate against the model schema
-        }).populate("assignees").populate("reporter");
-
-        if (!updatedTask) {
-            return res.status(400).json({
-                statusCode: 400,
-                message: "Failed to update the task",
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            message: "task updated successfully",
-            data: updatedTask,
-        });
-    } catch (error: any) {
-        console.log(error);
-        return res.status(400).json({
-            statusCode: 400,
-            message: error.message,
-        });
+    const deletedTask = await Task.findByIdAndDelete(id);
+    if (!deletedTask) {
+        throw new ApiError(400, "Task is not available");
     }
-};
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, [], "task deleted successfully"));
+});
+
+const updateTask = asyncHandler(async (req: Request, res: Response) => {
+    const data = req.body;
+    const { id } = req.params;
+
+    if (!id || !data) {
+        throw new ApiError(400, "Id and data is required");
+    }
+
+    const { assignees, reporter } = req.body;
+    const assigneesId = assignees.map((a: any) => a._id);
+
+    const reporterId = reporter._id;
+
+    data.assignees = assigneesId;
+    data.reporter = reporterId;
+
+    const updatedTask = await Task.findByIdAndUpdate(id, data, {
+        new: true, // return updated document
+        runValidators: true, // validate against the model schema
+    })
+        .populate("assignees")
+        .populate("reporter");
+
+    if (!updatedTask) {
+        throw new ApiError(400, "Failed to update the task");
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, updatedTask, "task updated successfully"));
+});
 
 export { createTask, fetchTask, deleteTask, updateTask };

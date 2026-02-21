@@ -1,85 +1,66 @@
 import { Request, Response } from "express";
 import { User } from "../models/user.model.js";
 
-const createUser = async function (req: Request, res: Response) {
-    try {
-        const { username, email, password, role, description } = req.body;
+import { ApiError } from "../utils/apiError.js";
+import { ApiResponse } from "../utils/apiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
-        if (!username || !email || !password || !role) {
-            return res.status(400).json({
-                message: "username, email, password and role is required",
-            });
-        }
+const createUser = asyncHandler(async function (req: Request, res: Response) {
+    const { username, email, password, role, description } = req.body;
 
-        const existingUsername = await User.findOne({ username });
-        if (existingUsername) {
-            return res.status(400).json({
-                message: "username already exist",
-            });
-        }
-
-        const existingEmail = await User.findOne({ email });
-        if (existingEmail) {
-            return res.status(400).json({
-                message: "email already exist",
-            });
-        }
-
-        const createdUser = await User.create({
-            username,
-            email,
-            password,
-            role,
-            description,
-        });
-
-        if (!createdUser) {
-            return res.status(400).json({
-                message: "Something went wrong while creating user",
-            });
-        }
-
-        return res.status(201).json({
-            success: true,
-            message: "User created Successfully !!!",
-            data: createdUser,
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(400).json({
-            message: "Error occured while creating user",
-        });
+    if (!username || !email || !password || !role) {
+        throw new ApiError(
+            400,
+            "username, email, password and role is required",
+        );
     }
-};
 
-const validateAssingee = async (req: Request, res: Response) => {
-    try {
-        const { username } = req.params;
-
-        if (!username) {
-            return res.status(400).json({
-                message: "Assignee username is required",
-            });
-        }
-
-        const assignee = await User.findOne({username});
-        if (!assignee) {
-            return res.status(400).json({
-                message: "Assignee does not exist",
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            message: "Assginee validated successfully",
-            data: assignee,
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(400).json({
-            message: "Error occured while creating user",
-        });
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+        throw new ApiError(400, "username already exist");
     }
-};
+
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+        throw new ApiError(400, "email already exist");
+    }
+
+    const createdUser = await User.create({
+        username,
+        email,
+        password,
+        role,
+        description,
+    });
+
+    if (!createdUser) {
+        throw new ApiError(400, "Something went wrong while creating user");
+    }
+
+    return res
+        .status(201)
+        .json(
+            new ApiResponse(201, createdUser, "User created Successfully !!!"),
+        );
+});
+
+const validateAssingee = asyncHandler(async (req: Request, res: Response) => {
+    const { username } = req.params;
+
+    if (!username) {
+        throw new ApiError(400, "Assignee username is required");
+    }
+
+    const assignee = await User.findOne({ username });
+    if (!assignee) {
+        throw new ApiError(400, "Assignee does not exist");
+    }
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(200, assignee, "Assginee validated successfully"),
+        );
+})
 
 export { createUser, validateAssingee };

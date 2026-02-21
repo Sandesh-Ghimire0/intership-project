@@ -72,7 +72,6 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
 
     // Submit form
     const handleSubmit = async (e: React.FormEvent) => {
-        console.log("task create click");
         e.preventDefault();
 
         if (formData.assignees.length === 0) {

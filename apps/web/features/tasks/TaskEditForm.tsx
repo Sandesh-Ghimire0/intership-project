@@ -30,10 +30,10 @@ const TaskEditForm = ({ task, onUpdate }: TaskEditFormProps) => {
             (a: any) => a.username === assigneeName,
         );
         if (duplicateAssignee.length > 0) {
-            setAssigneeError((prev) => ({
+            setAssigneeError({
                 ...initialAssigneeError,
                 duplicate: true,
-            }));
+            });
 
             return;
         }
@@ -48,11 +48,11 @@ const TaskEditForm = ({ task, onUpdate }: TaskEditFormProps) => {
 
             setAssigneeName("");
             setAssigneeError(initialAssigneeError);
-        } else if (res?.status === 400) {
-            setAssigneeError((prev) => ({
+        } else if (res?.status === 500) {
+            setAssigneeError({
                 ...initialAssigneeError,
                 doesNotExist: true,
-            }));
+            });
         }
     };
 
@@ -79,7 +79,6 @@ const TaskEditForm = ({ task, onUpdate }: TaskEditFormProps) => {
         setAssigneeError(initialAssigneeError);
     };
 
-    console.log(formData);
     return (
         <div className="bg-white p-6 rounded-xl shadow fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3xl">
             <h2 className="text-lg font-semibold mb-4 text-center">
