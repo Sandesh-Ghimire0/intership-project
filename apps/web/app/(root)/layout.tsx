@@ -1,85 +1,94 @@
 import React from "react";
 import Link from "next/link";
+import { MdDashboard } from "react-icons/md";
+import { GrTasks } from "react-icons/gr";
+import { FaTasks } from "react-icons/fa";
+import { FiActivity } from "react-icons/fi";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <div className="min-h-screen flex flex-col">
             {/* NAVBAR */}
-            <header className="sticky top-0 z-50 h-16 bg-white border-b flex items-center px-6">
+            <header className="sticky bg-gray-900 top-0 z-50 h-16 text-gray-200 flex items-center justify-between p-6">
                 {/* Logo */}
                 <div className="font-bold text-lg w-56">Tasks</div>
 
                 {/* Search */}
-                <div className="flex-1 px-6">
+                <div className="px-6">
                     <input
                         type="text"
                         placeholder="Search tasks..."
-                        className="w-full max-w-md border rounded-lg px-3 py-1.5"
+                        className="w-full max-w-4xl border rounded-lg px-3 py-1.5"
                     />
                 </div>
 
                 {/* Create Task  */}
-                <Link href="/tasks?showForm=true" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                <Link
+                    href="/tasks?showForm=true"
+                    className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-700/60"
+                >
                     + Create Task
-                </Link> 
+                </Link>
             </header>
 
             {/* BODY */}
             <div className="flex flex-1">
                 {/* SIDEBAR */}
-                <aside className="sticky top-16 h-[calc(100vh-4rem)] w-56 bg-gray-50 border-r flex flex-col justify-between px-4 py-6">
+                <aside className="sticky  top-16 h-[calc(100vh-4rem)] w-56 bg-gray-800 text-white flex flex-col justify-between py-6">
                     {/* TOP MENU */}
                     <nav className="space-y-3">
-                        <p className="text-sm font-semibold text-gray-500 uppercase">
-                            Main
-                        </p>
-
-                        <ul className="space-y-2">
-                            <li>
+                        <ul className="space-y-2 mt-3">
+                            <li className="hover:bg-gray-700 cursor-pointer">
                                 <Link
                                     href="/dashboard"
-                                    className="cursor-pointer hover:text-blue-600"
+                                    className="flex items-center gap-3 px-4 py-2"
                                 >
-                                    Dashboard
+                                    <MdDashboard />
+                                    <span>Dashboard</span>
                                 </Link>
                             </li>
 
-                            <li>
+                            <li className="hover:bg-gray-700 cursor-pointer">
                                 <Link
                                     href="/tasks"
-                                    className="cursor-pointer hover:text-blue-600"
+                                    className="flex items-center gap-3 px-4 py-2"
                                 >
-                                    Tasks
+                                    <GrTasks />
+                                    <span>Tasks</span>
                                 </Link>
                             </li>
 
-                            <li>
+                            <li className="hover:bg-gray-700 cursor-pointer">
                                 <Link
                                     href="/my-tasks"
-                                    className="cursor-pointer hover:text-blue-600"
+                                    className="flex items-center gap-3 px-4 py-2"
                                 >
-                                    My Tasks
+                                    <FaTasks />
+                                    <span>My Tasks</span>
                                 </Link>
                             </li>
 
-                            <li>
+                            <li className="hover:bg-gray-700 cursor-pointer">
                                 <Link
                                     href="/activity"
-                                    className="cursor-pointer hover:text-blue-600"
+                                    className="flex items-center gap-3 px-4 py-2"
                                 >
-                                    Activity
+                                    <FiActivity />
+                                    <span>Activity</span>
                                 </Link>
                             </li>
+
+
                         </ul>
                     </nav>
 
                     {/* BOTTOM MENU */}
                     <nav className="space-y-3">
-                        <ul className="space-y-2">
-                            <li className="cursor-pointer hover:text-blue-600">
+                        <ul className="space-y-2 ">
+                            <li className="hover:bg-gray-700 px-4 py-2 cursor-pointer flex items-center gap-3">
                                 Settings
                             </li>
-                            <li className="cursor-pointer text-red-600 hover:text-red-700">
+                            <li className="cursor-pointer text-red-600 hover:text-red-700 px-4">
                                 Logout
                             </li>
                         </ul>

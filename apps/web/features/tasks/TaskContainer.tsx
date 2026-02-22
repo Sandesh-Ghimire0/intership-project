@@ -59,7 +59,7 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
             {(isFormVisible || editId?.length > 0) && (
                 <div
                     onClick={() => router.push("/tasks")}
-                    className="fixed inset-0 bg-gray-400/50"
+                    className="fixed  z-50 inset-0 bg-black/50"
                 >
                     {editId?.length > 0 && (
                         <div onClick={(e) => e.stopPropagation()}>

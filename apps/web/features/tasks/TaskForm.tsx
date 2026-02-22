@@ -55,7 +55,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
 
             setAssigneeName("");
             setAssigneeError(initialAssigneeError);
-        } else if (res?.status === 400) {
+        } else if (res?.status === 500) {
             setAssigneeError((prev) => ({
                 ...initialAssigneeError,
                 doesNotExist: true,
