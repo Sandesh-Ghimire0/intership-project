@@ -1,40 +1,18 @@
 import { Request, Response } from "express";
-import { Task } from "../models/task.model.js";
-import { User } from "../models/user.model.js";
-
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import {
+    createNewTask,
+    deleteTaskById,
+    fetchAllTask,
+    updateTaskById,
+} from "../services/task.service.js";
 
 const createTask = asyncHandler(async (req: Request, res: Response) => {
-    const {
-        title,
-        description,
-        status,
-        priority,
-        dueDate,
-        assignees,
-        reporter,
-    } = req.body;
+    const data = req.body;
 
-    const assigneesId = assignees.map((a: any) => a._id);
-
-    const reporterObj = await User.findOne({ username: reporter });
-    const reporterId = reporterObj?._id;
-
-    const task = await Task.create({
-        title,
-        description,
-        status,
-        priority,
-        dueDate,
-        assignees: assigneesId,
-        reporter: reporterId,
-    });
-
-    const createdTask = await Task.findById(task._id)
-        .populate("assignees")
-        .populate("reporter");
+    const createdTask = await createNewTask(data);
 
     if (!createdTask) {
         throw new ApiError(400, "Failed to create the task");
@@ -46,7 +24,7 @@ const createTask = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const fetchTask = asyncHandler(async (req: Request, res: Response) => {
-    const tasks = await Task.find().populate("assignees").populate("reporter");
+    const tasks = await fetchAllTask();
 
     if (!tasks) {
         throw new ApiError(400, "Failed to fetch the tasks");
@@ -63,7 +41,7 @@ const deleteTask = asyncHandler(async (req: Request, res: Response) => {
         throw new ApiError(400, "Id is required");
     }
 
-    const deletedTask = await Task.findByIdAndDelete(id);
+    const deletedTask = await deleteTaskById(id as string);
     if (!deletedTask) {
         throw new ApiError(400, "Task is not available");
     }
@@ -81,20 +59,7 @@ const updateTask = asyncHandler(async (req: Request, res: Response) => {
         throw new ApiError(400, "Id and data is required");
     }
 
-    const { assignees, reporter } = req.body;
-    const assigneesId = assignees.map((a: any) => a._id);
-
-    const reporterId = reporter._id;
-
-    data.assignees = assigneesId;
-    data.reporter = reporterId;
-
-    const updatedTask = await Task.findByIdAndUpdate(id, data, {
-        new: true, // return updated document
-        runValidators: true, // validate against the model schema
-    })
-        .populate("assignees")
-        .populate("reporter");
+    const updatedTask = await updateTaskById(data, id as string);
 
     if (!updatedTask) {
         throw new ApiError(400, "Failed to update the task");
