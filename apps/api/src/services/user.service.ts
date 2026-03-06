@@ -1,7 +1,8 @@
 import { User } from "../models/user.model.js";
+import { IUser } from "../types/type.js";
 import { ApiError } from "../utils/apiError.js";
 
-export const createNewUser = async (data: any) => {
+export const createNewUser = async (data: IUser) => {
     const { username, email, password, role, description } = data;
     if (!username || !email || !password || !role) {
         throw new ApiError(

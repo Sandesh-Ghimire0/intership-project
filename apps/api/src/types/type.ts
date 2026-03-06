@@ -1,16 +1,18 @@
 import mongoose, { Document } from "mongoose";
 
 export interface ITask {
+    _id: string;
     title: string;
     description: string;
     status: "todo" | "in_progress" | "done";
     priority: "low" | "medium" | "high" | "critical";
     dueDate: Date;
-    assignees: mongoose.Types.ObjectId[];
-    reporter: mongoose.Types.ObjectId;
+    assignees: IUser[] | mongoose.Types.ObjectId[];
+    reporter: string;
 }
 
 export interface IUser{
+    _id: string;
     username: string;
     email: string;
     password: string;
@@ -18,5 +20,3 @@ export interface IUser{
     description?: string;
 }
 
-type Name = string
-type Status = "todo" | "in_progress" | "done";

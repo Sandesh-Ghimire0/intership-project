@@ -1,7 +1,9 @@
 import { Task } from "../models/task.model.js";
 import { User } from "../models/user.model.js";
+import { ITask, IUser } from "../types/type.js";
+import { ApiError } from "../utils/apiError.js";
 
-export const createNewTask = async (data: any) => {
+export const createNewTask = async (data: ITask) => {
     const {
         title,
         description,
@@ -12,7 +14,7 @@ export const createNewTask = async (data: any) => {
         reporter,
     } = data;
 
-    const assigneesId = assignees.map((a: any) => a._id);
+    const assigneesId = assignees.map(a => a._id);
 
     const reporterObj = await User.findOne({ username: reporter });
     const reporterId = reporterObj?._id;
@@ -44,14 +46,14 @@ export const deleteTaskById = async (id: string) => {
     return deletedTask;
 };
 
-export const updateTaskById = async (data: any, id: string) => {
-    const { assignees, reporter } = data;
-    const assigneesId = assignees.map((a: any) => a._id);
+export const updateTaskById = async (data: ITask, id: string) => {
+    const assignees  = data.assignees;
+    const assigneesId = assignees.map((a:any) => a._id);
 
-    const reporterId = reporter._id;
+    // const reporterId = reporter._id;
 
     data.assignees = assigneesId;
-    data.reporter = reporterId;
+    // data.reporter = reporterId;
 
     const updatedTask = await Task.findByIdAndUpdate(id, data, {
         new: true, // return updated document
