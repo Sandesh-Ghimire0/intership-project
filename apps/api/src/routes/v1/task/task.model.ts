@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ITask } from "../types/type.js";
+import { ITask } from "../shared/types/type.js";
 
 const taskSchema = new mongoose.Schema<ITask>(
     {
@@ -43,7 +43,7 @@ const taskSchema = new mongoose.Schema<ITask>(
 
         reporter: {
             type: mongoose.Schema.Types.ObjectId,
-            ref:"User"
+            ref: "User",
         },
     },
     { timestamps: true },

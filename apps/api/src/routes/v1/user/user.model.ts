@@ -1,22 +1,21 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt, { Secret, SignOptions } from "jsonwebtoken";
-import { IUser } from "../types/type.js";
-
+import { IUser } from "../shared/types/type.js";
 
 const userSchema = new mongoose.Schema<IUser>(
     {
         username: {
             type: String,
-            unique:true,
+            unique: true,
             required: true,
             lowercase: true,
             trim: true,
-            index:true
+            index: true,
         },
         email: {
             type: String,
-            unique:true,
+            unique: true,
             required: true,
             lowercase: true,
             trim: true,
@@ -24,7 +23,7 @@ const userSchema = new mongoose.Schema<IUser>(
         password: {
             type: String,
             required: true,
-            select:false
+            select: false,
         },
         role: {
             type: String,
@@ -41,7 +40,7 @@ const userSchema = new mongoose.Schema<IUser>(
     - "this" is the mongoose Docuement that follows the IUser interface
     - no need to call next(), mongoose will automatically call the next middleware when the promise resolves
 */
-userSchema.pre<IUser>("save", async function () {
+userSchema.pre("save", async function () {
     if (!this.isModified("password")) {
         return;
     }

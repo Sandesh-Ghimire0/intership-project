@@ -1,14 +1,15 @@
 # Real-Time Task Management System
-This project is a full-stack real-time task management system built with Next.js, React, Tailwind CSS, and MongoDB, designed to mimic a lightweight Jira/Trello-style workflow.In this application, users can create task and assign it to multiple people. The application includes a dashboard where users can view all tasks at a glance, monitor their progress by status and priority, and quickly identify pending or overdue work. Features such as real-time task updates and activity logs ensure that changes like task creation, deletion, or status updates are immediately reflected in the UI, making it suitable for productivity tracking and collaborative task management.
+This project is a full-stack real-time task management system built with Next.js, React, Tailwind CSS, and MongoDB. In this application, users can create task and assign it to multiple people. The application includes a dashboard where users can view all tasks at a glance, monitor their progress by status and priority, and quickly identify pending or overdue work. Features such as real-time task updates and activity logs ensure that changes like task creation, deletion, or status updates are immediately reflected in the UI, making it suitable for productivity tracking and collaborative task management.
 
 ## Table of Content
 
 - [setup](#setup)
 - [Installation](#installation)
-- [Assingment 1](#assignment-1)
-- [Assingment 2](#assignment-2)
-- [Assingment 3](#assignment-3)
-- [Assignment 4](#assignment-4)
+- [Task 1: Monorepo setup](#task-1-monorepo-setup)
+- [Task 2: created app with next.js and mongodb](#task-2-created-app-with-nextjs-and-mongodb)
+- [Task 3: Implement typescript](#task-3-implement-typescript)
+- [Task 4: Dockerize](#task-4-dockerize)
+- [Task 5: Folder structure](#task-5-folder-structure)
 
 ## setup
 
@@ -73,7 +74,7 @@ pnpm turbo run dev
 - localhost:3000 ---------> web <br>
 - localhost:4000 ---------> api
 - `Ensure MongoDB is running before starting the API`
-## Assignment 1
+## Task 1: Monorepo setup
 
 **Create a Monorepo structure**
 
@@ -88,13 +89,13 @@ pnpm turbo run dev
     - added scripts in `package.json`
     - added typescript configuration in `tsconfig.json` by extending the `base.json` from shared package `@repo/typescript-config`
 
-## Assignment 2
+## Task 2: created app with next.js and mongodb
 
 **Create a React or next.js app with mongodb** <br><br>
 `/api`
 
 - Created method ([connectDB](./apps/api/src/config/db.ts)) to establish connection with mongodb (local).
-- Added [Models](./apps/api/src/models/task.model.ts) [Controllers](./apps/api/src/controllers/task.controller.ts) and [Routes](/apps/api/src/routes/task.route.ts)
+- Added [Models](./apps/api/src/routes/v1/) [Controllers](./apps/api/src/routes/v1/) and [Routes](./apps/api/src/routes/v1/)
 
 `/web`
 
@@ -102,14 +103,14 @@ pnpm turbo run dev
 - created a [layout](<./apps/web/app/(root)/layout.tsx>) component
 - created a server component to [fetch](<./apps/web/app/(root)/tasks/page.tsx>) and client components to [create, display , Delete](./apps/web/features/tasks/) task
 
-## Assignment 3
+## Task 3: Implement typescript
 
 **Use typescript interface and type to ensure type safety**
 
 `/api`
 
 - Added built in express types like `Request` and `Response`
-- created a interface [ITask](./apps/api/src/types/type.ts) and implemented in controllers and models
+- created a interface [ITask](./apps/api/src/routes/v1/shared/types/type.ts) and implemented in controllers and models
 
 `/web`
 
@@ -118,10 +119,14 @@ pnpm turbo run dev
 - created interface for props
 
 
-## Assignment 4
+## Task 4: Dockerize
 
 **Dockerize the apps**
 
 
 - created Dockerfile for [api](./apps/api/Dockerfile) and [web](./apps/web/Dockerfile)
 - Added [scripts](./package.json) for pruning and dockerizing the apps with single command
+
+
+## Task 5: Folder structure
+Updated the folder stucture for the [backend](./apps/api/src/routes/)

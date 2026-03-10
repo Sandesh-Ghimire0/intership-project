@@ -1,11 +1,9 @@
 import { Request, Response } from "express";
-import { ApiError } from "../utils/apiError.js";
-import { ApiResponse } from "../utils/apiResponse.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
-import {
-    createNewUser,
-    fetchAssigneeByUsername,
-} from "../services/user.service.js";
+import { asyncHandler } from "../shared/utils/asyncHandler.js";
+import { ApiResponse } from "../shared/utils/apiResponse.js";
+import { ApiError } from "../shared/utils/apiError.js";
+
+import { createNewUser, fetchAssigneeByUsername } from "./user.service.js";
 
 const createUser = asyncHandler(async function (req: Request, res: Response) {
     const data = req.body;

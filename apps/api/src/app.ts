@@ -6,16 +6,13 @@ export const app: Express = express();
 app.use(cors())
 app.use(express.json());
 
-app.get("/health", (_req: Request, res: Response) => {
+app.get("/health", (req: Request, res: Response) => {
     res.json({ status: "ok" });
 });
 
 // ---------------------------------------------------------------------------------
 
-import taskRouter from "./routes/task.route.js";
-import userRouter from "./routes/user.route.js";
+import v1Router from "./routes/v1/index.js";
 
-app.use("/api/v1/task", taskRouter);
-app.use("/api/v1/user", userRouter)
+app.use("/api/v1", v1Router);
 
-// localhost:4000/api/v1/task/tasks , {data}

@@ -1,7 +1,6 @@
-import { Task } from "../models/task.model.js";
-import { User } from "../models/user.model.js";
-import { ITask, IUser } from "../types/type.js";
-import { ApiError } from "../utils/apiError.js";
+import { ITask } from "../shared/types/type.js";
+import { User } from "../user/user.model.js";
+import { Task } from "./task.model.js";
 
 export const createNewTask = async (data: ITask) => {
     const {
@@ -14,9 +13,12 @@ export const createNewTask = async (data: ITask) => {
         reporter,
     } = data;
 
-    const assigneesId = assignees.map(a => a._id);
+    const assigneesId = assignees.map((a) => a._id);
 
-    const reporterObj = await User.findOne({ username: reporter });
+    let reporterObj = null;
+    if (typeof reporter === "string") {
+        reporterObj = await User.findOne({ username: reporter });
+    }
     const reporterId = reporterObj?._id;
 
     const task = await Task.create({
@@ -47,8 +49,8 @@ export const deleteTaskById = async (id: string) => {
 };
 
 export const updateTaskById = async (data: ITask, id: string) => {
-    const assignees  = data.assignees;
-    const assigneesId = assignees.map((a:any) => a._id);
+    const assignees = data.assignees;
+    const assigneesId = assignees.map((a: any) => a._id);
 
     // const reporterId = reporter._id;
 

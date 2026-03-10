@@ -1,6 +1,6 @@
-import { User } from "../models/user.model.js";
-import { IUser } from "../types/type.js";
-import { ApiError } from "../utils/apiError.js";
+import { IUser } from "../shared/types/type.js";
+import { User } from "./user.model.js";
+import { ApiError } from "../shared/utils/apiError.js";
 
 export const createNewUser = async (data: IUser) => {
     const { username, email, password, role, description } = data;

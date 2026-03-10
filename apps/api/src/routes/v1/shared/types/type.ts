@@ -8,7 +8,7 @@ export interface ITask {
     priority: "low" | "medium" | "high" | "critical";
     dueDate: Date;
     assignees: IUser[] | mongoose.Types.ObjectId[];
-    reporter: string;
+    reporter: string | mongoose.Types.ObjectId;
 }
 
 export interface IUser{

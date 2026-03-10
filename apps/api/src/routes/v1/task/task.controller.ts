@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
-import { ApiError } from "../utils/apiError.js";
-import { ApiResponse } from "../utils/apiResponse.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
+import { asyncHandler } from "../shared/utils/asyncHandler.js";
+import { ApiResponse } from "../shared/utils/apiResponse.js";
+import { ApiError } from "../shared/utils/apiError.js";
+
 import {
     createNewTask,
     deleteTaskById,
     fetchAllTask,
     updateTaskById,
-} from "../services/task.service.js";
+} from "./task.service.js";
 
 const createTask = asyncHandler(async (req: Request, res: Response) => {
     const data = req.body;
