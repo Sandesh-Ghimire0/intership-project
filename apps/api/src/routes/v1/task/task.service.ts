@@ -1,68 +1,49 @@
 import { ITask } from "../shared/types/type.js";
 import { User } from "../user/user.model.js";
-import { Task } from "./task.model.js";
+import { taskrepository } from "./task.repository.js";
 
-export const createNewTask = async (data: ITask) => {
-    const {
-        title,
-        description,
-        status,
-        priority,
-        dueDate,
-        assignees,
-        reporter,
-    } = data;
+class TaskService {
+    async createNewTask(data: ITask) {
+        const assigneesId = data.assignees.map((a: any) => a._id);
 
-    const assigneesId = assignees.map((a) => a._id);
+        let reporterObj: any = null;
+        if (typeof data.reporter === "string") {
+            reporterObj = await User.findOne({ username: data.reporter });
+        }
+        const reporterId = reporterObj?._id;
 
-    let reporterObj = null;
-    if (typeof reporter === "string") {
-        reporterObj = await User.findOne({ username: reporter });
+        const createdTask = await taskrepository.create({
+            ...data,
+            assignees: assigneesId,
+            reporter: reporterId,
+        });
+
+        return createdTask;
     }
-    const reporterId = reporterObj?._id;
 
-    const task = await Task.create({
-        title,
-        description,
-        status,
-        priority,
-        dueDate,
-        assignees: assigneesId,
-        reporter: reporterId,
-    });
+    async fetchAllTask() {
+        const tasks = await taskrepository.findAll();
+        return tasks;
+    }
 
-    const createdTask = await Task.findById(task._id)
-        .populate("assignees")
-        .populate("reporter");
+    async updateTaskById(data: ITask, id: string) {
+        const assignees = data.assignees;
+        const assigneesId = assignees.map((a: any) => a._id);
 
-    return createdTask;
-};
+        // const reporterId = reporter._id;
 
-export const fetchAllTask = async () => {
-    const tasks = await Task.find().populate("assignees").populate("reporter");
-    return tasks;
-};
+        data.assignees = assigneesId;
+        // data.reporter = reporterId;
 
-export const deleteTaskById = async (id: string) => {
-    const deletedTask = await Task.findByIdAndDelete(id);
-    return deletedTask;
-};
+        const updatedTask = await taskrepository.update(data, id);
 
-export const updateTaskById = async (data: ITask, id: string) => {
-    const assignees = data.assignees;
-    const assigneesId = assignees.map((a: any) => a._id);
+        return updatedTask;
+    }
 
-    // const reporterId = reporter._id;
+    async deleteTaskById(id: string) {
+        const deletedTask = await taskrepository.delete(id);
+        return deletedTask;
+    }
+}
 
-    data.assignees = assigneesId;
-    // data.reporter = reporterId;
-
-    const updatedTask = await Task.findByIdAndUpdate(id, data, {
-        new: true, // return updated document
-        runValidators: true, // validate against the model schema
-    })
-        .populate("assignees")
-        .populate("reporter");
-
-    return updatedTask;
-};
+export const taskService = new TaskService();

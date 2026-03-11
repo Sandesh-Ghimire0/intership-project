@@ -2,18 +2,12 @@ import { Request, Response } from "express";
 import { asyncHandler } from "../shared/utils/asyncHandler.js";
 import { ApiResponse } from "../shared/utils/apiResponse.js";
 import { ApiError } from "../shared/utils/apiError.js";
-
-import {
-    createNewTask,
-    deleteTaskById,
-    fetchAllTask,
-    updateTaskById,
-} from "./task.service.js";
+import { taskService } from "./task.service.js";
 
 const createTask = asyncHandler(async (req: Request, res: Response) => {
     const data = req.body;
 
-    const createdTask = await createNewTask(data);
+    const createdTask = await taskService.createNewTask(data);
 
     if (!createdTask) {
         throw new ApiError(400, "Failed to create the task");
@@ -25,7 +19,7 @@ const createTask = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const fetchTask = asyncHandler(async (req: Request, res: Response) => {
-    const tasks = await fetchAllTask();
+    const tasks = await taskService.fetchAllTask();
 
     if (!tasks) {
         throw new ApiError(400, "Failed to fetch the tasks");
@@ -42,7 +36,7 @@ const deleteTask = asyncHandler(async (req: Request, res: Response) => {
         throw new ApiError(400, "Id is required");
     }
 
-    const deletedTask = await deleteTaskById(id as string);
+    const deletedTask = await taskService.deleteTaskById(id as string);
     if (!deletedTask) {
         throw new ApiError(400, "Task is not available");
     }
@@ -60,7 +54,7 @@ const updateTask = asyncHandler(async (req: Request, res: Response) => {
         throw new ApiError(400, "Id and data is required");
     }
 
-    const updatedTask = await updateTaskById(data, id as string);
+    const updatedTask = await taskService.updateTaskById(data, id as string);
 
     if (!updatedTask) {
         throw new ApiError(400, "Failed to update the task");

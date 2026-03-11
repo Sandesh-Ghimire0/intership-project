@@ -37,7 +37,6 @@ const userSchema = new mongoose.Schema<IUser>(
 );
 
 /* 
-    - "this" is the mongoose Docuement that follows the IUser interface
     - no need to call next(), mongoose will automatically call the next middleware when the promise resolves
 */
 userSchema.pre("save", async function () {
