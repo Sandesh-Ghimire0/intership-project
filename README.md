@@ -129,4 +129,4 @@ pnpm turbo run dev
 
 
 ## Task 5: Folder structure
-Updated the folder stucture for the [backend](./apps/api/src/routes/)
+Updated the folder stucture for the [backend](./apps/api/src)
