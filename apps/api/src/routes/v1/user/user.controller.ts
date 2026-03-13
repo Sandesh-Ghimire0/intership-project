@@ -3,23 +3,7 @@ import { asyncHandler } from "../shared/utils/asyncHandler.js";
 import { ApiResponse } from "../shared/utils/apiResponse.js";
 import { ApiError } from "../shared/utils/apiError.js";
 
-import { createNewUser, fetchAssigneeByUsername } from "./user.service.js";
-
-const createUser = asyncHandler(async function (req: Request, res: Response) {
-    const data = req.body;
-
-    const createdUser = await createNewUser(data);
-
-    if (!createdUser) {
-        throw new ApiError(400, "Something went wrong while creating user");
-    }
-
-    return res
-        .status(201)
-        .json(
-            new ApiResponse(201, createdUser, "User created Successfully !!!"),
-        );
-});
+import { fetchAssigneeByUsername } from "./user.service.js";
 
 const validateAssingee = asyncHandler(async (req: Request, res: Response) => {
     const { username } = req.params;
@@ -40,4 +24,4 @@ const validateAssingee = asyncHandler(async (req: Request, res: Response) => {
         );
 });
 
-export { createUser, validateAssingee };
+export { validateAssingee };
