@@ -1,9 +1,33 @@
 import { ITask } from "../shared/types/type.js";
+import { ApiError } from "../shared/utils/apiError.js";
 import { User } from "../user/user.model.js";
 import { taskrepository } from "./task.repository.js";
 
 class TaskService {
     async createNewTask(data: ITask) {
+        const {
+            title,
+            description,
+            status,
+            priority,
+            dueDate,
+            assignees,
+            reporter,
+        } = data;
+
+        if (
+            !title ||
+            !status ||
+            !priority ||
+            !dueDate ||
+            !assignees ||
+            !reporter
+        ) {
+            throw new ApiError(
+                400,
+                "title description status priority dueDate assignees reporter is required",
+            );
+        }
         const assigneesId = data.assignees.map((a: any) => a._id);
 
         let reporterObj: any = null;
