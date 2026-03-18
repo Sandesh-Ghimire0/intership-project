@@ -50,7 +50,6 @@ class AuthService {
         // delete does not work on mongoose document
         const userResponse = user.toObject();
         delete userResponse.password;
-        delete userResponse.refreshToken;
 
         return { user: userResponse, accessToken };
     }
