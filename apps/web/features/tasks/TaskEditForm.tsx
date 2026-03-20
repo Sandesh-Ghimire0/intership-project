@@ -1,9 +1,10 @@
 "use client"
 
 import React, { useState } from "react";
-import { IFormData, ITask, Priority, Status } from "./type";
+import { IFormData} from "./type";
 import { validateAssignee } from "../users/api";
 import Link from "next/link";
+import { Priority, Status } from "../shared/types/type";
 
 interface TaskEditFormProps {
     task: any;

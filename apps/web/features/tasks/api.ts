@@ -1,5 +1,6 @@
 import axios from "axios";
-import { IFormData, ITask } from "./type";
+import { IFormData } from "./type";
+import { ITask } from "../shared/types/type";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 

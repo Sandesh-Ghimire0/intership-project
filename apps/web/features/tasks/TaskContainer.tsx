@@ -4,10 +4,12 @@ import React, { useState } from "react";
 import { createTask, deleteTask, updateTask } from "./api";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
-import { IFormData, ITask } from "./type";
+import {  ITask } from "../shared/types/type";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import TaskEditForm from "./TaskEditForm";
+import { useAuthStore } from "../shared/store/useAuthStore";
+import { IFormData } from "./type";
 
 interface TaskContainerProps {
     initialTasks: ITask[];
@@ -17,6 +19,8 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
     const searchParams = useSearchParams();
     const isFormVisible = searchParams.get("showForm") === "true";
     const editId = searchParams.get("edit") as string;
+
+    const {user } = useAuthStore()
 
     const router = useRouter();
 

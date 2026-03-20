@@ -3,9 +3,11 @@
 import { FormEvent } from "react";
 import { loginUser } from "../api/api";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/features/shared/store/useAuthStore";
 
 const LoginForm = () => {
     const router = useRouter();
+    const { login } = useAuthStore();
 
     const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -15,10 +17,8 @@ const LoginForm = () => {
         try {
             const res = await loginUser(data as any);
             if (res?.status === 200) {
-                localStorage.setItem(
-                    "accessToken",
-                    JSON.stringify(res.data.data.accessToken),
-                );
+                const { user, accessToken } = res.data.data;
+                login(user, accessToken);
                 router.replace("/dashboard");
             }
         } catch (error) {

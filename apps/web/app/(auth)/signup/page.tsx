@@ -1,3 +1,4 @@
+import SignupForm from "@/features/auth/components/SignupForm";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -21,76 +22,7 @@ const Signup = () => {
                         Create New Account
                     </h2>
 
-                    <form className="space-y-5 mt-5">
-                        <div className="flex gap-3">
-                            <div>
-                                <label
-                                    htmlFor="fullname"
-                                    className="block text-sm font-semibold text-slate-800 mb-1"
-                                >
-                                    Name
-                                </label>
-                                <input
-                                    id="fullname"
-                                    type="text"
-                                    placeholder="Your full name"
-                                    className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-semibold text-slate-800 mb-1">
-                                    Email
-                                </label>
-                                <input
-                                    type="email"
-                                    placeholder="Your work email"
-                                    className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex gap-3">
-                            <div>
-                                <label className="block text-sm font-semibold text-slate-800 mb-1">
-                                    Password
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder="Create a password"
-                                    className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
-                                />
-                                <p className="text-xs text-slate-400 mt-2">
-                                    Must be at least 7 characters
-                                </p>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-semibold text-slate-800 mb-1">
-                                    Role
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder="Your role at work"
-                                    className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-semibold text-slate-800 mb-1">
-                                Description
-                            </label>
-                            <textarea
-                                rows={5}
-                                placeholder="Description of role"
-                                className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
-                            />
-                        </div>
-
-                        <button className="w-full bg-slate-900 text-white py-3 rounded-lg font-semibold hover:bg-slate-800 transition-colors mt-4">
-                            Create Account
-                        </button>
-                    </form>
+                    <SignupForm />
 
                     <p className="text-center text-sm text-slate-600 mt-8">
                         Already have an account?{" "}

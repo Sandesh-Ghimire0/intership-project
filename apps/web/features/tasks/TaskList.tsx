@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ITask } from "./type";
+import { ITask } from "../shared/types/type";
 import { useSearchParams } from "next/navigation";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";

@@ -25,12 +25,14 @@ export const createTaskSchema = z.object({
 });
 
 export const deleteTaskSchema = z.object({
-    params: {
+    params: z.object({
         id: z.string().min(10, "length of Id must be at least 10"),
-    },
+    }),
 });
 
 export const updateTaskSchema = z.object({
     body: taskBody,
-    params: { id: z.string().min(10, "length of Id must be at least 10") },
+    params: z.object({
+        id: z.string().min(10, "length of Id must be at least 10"),
+    }),
 });

@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { IFormData, ITask, Priority, Status } from "./type";
+import { IFormData } from "./type";
 import Link from "next/link";
 import { validateAssignee } from "../users/api";
+import { Priority, Status } from "../shared/types/type";
+import { useAuthStore } from "../shared/store/useAuthStore";
 
 interface TaskFormProps {
     onCreate: (formData: IFormData) => void;
@@ -16,6 +18,7 @@ const initialAssigneeError = {
 };
 
 const TaskForm = ({ onCreate }: TaskFormProps) => {
+    const { user } = useAuthStore();
     const [formData, setFormData] = useState<IFormData>({
         title: "",
         description: "",
@@ -23,7 +26,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
         priority: "medium",
         dueDate: "",
         assignees: [],
-        reporter: "sandesh_dev",
+        reporter: user?.username || "",
     });
 
     const [assigneeName, setAssigneeName] = useState("");
@@ -91,7 +94,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
             priority: "medium",
             dueDate: "",
             assignees: [],
-            reporter: "sandesh_dev",
+            reporter: "",
         });
         setAssigneeError(initialAssigneeError);
     };
