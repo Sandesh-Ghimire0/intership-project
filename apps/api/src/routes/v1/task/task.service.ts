@@ -50,6 +50,11 @@ class TaskService {
         return tasks;
     }
 
+    async fetchMyTask(userId: string) {
+        const tasks = await taskrepository.findByUserId(userId);
+        return tasks;
+    }
+
     async updateTaskById(data: ITask, id: string) {
         const assignees = data.assignees;
         const assigneesId = assignees.map((a: any) => a._id);

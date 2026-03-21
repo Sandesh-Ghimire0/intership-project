@@ -33,7 +33,11 @@ const login = asyncHandler(async (req, res) => {
 
     return res
         .status(200)
-        .cookie("accessToken", accessToken)
+        .cookie("accessToken", accessToken, {
+            httpOnly: true,
+            path: "/",
+            sameSite: "lax",
+        })
         .json(
             new ApiResponse(
                 200,
@@ -44,17 +48,10 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const logout = asyncHandler(async (req, res) => {
-
     return res
         .status(200)
         .clearCookie("accessToken")
-        .json(
-            new ApiResponse(
-                200,
-                { },
-                "User logged out successfully !!!",
-            ),
-        );
+        .json(new ApiResponse(200, {}, "User logged out successfully !!!"));
 });
 
 export { signup, login, logout };

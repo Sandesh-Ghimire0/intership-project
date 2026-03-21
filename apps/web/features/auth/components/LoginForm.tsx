@@ -1,9 +1,9 @@
 "use client";
 
 import { FormEvent } from "react";
-import { loginUser } from "../api/api";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/features/shared/store/useAuthStore";
+import { loginAction } from "../actions/auth.action";
 
 const LoginForm = () => {
     const router = useRouter();
@@ -15,12 +15,9 @@ const LoginForm = () => {
         const formData = new FormData(event.currentTarget);
         const data = Object.fromEntries(formData);
         try {
-            const res = await loginUser(data as any);
-            if (res?.status === 200) {
-                const { user, accessToken } = res.data.data;
-                login(user, accessToken);
-                router.replace("/dashboard");
-            }
+            const { user } = await loginAction(data as any);
+            login(user);
+            router.replace("/dashboard");
         } catch (error) {
             console.log("Error while loggin user", error);
         }

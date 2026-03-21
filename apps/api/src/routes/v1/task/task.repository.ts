@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { ITask } from "../shared/types/type.js";
 import { Task } from "./task.model.js";
 
@@ -22,6 +23,16 @@ class TaskRepository {
             .populate("reporter");
 
         return task;
+    }
+
+    async findByUserId(id: string) {
+        const tasks = await Task.find({
+            $or: [{ assignees: id }, { reporter: id }],
+        })
+            .populate("assignees")
+            .populate("reporter");
+
+        return tasks;
     }
 
     async update(data: ITask, id: string) {

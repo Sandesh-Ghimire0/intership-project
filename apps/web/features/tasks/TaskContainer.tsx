@@ -16,13 +16,12 @@ interface TaskContainerProps {
 }
 
 const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
+    const router = useRouter();
     const searchParams = useSearchParams();
+    
     const isFormVisible = searchParams.get("showForm") === "true";
     const editId = searchParams.get("edit") as string;
 
-    const {user } = useAuthStore()
-
-    const router = useRouter();
 
     const [tasks, setTasks] = useState<ITask[]>(initialTasks);
     const editedTask = tasks.find((task) => task._id === editId) as ITask;

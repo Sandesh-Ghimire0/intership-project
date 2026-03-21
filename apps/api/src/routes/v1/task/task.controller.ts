@@ -29,6 +29,23 @@ const fetchTask = asyncHandler(async (req: Request, res: Response) => {
         .json(new ApiResponse(200, tasks, "tasks fetched successfully"));
 });
 
+const fetchMyTasks = asyncHandler(async (req, res) => {
+    const { _id } = ( req as any).user;
+
+    if (!_id) {
+        throw new ApiError(400, "userId is required");
+    }
+
+    const tasks = await taskService.fetchMyTask(_id as string);
+    if (!tasks) {
+        throw new ApiError(400, "Failed to fetch my tasks");
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, tasks, "my tasks fetch successfully !!!"));
+});
+
 const deleteTask = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
@@ -65,4 +82,4 @@ const updateTask = asyncHandler(async (req: Request, res: Response) => {
         .json(new ApiResponse(200, updatedTask, "task updated successfully"));
 });
 
-export { createTask, fetchTask, deleteTask, updateTask };
+export { createTask, fetchTask, deleteTask, updateTask, fetchMyTasks };

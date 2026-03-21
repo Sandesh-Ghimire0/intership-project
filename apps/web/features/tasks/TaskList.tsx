@@ -13,7 +13,6 @@ interface TaskListProps {
 
 const TaskList = ({ tasks, onDelete }: TaskListProps) => {
     const searchParams = useSearchParams();
-    const editId = searchParams.get("edit");
 
     return (
         <div>

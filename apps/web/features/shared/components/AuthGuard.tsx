@@ -5,19 +5,19 @@ import { useAuthStore } from "../store/useAuthStore";
 import { useRouter } from "next/navigation";
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
-    const { accessToken, hasHydrated } = useAuthStore();
+    const { user, hasHydrated } = useAuthStore();
 
     const router = useRouter();
     const [isVerified, setIsVerified] = useState(false);
 
     useEffect(() => {
         // only check accessToken when zustand state is hydrated
-        if (hasHydrated && !accessToken) {
+        if (hasHydrated && !user) {
             router.replace("/login");
         } else {
             setIsVerified(true);
         }
-    }, [accessToken, hasHydrated]);
+    }, [user, hasHydrated]);
 
     if (!isVerified) {
         return (

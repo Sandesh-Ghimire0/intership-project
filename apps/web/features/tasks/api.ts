@@ -2,11 +2,18 @@ import axios from "axios";
 import { IFormData } from "./type";
 import { ITask } from "../shared/types/type";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const taskURL = axios.create({
+    baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/tasks`,
+    // withCredentials: true,
+});
 
-export const fetchTask = async (): Promise<ITask[] | undefined> => {
+export const fetchTask = async (
+    token: string,
+): Promise<ITask[] | undefined> => {
     try {
-        const res = await axios.get(`${API_URL}/api/v1/tasks`);
+        const res = await taskURL.get(`/`, {
+            headers: { Cookie: `accessToken=${token}` },
+        });
         return res.data.data;
     } catch (error) {
         console.log("ERROR :: fetching task", error);
@@ -14,9 +21,23 @@ export const fetchTask = async (): Promise<ITask[] | undefined> => {
     }
 };
 
+export const fetchMyTasks = async (
+    token: string,
+): Promise<ITask[] | undefined> => {
+    try {
+        const res = await taskURL.get(`/my`, {
+            headers: { Cookie: `accessToken=${token}` },
+        });
+        return res.data.data;
+    } catch (error) {
+        console.log("ERROR :: fetching My task", error);
+        return;
+    }
+};
+
 export const createTask = async (task: IFormData) => {
     try {
-        const res = await axios.post(`${API_URL}/api/v1/tasks`, task);
+        const res = await taskURL.post(`/`, task);
         return res.data;
     } catch (error) {
         console.log("ERROR :: creating task", error);
@@ -25,19 +46,18 @@ export const createTask = async (task: IFormData) => {
 
 export const deleteTask = async (id: string) => {
     try {
-        const res = await axios.delete(`${API_URL}/api/v1/tasks/${id}`);
+        const res = await taskURL.delete(`/${id}`);
         return res;
     } catch (error) {
         console.log("ERROR :: deleting task", error);
     }
 };
 
-export const updateTask = async (id: string, taskData:any) => {
-     try {
-        const res = await axios.put(`${API_URL}/api/v1/tasks/${id}`, taskData);
+export const updateTask = async (id: string, taskData: any) => {
+    try {
+        const res = await taskURL.put(`/${id}`, taskData);
         return res;
     } catch (error) {
         console.log("ERROR :: deleting task", error);
     }
-}
-
+};
