@@ -1,10 +1,10 @@
 import axios from "axios";
-import { IFormData } from "./type";
-import { ITask } from "../shared/types/type";
+import { IFormData } from "../type";
+import { ITask } from "../../shared/types/type";
 
 const taskURL = axios.create({
     baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/tasks`,
-    // withCredentials: true,
+    withCredentials: true,
 });
 
 export const fetchTask = async (

@@ -5,29 +5,6 @@ import { taskrepository } from "./task.repository.js";
 
 class TaskService {
     async createNewTask(data: ITask) {
-        const {
-            title,
-            description,
-            status,
-            priority,
-            dueDate,
-            assignees,
-            reporter,
-        } = data;
-
-        if (
-            !title ||
-            !status ||
-            !priority ||
-            !dueDate ||
-            !assignees ||
-            !reporter
-        ) {
-            throw new ApiError(
-                400,
-                "title description status priority dueDate assignees reporter is required",
-            );
-        }
         const assigneesId = data.assignees.map((a: any) => a._id);
 
         let reporterObj: any = null;
@@ -56,13 +33,14 @@ class TaskService {
     }
 
     async updateTaskById(data: ITask, id: string) {
-        const assignees = data.assignees;
-        const assigneesId = assignees.map((a: any) => a._id);
 
-        // const reporterId = reporter._id;
+        const { assignees, reporter } = data;
+        const assigneesId = assignees.map((a: any) => a._id);
+        
+        const reporterId = (reporter as any)._id;
 
         data.assignees = assigneesId;
-        // data.reporter = reporterId;
+        data.reporter = reporterId;
 
         const updatedTask = await taskrepository.update(data, id);
 

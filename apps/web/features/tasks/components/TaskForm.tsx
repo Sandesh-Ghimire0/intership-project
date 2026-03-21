@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { IFormData } from "./type";
+import { IFormData } from "../type";
 import Link from "next/link";
-import { validateAssignee } from "../users/api";
-import { Priority, Status } from "../shared/types/type";
-import { useAuthStore } from "../shared/store/useAuthStore";
+import { validateAssignee } from "@/features/users/api";
+import { Priority, Status } from "@/features/shared/types/type";
 
 interface TaskFormProps {
+    formData: IFormData;
+    action: string;
+    setFormData: React.Dispatch<React.SetStateAction<IFormData | undefined>>;
     onCreate: (formData: IFormData) => void;
+    onUpdate: (data: IFormData) => void;
 }
 
 const initialAssigneeError = {
@@ -17,18 +20,13 @@ const initialAssigneeError = {
     doesNotExist: false,
 };
 
-const TaskForm = ({ onCreate }: TaskFormProps) => {
-    const { user } = useAuthStore();
-    const [formData, setFormData] = useState<IFormData>({
-        title: "",
-        description: "",
-        status: "todo",
-        priority: "medium",
-        dueDate: "",
-        assignees: [],
-        reporter: user?.username || "",
-    });
-
+const TaskForm = ({
+    formData,
+    action,
+    setFormData,
+    onCreate,
+    onUpdate,
+}: TaskFormProps) => {
     const [assigneeName, setAssigneeName] = useState("");
     const [assingeeError, setAssigneeError] = useState(initialAssigneeError);
 
@@ -36,41 +34,45 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
     const addAssignee = async () => {
         if (!assigneeName) return;
 
-        const duplicateAssignee = formData.assignees.filter(
-            (a: any) => a.username === assigneeName,
+        const isDuplicate = formData.assignees.some(
+            (a) => a.username === assigneeName,
         );
-        if (duplicateAssignee.length > 0) {
-            setAssigneeError({
-                ...initialAssigneeError,
-                duplicate: true,
-            });
 
+        if (isDuplicate) {
+            setAssigneeError({ ...initialAssigneeError, duplicate: true });
             return;
         }
 
         const res = await validateAssignee(assigneeName);
         const assignee = res?.data.data;
         if (res?.data?.success) {
-            setFormData((prev) => ({
-                ...prev,
-                assignees: [...prev.assignees, assignee],
-            }));
+            setFormData((prev) => {
+                if (!prev) return prev;
+
+                return {
+                    ...prev,
+                    assignees: [...prev.assignees, assignee],
+                };
+            });
 
             setAssigneeName("");
             setAssigneeError(initialAssigneeError);
         } else if (res?.status === 500) {
-            setAssigneeError((prev) => ({
+            setAssigneeError({
                 ...initialAssigneeError,
                 doesNotExist: true,
-            }));
+            });
         }
     };
 
-    const removeAssignee = async (id: string) => {
-        setFormData((prev: any) => ({
-            ...prev,
-            assignees: prev.assignees.filter((a: any) => a._id !== id),
-        }));
+    const removeAssignee = (id: string) => {
+        setFormData((prev) => {
+            if (!prev) return prev;
+            return {
+                ...prev,
+                assignees: prev.assignees.filter((a: any) => a._id !== id),
+            };
+        });
     };
 
     // Submit form
@@ -78,14 +80,15 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
         e.preventDefault();
 
         if (formData.assignees.length === 0) {
-            setAssigneeError((prev) => ({
+            setAssigneeError({
                 ...initialAssigneeError,
                 empty: true,
-            }));
+            });
             return;
         }
 
-        onCreate(formData);
+        if (action === "create") onCreate(formData);
+        if (action === "edit") onUpdate(formData);
 
         setFormData({
             title: "",
@@ -94,7 +97,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
             priority: "medium",
             dueDate: "",
             assignees: [],
-            reporter: "",
+            reporter: null,
         });
         setAssigneeError(initialAssigneeError);
     };
@@ -284,7 +287,7 @@ const TaskForm = ({ onCreate }: TaskFormProps) => {
                         type="submit"
                         className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 cursor-pointer"
                     >
-                        Create Task
+                        {action === "create" ? "Create" : "Edit"} Task
                     </button>
                 </div>
             </form>

@@ -11,7 +11,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     const [isVerified, setIsVerified] = useState(false);
 
     useEffect(() => {
-        // only check accessToken when zustand state is hydrated
+        // only check user when zustand state is hydrated
         if (hasHydrated && !user) {
             router.replace("/login");
         } else {

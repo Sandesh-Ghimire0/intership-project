@@ -1,5 +1,5 @@
 
-import { Priority, Status } from "../shared/types/type";
+import { IUser, Priority, Status } from "../shared/types/type";
 
 export interface IFormData {
     title: string;
@@ -7,6 +7,6 @@ export interface IFormData {
     status: Status;
     priority: Priority;
     dueDate: Date | string;
-    assignees: string[];
-    reporter: string;
+    assignees: IUser[];
+    reporter: IUser | null
 }

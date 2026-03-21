@@ -1,10 +1,10 @@
 export const dynamic = "force-dynamic";
 
-import { fetchMyTasks } from "@/features/tasks/api";
+import { fetchMyTasks } from "@/features/tasks/api/api";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import React from "react";
-import TaskContainer from "@/features/tasks/TaskContainer";
+import TaskContainer from "@/features/tasks/components/TaskContainer";
 
 const MyTasks = async () => {
     const cookieStore = await cookies();
@@ -25,6 +25,8 @@ const MyTasks = async () => {
     }
     return (
         <div>
+            <h2 className="text-lg font-semibold mb-4">My Tasks</h2>
+
             <TaskContainer initialTasks={tasks} />
         </div>
     );

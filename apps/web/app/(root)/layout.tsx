@@ -26,7 +26,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
                     {/* Create Task  */}
                     <Link
-                        href="/tasks?showForm=true"
+                        href="/tasks?create=true"
                         className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-700/60"
                     >
                         + Create Task
