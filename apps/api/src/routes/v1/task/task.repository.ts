@@ -3,9 +3,9 @@ import { ITask } from "../shared/types/type.js";
 import { Task } from "./task.model.js";
 
 class TaskRepository {
-    async create(taskData: ITask) {
+    async create(taskData:ITask) {
         const task = await Task.create(taskData);
-        const createdTask = await this.findById(task._id);
+        const createdTask = await this.findById(task._id.toString());
         return createdTask;
     }
 

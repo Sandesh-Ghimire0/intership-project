@@ -1,17 +1,14 @@
 import { ITask } from "../shared/types/type.js";
-import { ApiError } from "../shared/utils/apiError.js";
-import { User } from "../user/user.model.js";
 import { taskrepository } from "./task.repository.js";
 
 class TaskService {
     async createNewTask(data: ITask) {
         const assigneesId = data.assignees.map((a: any) => a._id);
 
-        let reporterObj: any = null;
-        if (typeof data.reporter === "string") {
-            reporterObj = await User.findOne({ username: data.reporter });
+        let reporterId = "";
+        if (typeof data.reporter !== "string") {
+            reporterId = data.reporter._id;
         }
-        const reporterId = reporterObj?._id;
 
         const createdTask = await taskrepository.create({
             ...data,
@@ -33,10 +30,9 @@ class TaskService {
     }
 
     async updateTaskById(data: ITask, id: string) {
-
         const { assignees, reporter } = data;
         const assigneesId = assignees.map((a: any) => a._id);
-        
+
         const reporterId = (reporter as any)._id;
 
         data.assignees = assigneesId;

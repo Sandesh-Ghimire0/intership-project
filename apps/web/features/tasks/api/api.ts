@@ -48,8 +48,9 @@ export const deleteTask = async (id: string) => {
     try {
         const res = await taskURL.delete(`/${id}`);
         return res;
-    } catch (error) {
+    } catch (error: any) {
         console.log("ERROR :: deleting task", error);
+        return error.response;
     }
 };
 
@@ -57,7 +58,8 @@ export const updateTask = async (id: string, taskData: any) => {
     try {
         const res = await taskURL.put(`/${id}`, taskData);
         return res;
-    } catch (error) {
-        console.log("ERROR :: deleting task", error);
+    } catch (error: any) {
+        console.log("ERROR :: Updating task", error);
+        return error.response;
     }
 };

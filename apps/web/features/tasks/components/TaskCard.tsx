@@ -2,6 +2,7 @@
 
 import { ITask } from "@/features/shared/types/type";
 import Link from "next/link";
+import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
@@ -11,6 +12,8 @@ interface TasksProps {
 }
 
 const TaskCard = ({ task, onDelete }: TasksProps) => {
+    const [showDeleteBox, setShowDeleteBox] = useState(false);
+
     return (
         <div
             key={task._id}
@@ -110,7 +113,7 @@ const TaskCard = ({ task, onDelete }: TasksProps) => {
 
             <div className="flex justify-end gap-5">
                 <button
-                    onClick={() => onDelete(task._id)}
+                    onClick={() => setShowDeleteBox(true)}
                     className="p-2 bg-red-600 text-lg text-white rounded-full"
                 >
                     <MdDelete />
@@ -123,6 +126,41 @@ const TaskCard = ({ task, onDelete }: TasksProps) => {
                     <FaEdit />
                 </Link>
             </div>
+            {showDeleteBox && (
+                <div
+                    className="fixed z-50 inset-0 bg-black/50"
+                    onClick={() => setShowDeleteBox(false)}
+                >
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-sm p-4"
+                    >
+                        <p className="font-md tracking-wide">
+                            Do you want to delete this task ?
+                        </p>
+
+                        <div className="flex justify-end gap-5">
+                            <button
+                                onClick={() => {
+                                    setShowDeleteBox(false);
+                                    console.log(task._id);
+                                    onDelete(task._id);
+                                }}
+                                className="bg-gray-200 text-black px-4 py-2 rounded-lg mt-8 "
+                            >
+                                Yes
+                            </button>
+
+                            <button
+                                onClick={() => setShowDeleteBox(false)}
+                                className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-8 "
+                            >
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

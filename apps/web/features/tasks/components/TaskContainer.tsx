@@ -22,6 +22,7 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
     const [tasks, setTasks] = useState<ITask[]>(initialTasks);
     const [formData, setFormData] = useState<IFormData | undefined>();
     const [action, setAction] = useState<"create" | "edit">("create");
+    const [isAuthorized, setIsAuthorized] = useState(true);
 
     const isCreateTask = searchParams.get("create") === "true";
     const editTaskId = searchParams.get("edit") as string;
@@ -54,7 +55,7 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
         if (createdData.statusCode === 201) {
             setTasks((prev: ITask[]) => [...prev, createdData.data]); // use createdData not formData because it does not include property added by db automatically
             // like _id, createdAt etc
-            router.push("/tasks");
+            router.push("/my-tasks");
         }
     };
 
@@ -65,11 +66,14 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
             setTasks((prev: ITask[]) =>
                 prev.filter((task: ITask) => task._id !== id),
             );
+        } else if (res?.status === 403) {
+            setIsAuthorized(false);
         }
+        console.log(res?.status);
     };
 
     const handleUpdate = async (taskData: any) => {
-        console.log(taskData)
+        console.log(taskData);
         const res = await updateTask(editTaskId, taskData);
         const updatedTask = res?.data.data;
 
@@ -77,7 +81,9 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
             setTasks((prev: any) =>
                 prev.map((t: any) => (t._id === editTaskId ? updatedTask : t)),
             );
-            router.push("/tasks");
+            router.push("/my-tasks");
+        } else if (res?.status === 403) {
+            setIsAuthorized(false);
         }
     };
 
@@ -85,7 +91,7 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
         <div>
             {(isCreateTask || editTaskId?.length > 0) && formData && (
                 <div
-                    onClick={() => router.push("/tasks")}
+                    onClick={() => router.push("/my-tasks")}
                     className="fixed  z-50 inset-0 bg-black/50"
                 >
                     {action && (
@@ -103,7 +109,12 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
             )}
 
             <div>
-                <TaskList tasks={tasks} onDelete={handleDelete} />
+                <TaskList
+                    tasks={tasks}
+                    isAuthorized={isAuthorized}
+                    setIsAuthorized={setIsAuthorized}
+                    onDelete={handleDelete}
+                />
             </div>
         </div>
     );

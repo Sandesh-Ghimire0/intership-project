@@ -125,7 +125,7 @@ const AllTask = ({ initialTasks }: AllTaskProps) => {
 
                                         {/* TIMESTAMPS */}
                                         {(task.createdAt || task.updatedAt) && (
-                                            <div className="text-xs text-gray-400 mt-3">
+                                            <div className="text-xs text-gray-400 mt-3 flex gap-7">
                                                 {task.createdAt && (
                                                     <span>
                                                         Created:{" "}

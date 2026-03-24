@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { ITask } from "../shared/types/type.js";
 
-const taskSchema = new mongoose.Schema<ITask>(
+const taskSchema = new mongoose.Schema(
     {
         title: {
             type: String,

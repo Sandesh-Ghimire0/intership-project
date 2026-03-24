@@ -13,15 +13,28 @@ import {
     updateTaskSchema,
 } from "./task.validation.js";
 import { verifyJWT } from "../shared/middlewares/jwt.middleware.js";
+import { authorizeUpdateOrDelete } from "./task.middleware.js";
 
 const taskRouter: Router = Router();
 
 taskRouter.route("/").get(verifyJWT, fetchTask);
-taskRouter.route("/").post(validate(createTaskSchema), verifyJWT, createTask);
+taskRouter.route("/").post(verifyJWT, validate(createTaskSchema), createTask);
 taskRouter
     .route("/:id")
-    .delete(validate(deleteTaskSchema), verifyJWT, deleteTask);
-taskRouter.route("/:id").put(validate(updateTaskSchema), verifyJWT, updateTask);
+    .delete(
+        verifyJWT,
+        authorizeUpdateOrDelete,
+        validate(deleteTaskSchema),
+        deleteTask,
+    );
+taskRouter
+    .route("/:id")
+    .put(
+        verifyJWT,
+        authorizeUpdateOrDelete,
+        validate(updateTaskSchema),
+        updateTask,
+    );
 taskRouter.route("/my").get(verifyJWT, fetchMyTasks);
 
 export default taskRouter;

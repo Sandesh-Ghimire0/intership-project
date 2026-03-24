@@ -6,7 +6,7 @@ import { taskService } from "./task.service.js";
 
 const createTask = asyncHandler(async (req: Request, res: Response) => {
     const data = req.body;
-
+    console.log(data)
     const createdTask = await taskService.createNewTask(data);
 
     if (!createdTask) {

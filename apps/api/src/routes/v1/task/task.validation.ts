@@ -17,7 +17,7 @@ const taskBody = z.object({
     dueDate: z.string(),
 
     assignees: z.array(z.object()),
-    reporter: z.union([z.string(), z.object()]),
+    reporter: z.object(),
 });
 
 export const createTaskSchema = z.object({

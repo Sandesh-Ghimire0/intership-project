@@ -7,11 +7,11 @@ export interface ITask {
     status: "todo" | "in_progress" | "done";
     priority: "low" | "medium" | "high" | "critical";
     dueDate: Date;
-    assignees: string[] | mongoose.Types.ObjectId[];
-    reporter: string | mongoose.Types.ObjectId;
+    assignees: IUser[] | string[];
+    reporter: IUser | string;
 }
 
-export interface IUser{
+export interface IUser {
     _id: string;
     username: string;
     email: string;
@@ -19,4 +19,3 @@ export interface IUser{
     role: string;
     description?: string;
 }
-
