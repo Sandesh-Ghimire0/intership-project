@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"; // don't fetch the task during build
 
 import { fetchTask } from "@/features/tasks/api/api";
+import AllTask from "@/features/tasks/components/AllTask";
 import TaskContainer from "@/features/tasks/components/TaskContainer";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -26,7 +27,7 @@ export default async function Tasks() {
     return (
         <div>
             <h2 className="text-lg font-semibold mb-4">Tasks</h2>
-            <TaskContainer initialTasks={tasks} />
+            <AllTask initialTasks={tasks} />
         </div>
     );
 }

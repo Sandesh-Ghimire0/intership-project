@@ -1,10 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { ITask } from "../../shared/types/type";
-import { useSearchParams } from "next/navigation";
-import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
+
 import TaskCard from "./TaskCard";
 
 interface TaskListProps {
@@ -13,7 +10,6 @@ interface TaskListProps {
 }
 
 const TaskList = ({ tasks, onDelete }: TaskListProps) => {
-    const searchParams = useSearchParams();
 
     return (
         <div>

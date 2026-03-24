@@ -87,6 +87,7 @@ const TaskForm = ({
             return;
         }
 
+        if (!action) return;
         if (action === "create") onCreate(formData);
         if (action === "edit") onUpdate(formData);
 
@@ -103,7 +104,9 @@ const TaskForm = ({
     };
     return (
         <div className="bg-white p-6 rounded-xl shadow fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3xl">
-            <h2 className="text-lg font-semibold mb-4">Create Task</h2>
+            <h2 className="text-lg font-semibold mb-4">
+                {action === "edit" ? "Edit" : "Create"} Task
+            </h2>
 
             <form
                 onSubmit={handleSubmit}
@@ -278,7 +281,7 @@ const TaskForm = ({
 
                 <div className="flex gap-3">
                     <Link
-                        href="/tasks"
+                        href="/my-tasks"
                         className="w-full bg-gray-600 text-white py-2 rounded hover:bg-gray-700 text-center "
                     >
                         Cancel

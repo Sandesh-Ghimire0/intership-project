@@ -99,16 +99,6 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
                             />
                         </div>
                     )}
-                    {/* {action === "create" && (
-                        <div onClick={(e) => e.stopPropagation()}>
-                            <TaskForm
-                                task={task}
-                                action={action}
-                                onCreate={handleCreate}
-                                onUpdate={handleUpdate}
-                            />
-                        </div>
-                    )} */}
                 </div>
             )}
 

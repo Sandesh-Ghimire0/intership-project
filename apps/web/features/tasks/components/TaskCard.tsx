@@ -117,7 +117,7 @@ const TaskCard = ({ task, onDelete }: TasksProps) => {
                 </button>
 
                 <Link
-                    href={`/tasks?edit=${task._id}`}
+                    href={`/my-tasks?edit=${task._id}`}
                     className="p-2 rounded-full bg-blue-600 text-white"
                 >
                     <FaEdit />
