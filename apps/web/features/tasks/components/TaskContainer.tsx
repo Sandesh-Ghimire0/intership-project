@@ -59,7 +59,14 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
         }
     };
 
-    const handleDelete = async (id: string) => {
+    const handleDelete = async (id: string, reporterId: string) => {
+        // prevents network call
+        if (user?._id !== reporterId) {
+            setIsAuthorized(false);
+            return;
+        } else {
+            setIsAuthorized(true);
+        }
         const res = await deleteTask(id);
 
         if (res?.status === 200) {
@@ -69,11 +76,17 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
         } else if (res?.status === 403) {
             setIsAuthorized(false);
         }
-        console.log(res?.status);
     };
 
     const handleUpdate = async (taskData: any) => {
-        console.log(taskData);
+        // prevents network call
+        if (user?._id !== taskData.reporter._id) {
+            setIsAuthorized(false);
+            return;
+        } else {
+            setIsAuthorized(true);
+        }
+
         const res = await updateTask(editTaskId, taskData);
         const updatedTask = res?.data.data;
 

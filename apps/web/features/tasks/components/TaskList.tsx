@@ -8,7 +8,7 @@ interface TaskListProps {
     tasks: ITask[];
     isAuthorized: boolean;
     setIsAuthorized: React.Dispatch<React.SetStateAction<boolean>>;
-    onDelete: (id: string) => void;
+    onDelete: (id: string, reporterId: string) => void;
 }
 
 const TaskList = ({

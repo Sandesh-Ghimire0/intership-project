@@ -4,7 +4,7 @@ import { useState } from "react";
 import { IFormData } from "../type";
 import Link from "next/link";
 import { validateAssignee } from "@/features/users/api";
-import { Priority, Status } from "@/features/shared/types/type";
+import { ITask, Priority, Status } from "@/features/shared/types/type";
 
 interface TaskFormProps {
     formData: IFormData;

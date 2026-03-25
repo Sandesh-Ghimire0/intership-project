@@ -8,7 +8,7 @@ import { MdDelete } from "react-icons/md";
 
 interface TasksProps {
     task: ITask;
-    onDelete: (id: string) => void;
+    onDelete: (id: string, reporterId: string) => void;
 }
 
 const TaskCard = ({ task, onDelete }: TasksProps) => {
@@ -143,8 +143,7 @@ const TaskCard = ({ task, onDelete }: TasksProps) => {
                             <button
                                 onClick={() => {
                                     setShowDeleteBox(false);
-                                    console.log(task._id);
-                                    onDelete(task._id);
+                                    onDelete(task._id, task.reporter._id);
                                 }}
                                 className="bg-gray-200 text-black px-4 py-2 rounded-lg mt-8 "
                             >
