@@ -3,7 +3,7 @@ import { ITask } from "../shared/types/type.js";
 import { Task } from "./task.model.js";
 
 class TaskRepository {
-    async create(taskData:ITask) {
+    async create(taskData: ITask) {
         const task = await Task.create(taskData);
         const createdTask = await this.findById(task._id.toString());
         return createdTask;
@@ -47,7 +47,9 @@ class TaskRepository {
     }
 
     async delete(id: string) {
-        return await Task.findByIdAndDelete(id);
+        return await Task.findByIdAndDelete(id)
+            .populate("assignees")
+            .populate("reporter");
     }
 }
 

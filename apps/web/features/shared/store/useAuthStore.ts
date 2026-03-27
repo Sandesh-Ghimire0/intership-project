@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { IUser } from "../types/type";
-import { persist } from "zustand/middleware";
+import {  persist } from "zustand/middleware";
 
 interface AuthState {
     user: IUser | null;
@@ -19,10 +19,10 @@ export const useAuthStore = create<AuthState>()(
                 set({ hasHydrated: state });
             },
             login: (user) => {
-                set({ user});
+                set({ user });
             },
             logout: () => {
-                set({ user:null });
+                set({ user: null });
                 localStorage.removeItem("auth-storage");
             },
         }),
@@ -36,7 +36,7 @@ export const useAuthStore = create<AuthState>()(
 );
 
 /**
- * when page wrapped by AuthGuard component is refreshed, initially the value of accessToken is null because persist middleware has not finished reading the 
+ * when page wrapped by AuthGuard component is refreshed, initially the value of accessToken is null because persist middleware has not finished reading the
  * localstorage due to which page gets redirected to login page even if their is token in local storage
  * To solve this we need to implement "hydration check". This check will ensure that AuthGuard component will only render children after zustand state is loaded
  * with "auth-storage"(localstorage)

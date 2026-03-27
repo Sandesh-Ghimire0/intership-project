@@ -59,7 +59,7 @@ const deleteTask = asyncHandler(async (req: Request, res: Response) => {
 
     return res
         .status(200)
-        .json(new ApiResponse(200, [], "task deleted successfully"));
+        .json(new ApiResponse(200, deletedTask, "task deleted successfully"));
 });
 
 const updateTask = asyncHandler(async (req: Request, res: Response) => {

@@ -2,7 +2,6 @@ export const dynamic = "force-dynamic"; // don't fetch the task during build
 
 import { fetchTask } from "@/features/tasks/api/api";
 import AllTask from "@/features/tasks/components/AllTask";
-import TaskContainer from "@/features/tasks/components/TaskContainer";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 

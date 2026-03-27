@@ -1,4 +1,4 @@
-import mongoose, { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export interface ITask {
     _id: string;
@@ -19,3 +19,15 @@ export interface IUser {
     role: string;
     description?: string;
 }
+
+export interface IActivity {
+    userId: Types.ObjectId;
+    receiverId: Types.ObjectId[];
+    content: string;
+    title: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+// Create an interface that represents a saved Document
+export interface IActivityDocument extends IActivity, Document {}

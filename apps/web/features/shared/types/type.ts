@@ -21,3 +21,11 @@ export interface ITask {
     createdAt: Date | string;
     updatedAt: Date | string;
 }
+
+export interface IActivity {
+    _id: string;
+    userId: IUser;
+    receiverId: IUser[];
+    content: string;
+    title: string;
+}
