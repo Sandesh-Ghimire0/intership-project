@@ -4,15 +4,21 @@ import React, { useEffect } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { getSocket } from "@/app/socket";
 import { useActivityStore } from "../store/useActivityStore";
+import { IActivity } from "../types/type";
 
 const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     const { user } = useAuthStore();
     const socket = getSocket();
 
-    const { addActivity } = useActivityStore();
+    const { addActivity, addMyActivity } = useActivityStore();
 
-    const handleActivity = (data: any) => {
-        console.log(data);
+    const handleActivity = (data: IActivity) => {
+        if (
+            data.userId._id === user?._id ||
+            data.receiverId.some((r) => r._id === user?._id)
+        ) {
+            addMyActivity(data);
+        }
         addActivity(data);
     };
 

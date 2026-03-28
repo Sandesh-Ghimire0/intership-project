@@ -28,4 +28,5 @@ export interface IActivity {
     receiverId: IUser[];
     content: string;
     title: string;
+    createdAt: string;
 }

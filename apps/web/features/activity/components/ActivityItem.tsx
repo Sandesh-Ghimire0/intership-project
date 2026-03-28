@@ -1,15 +1,17 @@
-"use client"
+"use client";
 
 import { IActivity } from "@/features/shared/types/type";
 import React from "react";
 import { Edit3, Trash2, User, Clock } from "lucide-react";
-
+import { useAuthStore } from "@/features/shared/store/useAuthStore";
+import { formatDistanceToNow } from "date-fns";
 
 interface ActivityItemProps {
     log: IActivity;
 }
 
 const ActivityItem = ({ log }: ActivityItemProps) => {
+    const { user } = useAuthStore();
     return (
         <li
             key={log._id}
@@ -37,7 +39,9 @@ const ActivityItem = ({ log }: ActivityItemProps) => {
                 <div className="flex-1 min-w-0">
                     <p className="text-sm text-gray-800">
                         <span className="font-semibold text-gray-900">
-                            @{log.userId.username}
+                            {log.userId.username === user?.username
+                                ? "You"
+                                : "@" + log.userId.username}
                         </span>{" "}
                         {log.content}
                     </p>
@@ -48,7 +52,9 @@ const ActivityItem = ({ log }: ActivityItemProps) => {
                     {/* Timestamp */}
                     <div className="flex items-center mt-2 text-xs text-gray-400">
                         <Clock size={12} className="mr-1" />
-                        "3 min ago"
+                        {formatDistanceToNow(new Date(log.createdAt), {
+                            addSuffix: true,
+                        })}
                     </div>
                 </div>
 
