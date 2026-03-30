@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 import { useAuthStore } from "@/features/shared/store/useAuthStore";
 import { useRouter } from "next/navigation";
-import { logoutAction } from "../actions/auth.action";
+import { logoutAction } from "../auth.action";
 
 const Logout = () => {
     const { logout } = useAuthStore();

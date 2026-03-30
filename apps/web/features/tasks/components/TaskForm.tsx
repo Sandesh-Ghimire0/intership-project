@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { IFormData } from "../type";
+import { IFormData } from "../task.type";
 import Link from "next/link";
-import { validateAssignee } from "@/features/users/api";
+import { validateAssignee } from "@/features/users/user.api";
 import { ITask, Priority, Status } from "@/features/shared/types/type";
 
 interface TaskFormProps {

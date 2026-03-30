@@ -3,7 +3,7 @@
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/features/shared/store/useAuthStore";
-import { loginAction } from "../actions/auth.action";
+import { loginAction } from "../auth.action";
 
 const LoginForm = () => {
     const router = useRouter();

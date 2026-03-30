@@ -16,7 +16,6 @@ export async function serverFetch(path: string, options?: RequestInit) {
             ...options?.headers,
             Cookie: cookieHeader,
         },
-        cache: "no-store",
     });
 
     const json = await res.json()

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { FormEvent } from "react";
-import { signupUser } from "../api/api";
+import { signupUser } from "../auth.api";
 import { useRouter } from "next/navigation";
 
 const SignupForm = () => {

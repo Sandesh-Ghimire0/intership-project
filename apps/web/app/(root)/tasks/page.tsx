@@ -1,9 +1,10 @@
-export const dynamic = "force-dynamic"; // don't fetch the task during build
+export const dynamic = "force-dynamic";
 
 import AllTask from "@/features/tasks/components/AllTask";
 import { serverFetch } from "@/lib/serverFetch";
 
 export default async function Tasks() {
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
     const res = await serverFetch("/api/v1/tasks");
 
     if (!res.data) {

@@ -23,7 +23,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     if (!isVerified) {
         return (
             <div className="flex text-2xl font-bold h-screen w-full items-center justify-center">
-                Loading...
+                Verifying User...
             </div>
         );
     }

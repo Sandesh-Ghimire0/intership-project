@@ -1,4 +1,4 @@
-import { IUser } from "../../shared/types/type";
+import { IUser } from "./../shared/types/type";
 import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;

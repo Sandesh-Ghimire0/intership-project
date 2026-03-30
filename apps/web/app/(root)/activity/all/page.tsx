@@ -5,6 +5,7 @@ import ActivityList from "@/features/activity/components/ActivityList";
 import { serverFetch } from "@/lib/serverFetch";
 
 const AllActivity = async () => {
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
     const res = await serverFetch("/api/v1/activity");
 
     if (!res.data) {

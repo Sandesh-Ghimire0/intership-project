@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { createTask, deleteTask, updateTask } from "../api/api";
+import { createTask, deleteTask, updateTask } from "../task.api";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import { ITask, IUser } from "@/features/shared/types/type";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { IFormData } from "../type";
+import { IFormData } from "../task.type";
 import { useAuthStore } from "@/features/shared/store/useAuthStore";
 import { getSocket } from "@/app/socket";
 
