@@ -24,19 +24,21 @@ export async function loginAction(data: { email: string; password: string }) {
 
 export async function logoutAction() {
     const cookieStore = await cookies();
+    const token = cookieStore.get("accessToken")?.value;
 
-    const res = await fetch(`${API_URL}/api/v1/auth/logout`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${cookieStore.get("accessToken")?.value}`,
-        },
-    });
-
-    if (res.ok) {
-        cookieStore.delete("accessToken");
-        return { success: true };
+    try {
+        // Attempt to notify backend
+        await fetch(`${API_URL}/api/v1/auth/logout`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+    } catch (error) {
+        console.error("Backend logout failed, proceeding with local cleanup");
     }
 
-    return { success: false };
+    cookieStore.delete("accessToken");
+    return { success: true };
 }

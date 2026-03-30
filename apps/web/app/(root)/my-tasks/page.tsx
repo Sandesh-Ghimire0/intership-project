@@ -5,6 +5,7 @@ import TaskContainer from "@/features/tasks/components/TaskContainer";
 import { serverFetch } from "@/lib/serverFetch";
 
 const MyTasks = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     const res = await serverFetch("/api/v1/tasks/my");
 
     if (!res.data) {

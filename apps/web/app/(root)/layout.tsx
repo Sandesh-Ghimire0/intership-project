@@ -1,12 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import { MdDashboard } from "react-icons/md";
-import { GrTasks } from "react-icons/gr";
-import { FaTasks } from "react-icons/fa";
-import { FiActivity } from "react-icons/fi";
+
 import AuthGuard from "@/features/shared/components/AuthGuard";
 import SocketProvider from "@/features/shared/components/SocketProvider";
 import Logout from "@/features/auth/components/Logout";
+import Sidebar from "@/features/shared/components/Sidebar";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -39,49 +37,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 {/* SIDEBAR */}
                 <aside className="sticky  top-16 h-[calc(100vh-4rem)] w-56 bg-gray-800 text-white flex flex-col justify-between py-6">
                     {/* TOP MENU */}
-                    <nav className="space-y-3">
-                        <ul className="space-y-2 mt-3">
-                            <li className="hover:bg-gray-700 cursor-pointer">
-                                <Link
-                                    href="/dashboard"
-                                    className="flex items-center gap-3 px-4 py-2"
-                                >
-                                    <MdDashboard />
-                                    <span>Dashboard</span>
-                                </Link>
-                            </li>
-
-                            <li className="hover:bg-gray-700 cursor-pointer">
-                                <Link
-                                    href="/tasks"
-                                    className="flex items-center gap-3 px-4 py-2"
-                                >
-                                    <GrTasks />
-                                    <span>Tasks</span>
-                                </Link>
-                            </li>
-
-                            <li className="hover:bg-gray-700 cursor-pointer">
-                                <Link
-                                    href="/my-tasks"
-                                    className="flex items-center gap-3 px-4 py-2"
-                                >
-                                    <FaTasks />
-                                    <span>My Tasks</span>
-                                </Link>
-                            </li>
-
-                            <li className="hover:bg-gray-700 cursor-pointer">
-                                <Link
-                                    href="/activity/my"
-                                    className="flex items-center gap-3 px-4 py-2"
-                                >
-                                    <FiActivity />
-                                    <span>Activity</span>
-                                </Link>
-                            </li>
-                        </ul>
-                    </nav>
+                    <Sidebar />
 
                     {/* BOTTOM MENU */}
                     <nav className="space-y-3">
