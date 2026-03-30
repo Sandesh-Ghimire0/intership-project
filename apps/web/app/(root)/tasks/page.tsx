@@ -1,19 +1,12 @@
 export const dynamic = "force-dynamic"; // don't fetch the task during build
 
-import { fetchTask } from "@/features/tasks/api/api";
 import AllTask from "@/features/tasks/components/AllTask";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { serverFetch } from "@/lib/serverFetch";
 
 export default async function Tasks() {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("accessToken")?.value;
-    if (!token) {
-        redirect("/login");
-    }
-    const tasks = await fetchTask(token);
+    const res = await serverFetch("/api/v1/tasks");
 
-    if (!tasks) {
+    if (!res.data) {
         return (
             <div>
                 <h1 className="text-4xl font-bold">
@@ -26,7 +19,7 @@ export default async function Tasks() {
     return (
         <div>
             <h2 className="text-lg font-semibold mb-4">Tasks</h2>
-            <AllTask initialTasks={tasks} />
+            <AllTask initialTasks={res.data} />
         </div>
     );
 }

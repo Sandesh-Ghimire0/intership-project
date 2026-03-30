@@ -1,20 +1,13 @@
 export const dynamic = "force-dynamic";
 
-import { fetchMyTasks } from "@/features/tasks/api/api";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
 import React from "react";
 import TaskContainer from "@/features/tasks/components/TaskContainer";
+import { serverFetch } from "@/lib/serverFetch";
 
 const MyTasks = async () => {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("accessToken")?.value;
-    if (!token) {
-        redirect("/login");
-    }
-    const tasks = await fetchMyTasks(token);
+    const res = await serverFetch("/api/v1/tasks/my");
 
-    if (!tasks) {
+    if (!res.data) {
         return (
             <div>
                 <h1 className="text-4xl font-bold">
@@ -27,7 +20,7 @@ const MyTasks = async () => {
         <div>
             <h2 className="text-lg font-semibold mb-4">My Tasks</h2>
 
-            <TaskContainer initialTasks={tasks} />
+            <TaskContainer initialTasks={res.data} />
         </div>
     );
 };

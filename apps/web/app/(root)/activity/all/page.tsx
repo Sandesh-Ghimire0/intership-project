@@ -1,20 +1,13 @@
 export const dynamic = "force-dynamic";
 
-import { fetchActivities } from "@/features/activity/api/api";
-import ActivityList from "@/features/activity/components/ActivityList";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import React from "react";
+import ActivityList from "@/features/activity/components/ActivityList";
+import { serverFetch } from "@/lib/serverFetch";
 
 const AllActivity = async () => {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("accessToken")?.value;
-    if (!token) {
-        redirect("/login");
-    }
-    const logs = await fetchActivities(token);
+    const res = await serverFetch("/api/v1/activity");
 
-    if (!logs) {
+    if (!res.data) {
         return (
             <div>
                 <h1 className="text-4xl font-bold">
@@ -24,7 +17,7 @@ const AllActivity = async () => {
         );
     }
 
-    return <ActivityList initialData={logs} />;
+    return <ActivityList initialData={res.data} />;
 };
 
 export default AllActivity;

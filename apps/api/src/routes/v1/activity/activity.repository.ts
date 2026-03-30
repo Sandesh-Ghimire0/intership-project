@@ -25,7 +25,6 @@ class ActivityRepository {
     }
 
     async findByUserId(id: string) {
-        console.log(id);
         const activities = await Activity.find({
             $or: [{ userId: id }, { receiverId: id }],
         })

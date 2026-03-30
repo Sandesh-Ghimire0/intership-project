@@ -21,3 +21,22 @@ export async function loginAction(data: { email: string; password: string }) {
 
     return { user };
 }
+
+export async function logoutAction() {
+    const cookieStore = await cookies();
+
+    const res = await fetch(`${API_URL}/api/v1/auth/logout`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookieStore.get("accessToken")?.value}`,
+        },
+    });
+
+    if (res.ok) {
+        cookieStore.delete("accessToken");
+        return { success: true };
+    }
+
+    return { success: false };
+}

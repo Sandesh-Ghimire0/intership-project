@@ -18,7 +18,6 @@ class ActivitySocket {
     }
 
     private async handleActivity(data: IActivity) {
-        console.log(data)
         const activity = await activityService.createNewActivity(data);
         io.emit("activity", activity);
     }

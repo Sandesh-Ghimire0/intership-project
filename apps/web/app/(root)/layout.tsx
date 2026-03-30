@@ -6,6 +6,7 @@ import { FaTasks } from "react-icons/fa";
 import { FiActivity } from "react-icons/fi";
 import AuthGuard from "@/features/shared/components/AuthGuard";
 import SocketProvider from "@/features/shared/components/SocketProvider";
+import Logout from "@/features/auth/components/Logout";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -72,7 +73,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
                             <li className="hover:bg-gray-700 cursor-pointer">
                                 <Link
-                                    href="/activity/all"
+                                    href="/activity/my"
                                     className="flex items-center gap-3 px-4 py-2"
                                 >
                                     <FiActivity />
@@ -88,9 +89,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                             <li className="hover:bg-gray-700 px-4 py-2 cursor-pointer flex items-center gap-3">
                                 Settings
                             </li>
-                            <li className="cursor-pointer text-red-600 hover:text-red-700 px-4">
-                                Logout
-                            </li>
+                            <Logout />
                         </ul>
                     </nav>
                 </aside>
