@@ -50,6 +50,7 @@ const LoginForm = () => {
                     name="email"
                     placeholder="Your work email"
                     className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-100 transition-all"
+                    required
                 />
             </div>
 
@@ -60,8 +61,11 @@ const LoginForm = () => {
                 <input
                     type="password"
                     name="password"
+                    minLength={7}
+                    maxLength={20}
                     placeholder="Enter password"
                     className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-100 transition-all"
+                    required
                 />
             </div>
 

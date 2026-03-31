@@ -1,6 +1,5 @@
 import { IUser } from "../shared/types/type.js";
 import { ApiError } from "../shared/utils/apiError.js";
-import { User } from "../user/user.model.js";
 import { userRepository } from "../user/user.repository.js";
 
 class AuthService {
@@ -15,12 +14,12 @@ class AuthService {
 
         const existingUsername = await userRepository.findUserByName(username);
         if (existingUsername) {
-            throw new ApiError(400, "username already exist");
+            throw new ApiError(409, "username already exist");
         }
 
         const existingEmail = await userRepository.findUserByEmail(email);
         if (existingEmail) {
-            throw new ApiError(400, "email already exist");
+            throw new ApiError(409, "email already exist");
         }
 
         const createdUser = await userRepository.create(data);
