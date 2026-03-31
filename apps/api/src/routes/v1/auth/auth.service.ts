@@ -37,12 +37,13 @@ class AuthService {
 
         const user = (await userRepository.findUserByEmail(email)) as any;
         if (!user) {
-            throw new ApiError(400, "email not found");
+            throw new ApiError(401, "email not found");
         }
 
         const isCorrect = await user.isPasswordCorrect(password);
+        console.log(isCorrect);
         if (!isCorrect) {
-            throw new ApiError(400, "Incorrect password");
+            throw new ApiError(401, "Incorrect password");
         }
 
         const accessToken = user.generateAccessToken();

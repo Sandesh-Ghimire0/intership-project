@@ -6,10 +6,10 @@ const asyncHandler =
         try {
             await fn(req, res, next);
         } catch (error: any) {
-            console.log(error)
+            console.log(error);
             res.status(error.statusCode || 500).json({
                 success: false,
-                message: error.message,
+                message: error.message || "Something went wrong",
             });
         }
     };
