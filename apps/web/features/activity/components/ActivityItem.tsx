@@ -17,7 +17,7 @@ const ActivityItem = ({ log }: ActivityItemProps) => {
         <li key={log._id}>
             <div className="flex items-center justify-between space-x-4 bg-white p-5 hover:bg-gray-50 shadow-md transition-colors duration-200">
                 {/* Icon Indicator */}
-                <div className="flex items-start gap-2">
+                <div className="flex justify-between w-full gap-2">
                     <div
                         className={`mt-1 p-3 rounded-lg ${
                             log.content.split(" ").includes("deleted")
@@ -47,21 +47,20 @@ const ActivityItem = ({ log }: ActivityItemProps) => {
                         <p className="text-sm font-medium text-gray-600 mt-1">
                             Title: <span className="italic">"{log.title}"</span>
                         </p>
-
-                        {/* Timestamp */}
-                        <div className="flex items-center mt-2 text-xs text-gray-400">
-                            <Clock size={12} className="mr-1" />
-                            {formatDistanceToNow(new Date(log.createdAt), {
-                                addSuffix: true,
-                            })}
-                        </div>
+                    </div>
+                    {/* Timestamp */}
+                    <div className="flex items-center mt-2 text-xs text-gray-400">
+                        <Clock size={12} className="mr-1" />
+                        {formatDistanceToNow(new Date(log.createdAt), {
+                            addSuffix: true,
+                        })}
                     </div>
                 </div>
 
                 {/* User Avatar Placeholder */}
-                <button className="text-2xl text-red-500">
+                {/* <button className="text-2xl text-red-500">
                     <MdDelete />
-                </button>
+                </button> */}
             </div>
         </li>
     );

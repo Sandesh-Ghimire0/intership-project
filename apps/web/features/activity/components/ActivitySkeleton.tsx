@@ -20,7 +20,7 @@ const ActivitySkeleton = () => {
                         </div>
 
                         <div className="pr-2">
-                            <div className="h-5 w-4 bg-red-100 rounded-sm"></div>
+                            <div className="h-4 w-20 bg-gray-200 rounded"></div>
                         </div>
                     </div>
                 ))}

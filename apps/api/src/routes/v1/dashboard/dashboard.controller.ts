@@ -3,6 +3,78 @@ import { ApiResponse } from "../shared/utils/apiResponse.js";
 import { asyncHandler } from "../shared/utils/asyncHandler.js";
 import { dashboardService } from "./dashboard.service.js";
 
+export const fetchSummary = asyncHandler(async (req, res) => {
+    const { _id } = (req as any).user;
+
+    if (!_id) {
+        throw new ApiError(400, "Id is required");
+    }
+
+    // stats
+    const stats = await dashboardService.fetchStats(_id as string);
+    if (!stats) {
+        throw new ApiError(
+            500,
+            "something went wrong while fetching the stats",
+        );
+    }
+
+    // priority distribution
+    const priorityDistribution =
+        await dashboardService.fetchPriorityDistribution(_id as string);
+    if (!priorityDistribution) {
+        throw new ApiError(
+            500,
+            "something went wrong while fetching the priorityDistribution",
+        );
+    }
+
+    // status distribution
+    const statusDistribution = await dashboardService.fetchStatusDistrubution(
+        _id as string,
+    );
+    if (!statusDistribution) {
+        throw new ApiError(
+            500,
+            "something went wrong while fetching the stats",
+        );
+    }
+
+    // top priority task
+    const topPriorityTasks = await dashboardService.fetchTopPriorityTask(
+        _id as string,
+    );
+    if (!topPriorityTasks) {
+        throw new ApiError(
+            500,
+            "something went wrong while fetching the stats",
+        );
+    }
+
+    // recent activity
+    const recentActivity = await dashboardService.fetchRecentActivity(
+        _id as string,
+    );
+    if (!recentActivity) {
+        throw new ApiError(
+            500,
+            "something went wrong while fetching the stats",
+        );
+    }
+
+    const summary = {
+        stats,
+        priorityDistribution,
+        statusDistribution,
+        topPriorityTasks,
+        recentActivity,
+    };
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, summary, "dashboard data fetched successfully"));
+});
+
 export const fetchStats = asyncHandler(async (req, res) => {
     const { _id } = (req as any).user;
 

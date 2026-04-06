@@ -140,6 +140,8 @@ class DashboardService {
             },
         ]);
 
+        console.log(distribution)
+
         const formattedData = distribution.reduce((acc, item) => {
             acc[item._id] = item.count;
             return acc
@@ -147,7 +149,7 @@ class DashboardService {
 
         return {
             todo: formattedData.todo || 0,
-            inProgress: formattedData.inProgress || 0,
+            inProgress: formattedData["in_progress"] || 0,
             done: formattedData.done || 0,
         };
     }
@@ -157,7 +159,7 @@ class DashboardService {
             $or: [{ assignees: userId }, { reporter: userId }],
             status: { $ne: "done" },
         })
-            .select("_id title dueDate status")
+            .select("_id title dueDate priority")
             .sort({ dueDate: 1 })
             .limit(5);
 

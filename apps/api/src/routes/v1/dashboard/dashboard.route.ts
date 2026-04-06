@@ -5,11 +5,13 @@ import {
     fetchRecentActivity,
     fetchStats,
     fetchStatusDistrubution,
+    fetchSummary,
     fetchTopPriorityTask,
 } from "./dashboard.controller.js";
 
 const dashboardRouter: Router = Router();
 
+dashboardRouter.route("/summary").get(verifyJWT, fetchSummary);
 dashboardRouter.route("/stats").get(verifyJWT, fetchStats);
 dashboardRouter
     .route("/priority-distribution")
