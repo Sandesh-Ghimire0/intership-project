@@ -12,6 +12,16 @@ const Dashboard = async () => {
     // await new Promise((resolve) => setTimeout(resolve, 1000));
     const res = await serverFetch("/api/v1/dashboard/summary");
 
+    if (!res.data) {
+        return (
+            <div>
+                <h1 className="text-4xl font-bold">
+                    Failed to Load the Activity data
+                </h1>
+            </div>
+        );
+    }
+
     return (
         <div>
             <Stats data={res.data.stats} />
@@ -23,7 +33,7 @@ const Dashboard = async () => {
 
             <div className="flex items-start mt-5 gap-3">
                 <TopTask data={res.data.topPriorityTasks} />
-				<RecentActivity data={res.data.recentActivity} />
+                <RecentActivity data={res.data.recentActivity} />
             </div>
         </div>
     );
