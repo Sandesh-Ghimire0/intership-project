@@ -20,7 +20,7 @@ const TaskList = ({
     return (
         <div>
             {tasks.length === 0 ? (
-                <p className="text-gray-500">No tasks found.</p>
+                <p className="text-[13px] text-slate-500">No tasks found.</p>
             ) : (
                 <div className="grid gap-4 lg:grid-cols-3 md:grid-cols-2">
                     {tasks?.map((task: ITask) => (
@@ -32,23 +32,25 @@ const TaskList = ({
                     ))}
                     {!isAuthorized && (
                         <div
-                            className="fixed z-50 inset-0 bg-black/50"
+                            className="fixed z-50 inset-0 bg-black/40"
                             onClick={() => setIsAuthorized(true)}
                         >
                             <div
                                 onClick={(e) => e.stopPropagation()}
-                                className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-sm p-4"
+                                className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-slate-200 rounded-[4px] w-80 p-5"
                             >
-                                <p className="font-md tracking-wide">
+                                <p className="text-[14px] font-semibold text-slate-800">
                                     Access Forbidden
                                 </p>
-
-                                <div className="text-end">
+                                <p className="text-[13px] text-slate-500 mt-1">
+                                    You don&apos;t have permission to perform this action.
+                                </p>
+                                <div className="flex justify-end mt-6">
                                     <button
                                         onClick={() => setIsAuthorized(true)}
-                                        className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-8 "
+                                        className="bg-blue-600 text-white px-4 py-1.5 text-[13px] rounded-[4px] hover:bg-blue-700 transition-colors"
                                     >
-                                        ok
+                                        OK
                                     </button>
                                 </div>
                             </div>

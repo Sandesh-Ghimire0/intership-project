@@ -1,59 +1,81 @@
 import React from "react";
 import Link from "next/link";
-
 import AuthGuard from "@/features/shared/components/AuthGuard";
 import SocketProvider from "@/features/shared/components/SocketProvider";
 import Logout from "@/features/auth/components/Logout";
 import Sidebar from "@/features/shared/components/Sidebar";
+// import UserAvatar from "@/features/shared/components/UserAvatar";
+import { FiSearch, FiBell } from "react-icons/fi";
+import { GrTask } from "react-icons/gr";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className="min-h-screen flex flex-col">
-            {/* NAVBAR */}
-            <header className="sticky bg-gray-900 top-0 z-50 h-16 text-gray-200 flex items-center justify-between p-6">
-                {/* Logo */}
-                <div className="font-bold text-lg w-56">Tasks</div>
+        <div className="min-h-screen flex bg-white text-slate-900" style={{ fontFamily: "'Inter', sans-serif" }}>
 
-                {/* Search */}
-                <div className="px-6">
-                    <input
-                        type="text"
-                        placeholder="Search tasks..."
-                        className="w-full max-w-4xl border rounded-lg px-3 py-1.5"
-                    />
+            {/* ── SIDEBAR ── */}
+            <aside className="w-60 bg-white border-r border-slate-200 sticky top-0 h-screen flex flex-col shrink-0">
+
+                {/* Logo */}
+                <div className="px-6 py-5 border-b border-slate-200">
+                    <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 bg-blue-600 rounded flex items-center justify-center shrink-0">
+                            <GrTask className="text-white" size={14} />
+                        </div>
+                        <span className="font-bold text-[16px] tracking-tight text-slate-900">
+                            Tasks App
+                        </span>
+                    </div>
                 </div>
 
-                {/* Create Task  */}
-                <Link
-                    href="/my-tasks?create=true"
-                    className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-700/60"
-                >
-                    + Create Task
-                </Link>
-            </header>
+                {/* Nav links */}
+                <Sidebar />
 
-            {/* BODY */}
-            <div className="flex flex-1">
-                {/* SIDEBAR */}
-                <aside className="sticky  top-16 h-[calc(100vh-4rem)] w-56 bg-gray-800 text-white flex flex-col justify-between py-6">
-                    {/* TOP MENU */}
-                    <Sidebar />
+                {/* Bottom: Settings + Logout */}
+                <div className="border-t border-slate-200 py-3">
+                    <Link
+                        href="/settings"
+                        className="flex items-center gap-3 px-3 py-2 mx-3 rounded text-[14px] font-medium text-slate-500 hover:bg-slate-50 hover:text-blue-600 transition-all duration-100"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" className="text-slate-400">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Settings
+                    </Link>
+                    <Logout />
+                </div>
+            </aside>
 
-                    {/* BOTTOM MENU */}
-                    <nav className="space-y-3">
-                        <ul className="space-y-2 ">
-                            <li className="hover:bg-gray-700 px-4 py-2 cursor-pointer flex items-center gap-3">
-                                Settings
-                            </li>
-                            <Logout />
-                        </ul>
-                    </nav>
-                </aside>
+            {/* ── CONTENT WRAPPER ── */}
+            <div className="flex flex-col flex-1 min-h-screen">
 
-                {/* MAIN CONTENT */}
+                {/* NAVBAR */}
+                <header className="h-14 border-b border-slate-200 flex items-center justify-between px-6 bg-white sticky top-0 z-40">
+
+                    {/* Search */}
+                    <div className="relative w-full max-w-sm">
+                        <FiSearch className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" size={15} />
+                        <input
+                            type="text"
+                            placeholder="Search tasks..."
+                            className="w-full bg-slate-50 border border-slate-200 rounded-md pl-8 pr-3 py-1.5 text-[13px] text-slate-700 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-colors"
+                        />
+                    </div>
+
+                    {/* Right: bell + user */}
+                    <div className="flex items-center gap-4">
+                        <button className="text-slate-400 hover:text-slate-600 transition-colors">
+                            <FiBell size={18} />
+                        </button>
+                        <div className="h-5 w-px bg-slate-200" />
+                        {/* <UserAvatar /> */}
+                    </div>
+                </header>
+
+                {/* MAIN */}
                 <AuthGuard>
                     <SocketProvider>
-                        <main className="flex-1 bg-gray-100 p-10 rounded-xl">
+                        <main className="flex-1 bg-slate-50 p-8">
                             {children}
                         </main>
                     </SocketProvider>

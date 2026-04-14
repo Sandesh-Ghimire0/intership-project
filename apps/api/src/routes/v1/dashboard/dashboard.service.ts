@@ -140,7 +140,6 @@ class DashboardService {
             },
         ]);
 
-        console.log(distribution)
 
         const formattedData = distribution.reduce((acc, item) => {
             acc[item._id] = item.count;

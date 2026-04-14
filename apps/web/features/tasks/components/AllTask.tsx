@@ -7,157 +7,149 @@ interface AllTaskProps {
     initialTasks: ITask[];
 }
 
+function statusClasses(status: string) {
+    if (status === "todo")
+        return "bg-blue-200 text-blue-800 border border-blue-200";
+    if (status === "in_progress")
+        return "bg-amber-200 text-amber-800 border border-amber-200";
+    return "bg-emerald-200 text-emerald-800 border border-emerald-200";
+}
+
+function priorityClasses(priority: string) {
+    if (priority === "low")
+        return "bg-emerald-200 text-emerald-800 border border-emerald-200";
+    if (priority === "medium")
+        return "bg-amber-200 text-amber-800 border border-amber-200";
+    if (priority === "high")
+        return "bg-red-200 text-red-800 border border-red-200";
+    return "bg-red-200 text-red-900 border border-red-300";
+}
+
 const AllTask = ({ initialTasks }: AllTaskProps) => {
     const [showDetailsId, setShowDetailsId] = useState<string[]>([]);
+
     return (
         <div>
             {initialTasks.length === 0 ? (
-                <p className="text-gray-500">No tasks found.</p>
+                <p className="text-[13px] text-slate-500">No tasks found.</p>
             ) : (
-                <div className="grid gap-4 lg:grid-cols-3 md:grid-cols-2  items-start">
+                <div className="grid gap-4 lg:grid-cols-3 md:grid-cols-2 items-start">
                     {initialTasks?.map((task: ITask) => (
                         <div
                             key={task._id}
-                            className="rounded-lg py-4 px-5 bg-white shadow-sm flex flex-col justify-between gap-3 hover:shadow-lg h-fit transition-all duration-300"
+                            className="bg-white border border-slate-200 rounded-xl shadow-sm p-5 flex flex-col gap-3 h-fit hover:border-blue-400 hover:shadow-md transition-all duration-200"
                         >
-                            <div className="flex justify-between items-center text-sm mt-3">
-                                <div className="flex gap-2">
+                            {/* ── HEADER: badges + show/hide ── */}
+                            <div className="flex justify-between items-start">
+                                <div className="flex gap-2 flex-wrap">
                                     <span
-                                        className={`${
-                                            task.status === "todo"
-                                                ? "bg-purple-400 px-4 py-1 rounded text-purple-950"
-                                                : task.status === "in_progress"
-                                                  ? "bg-yellow-400 px-4 py-1 rounded text-yellow-950"
-                                                  : "bg-green-600 px-4 py-1 rounded text-green-950"
-                                        }`}
+                                        className={`text-[11px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-sm ${statusClasses(task.status)}`}
                                     >
-                                        {task.status}
+                                        {task.status.replace("_", " ")}
                                     </span>
                                     <span
-                                        className={`${
-                                            task.priority === "low"
-                                                ? "bg-green-400 px-4 py-1 rounded text-green-950"
-                                                : task.priority === "medium"
-                                                  ? "bg-orange-400 px-4 py-1 rounded text-oragne-950"
-                                                  : task.priority === "high"
-                                                    ? "bg-sky-500 px-4 py-1 rounded text-blue-950"
-                                                    : "bg-red-600 px-4 py-1 rounded text-red-950"
-                                        }`}
+                                        className={`text-[11px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-sm ${priorityClasses(task.priority)}`}
                                     >
                                         {task.priority}
                                     </span>
                                 </div>
-                                <div>
-                                    <span className="text-gray-400">Due:</span>
-                                    <span className=" text-gray-400 rounded">
-                                        {new Date(
-                                            task.dueDate,
-                                        ).toLocaleDateString()}
-                                    </span>
-                                </div>
+
+                                <button
+                                    onClick={() =>
+                                        showDetailsId.includes(task._id)
+                                            ? setShowDetailsId((prev) =>
+                                                  prev.filter(
+                                                      (id) => id !== task._id,
+                                                  ),
+                                              )
+                                            : setShowDetailsId([
+                                                  ...showDetailsId,
+                                                  task._id,
+                                              ])
+                                    }
+                                    className="text-[11px] text-blue-600 font-medium hover:underline shrink-0"
+                                >
+                                    {showDetailsId.includes(task._id)
+                                        ? "Hide"
+                                        : "Details"}
+                                </button>
                             </div>
-                            {/* TITLE */}
-                            <h3 className="font-semibold text-lg">
+
+                            {/* ── TITLE ── */}
+                            <h3 className="text-[15px] font-semibold text-slate-800 leading-snug">
                                 {task.title}
                             </h3>
 
-                            {/* DESCRIPTION */}
+                            {/* ── DESCRIPTION ── */}
                             {task.description && (
-                                <p className="text-sm text-gray-600">
+                                <p className="text-[13px] text-slate-500 leading-relaxed line-clamp-3">
                                     {task.description}
                                 </p>
                             )}
 
-                            {!showDetailsId.includes(task._id) && (
-                                <button
-                                    onClick={() =>
-                                        setShowDetailsId([
-                                            ...showDetailsId,
-                                            task._id,
-                                        ])
-                                    }
-                                    className="text-end underline text-sm text-blue-700"
-                                >
-                                    Show Details
-                                </button>
-                            )}
-                            {showDetailsId.length > 0 &&
-                                showDetailsId.includes(task._id) && (
-                                    <>
-                                        <div className="flex  justify-between">
-                                            {/* REPORTER */}
-                                            {task.reporter && (
-                                                <div className="text-sm">
-                                                    <div className="font-semibold text-center">
-                                                        Reporter
-                                                    </div>
-                                                    <br />{" "}
-                                                    <span className="shadow px-4 py-1">
-                                                        {task.reporter.username}
-                                                    </span>
-                                                </div>
-                                            )}
-
-                                            {/* ASSIGNEES */}
-                                            {task.assignees?.length > 0 && (
-                                                <div className="text-sm ">
-                                                    <div className="font-semibold text-center">
-                                                        Assignees:
-                                                    </div>
-                                                    <ul className="grid grid-cols-2 ml-5 mt-1">
-                                                        {task.assignees.map(
-                                                            (
-                                                                a: any,
-                                                                idx: number,
-                                                            ) => (
-                                                                <li
-                                                                    key={idx}
-                                                                    className="shadow px-4 py-1 ml-1 mt-1"
-                                                                >
-                                                                    {a.username}
-                                                                </li>
-                                                            ),
-                                                        )}
-                                                    </ul>
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        {/* TIMESTAMPS */}
-                                        {(task.createdAt || task.updatedAt) && (
-                                            <div className="text-xs text-gray-400 mt-3 flex gap-7">
-                                                {task.createdAt && (
-                                                    <span>
-                                                        Created:{" "}
-                                                        {new Date(
-                                                            task.createdAt,
-                                                        ).toLocaleString()}
-                                                    </span>
-                                                )}
-                                                {task.updatedAt && (
-                                                    <span className="ml-4">
-                                                        Updated:{" "}
-                                                        {new Date(
-                                                            task.updatedAt,
-                                                        ).toLocaleString()}
-                                                    </span>
-                                                )}
+                            {/* ── EXPANDED META ── */}
+                            {showDetailsId.includes(task._id) && (
+                                <>
+                                    <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-[12px] border-t border-slate-100 pt-3">
+                                        {task.reporter && (
+                                            <div>
+                                                <p className="text-slate-400 font-medium mb-0.5">
+                                                    Reporter
+                                                </p>
+                                                <p className="text-slate-600 font-medium">
+                                                    {task.reporter.username}
+                                                </p>
                                             </div>
                                         )}
-                                        <button
-                                            onClick={() =>
-                                                setShowDetailsId((prev) =>
-                                                    prev.filter(
-                                                        (id) => id !== task._id,
-                                                    ),
-                                                )
-                                            }
-                                            className="text-end underline text-sm text-blue-700"
-                                        >
-                                            Hide Details
-                                        </button>
-                                    </>
-                                )}
+
+                                        <div>
+                                            <p className="text-slate-400 font-medium mb-0.5">
+                                                Due Date
+                                            </p>
+                                            <p className="text-slate-600 font-medium">
+                                                {new Date(
+                                                    task.dueDate,
+                                                ).toLocaleDateString()}
+                                            </p>
+                                        </div>
+
+                                        {task.assignees?.length > 0 && (
+                                            <div className="col-span-2">
+                                                <p className="text-slate-400 font-medium mb-0.5">
+                                                    Assignees
+                                                </p>
+                                                <p className="text-slate-600 font-medium">
+                                                    {task.assignees
+                                                        .map((a: any) => a.username)
+                                                        .join(", ")}
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* TIMESTAMPS */}
+                                    {(task.createdAt || task.updatedAt) && (
+                                        <div className="flex justify-between text-[11px] text-slate-400 border-t border-slate-100 pt-3">
+                                            {task.createdAt && (
+                                                <span>
+                                                    Created:{" "}
+                                                    {new Date(
+                                                        task.createdAt,
+                                                    ).toLocaleDateString()}
+                                                </span>
+                                            )}
+                                            {task.updatedAt && (
+                                                <span>
+                                                    Updated:{" "}
+                                                    {new Date(
+                                                        task.updatedAt,
+                                                    ).toLocaleDateString()}
+                                                </span>
+                                            )}
+                                        </div>
+                                    )}
+                                </>
+                            )}
                         </div>
                     ))}
                 </div>

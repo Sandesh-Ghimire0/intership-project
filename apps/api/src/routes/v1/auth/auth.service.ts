@@ -40,7 +40,6 @@ class AuthService {
         }
 
         const isCorrect = await user.isPasswordCorrect(password);
-        console.log(isCorrect);
         if (!isCorrect) {
             throw new ApiError(401, "Incorrect password");
         }

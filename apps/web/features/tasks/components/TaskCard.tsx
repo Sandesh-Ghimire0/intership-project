@@ -11,150 +11,150 @@ interface TasksProps {
     onDelete: (id: string, reporterId: string) => void;
 }
 
+/** Returns tonal badge classes based on status */
+function statusClasses(status: string) {
+    if (status === "todo")
+        return "bg-blue-200 text-blue-800 border border-blue-200";
+    if (status === "in_progress")
+        return "bg-amber-200 text-amber-800 border border-amber-200";
+    return "bg-emerald-200 text-emerald-800 border border-emerald-200";
+}
+
+/** Returns tonal badge classes based on priority */
+function priorityClasses(priority: string) {
+    if (priority === "low")
+        return "bg-emerald-200 text-emerald-800 border border-emerald-200";
+    if (priority === "medium")
+        return "bg-amber-200 text-amber-800 border border-amber-200";
+    if (priority === "high")
+        return "bg-red-200 text-red-800 border border-red-200";
+    return "bg-red-200 text-red-900 border border-red-300";
+}
+
 const TaskCard = ({ task, onDelete }: TasksProps) => {
     const [showDeleteBox, setShowDeleteBox] = useState(false);
 
     return (
-        <div
-            key={task._id}
-            className="rounded-lg py-4 px-5 bg-white shadow-sm flex flex-col justify-between gap-3 hover:shadow-lg"
-        >
-            <div className="flex justify-between items-center text-sm mt-3">
-                <div className="flex gap-2">
+        <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-5 flex flex-col gap-3 hover:border-blue-400 hover:shadow-md transition-all duration-200">
+
+            {/* ── HEADER: badges + action icons ── */}
+            <div className="flex justify-between items-start">
+                <div className="flex gap-2 flex-wrap">
                     <span
-                        className={`${
-                            task.status === "todo"
-                                ? "bg-purple-400 px-4 py-1 rounded text-purple-950"
-                                : task.status === "in_progress"
-                                  ? "bg-yellow-400 px-4 py-1 rounded text-yellow-950"
-                                  : "bg-green-600 px-4 py-1 rounded text-green-950"
-                        }`}
+                        className={`text-[11px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-sm ${statusClasses(task.status)}`}
                     >
-                        {task.status}
+                        {task.status.replace("_", " ")}
                     </span>
                     <span
-                        className={`${
-                            task.priority === "low"
-                                ? "bg-green-400 px-4 py-1 rounded text-green-950"
-                                : task.priority === "medium"
-                                  ? "bg-orange-400 px-4 py-1 rounded text-oragne-950"
-                                  : task.priority === "high"
-                                    ? "bg-sky-500 px-4 py-1 rounded text-blue-950"
-                                    : "bg-red-600 px-4 py-1 rounded text-red-950"
-                        }`}
+                        className={`text-[11px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-sm ${priorityClasses(task.priority)}`}
                     >
                         {task.priority}
                     </span>
                 </div>
-                <div>
-                    <span className="text-gray-400">Due:</span>
-                    <span className=" text-gray-400 rounded">
-                        {new Date(task.dueDate).toLocaleDateString()}
-                    </span>
+
+                <div className="flex gap-1.5 shrink-0">
+                    <Link
+                        href={`/my-tasks?edit=${task._id}`}
+                        className="border border-slate-200 p-1.5 rounded-[4px] text-slate-500 hover:bg-slate-50 hover:text-blue-600 hover:border-blue-500 transition-colors duration-150"
+                        title="Edit task"
+                    >
+                        <FaEdit size={13} />
+                    </Link>
+                    <button
+                        onClick={() => setShowDeleteBox(true)}
+                        className="border border-slate-200 p-1.5 rounded-[4px] text-slate-500 hover:bg-slate-50 hover:text-red-600 hover:border-red-400 transition-colors duration-150"
+                        title="Delete task"
+                    >
+                        <MdDelete size={14} />
+                    </button>
                 </div>
             </div>
-            {/* TITLE */}
-            <h3 className="font-semibold text-lg">{task.title}</h3>
 
-            {/* DESCRIPTION */}
+            {/* ── TITLE ── */}
+            <h3 className="text-[15px] font-semibold text-slate-800 leading-snug">
+                {task.title}
+            </h3>
+
+            {/* ── DESCRIPTION ── */}
             {task.description && (
-                <p className="text-sm text-gray-600">{task.description}</p>
+                <p className="text-[13px] text-slate-500 leading-relaxed line-clamp-3">
+                    {task.description}
+                </p>
             )}
 
-            <div className="flex  justify-between">
-                {/* REPORTER */}
+            {/* ── META GRID ── */}
+            <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-[12px] border-t border-slate-100 pt-3">
+                {/* Reporter */}
                 {task.reporter && (
-                    <div className="text-sm">
-                        <div className="font-semibold text-center">
-                            Reporter
-                        </div>
-                        <br />{" "}
-                        <span className="shadow px-4 py-1">
-                            {task.reporter.username}
-                        </span>
+                    <div>
+                        <p className="text-slate-400 font-medium mb-0.5">Reporter</p>
+                        <p className="text-slate-600 font-medium">{task.reporter.username}</p>
                     </div>
                 )}
 
-                {/* ASSIGNEES */}
+                {/* Due Date */}
+                <div>
+                    <p className="text-slate-400 font-medium mb-0.5">Due Date</p>
+                    <p className="text-slate-600 font-medium">
+                        {new Date(task.dueDate).toLocaleDateString()}
+                    </p>
+                </div>
+
+                {/* Assignees — full width */}
                 {task.assignees?.length > 0 && (
-                    <div className="text-sm ">
-                        <div className="font-semibold text-center">
-                            Assignees:
-                        </div>
-                        <ul className="grid grid-cols-2 ml-5 mt-1">
-                            {task.assignees.map((a: any, idx: number) => (
-                                <li
-                                    key={idx}
-                                    className="shadow px-4 py-1 ml-1 mt-1"
-                                >
-                                    {a.username}
-                                </li>
-                            ))}
-                        </ul>
+                    <div className="col-span-2">
+                        <p className="text-slate-400 font-medium mb-0.5">Assignees</p>
+                        <p className="text-slate-600 font-medium">
+                            {task.assignees.map((a: any) => a.username).join(", ")}
+                        </p>
                     </div>
                 )}
             </div>
 
-            {/* TIMESTAMPS */}
+            {/* ── FOOTER: timestamps ── */}
             {(task.createdAt || task.updatedAt) && (
-                <div className="text-xs text-gray-400 mt-3">
+                <div className="flex justify-between text-[11px] text-slate-400 border-t border-slate-100 pt-3 mt-auto">
                     {task.createdAt && (
-                        <span>
-                            Created: {new Date(task.createdAt).toLocaleString()}
-                        </span>
+                        <span>Created: {new Date(task.createdAt).toLocaleDateString()}</span>
                     )}
                     {task.updatedAt && (
-                        <span className="ml-4">
-                            Updated: {new Date(task.updatedAt).toLocaleString()}
-                        </span>
+                        <span>Updated: {new Date(task.updatedAt).toLocaleDateString()}</span>
                     )}
                 </div>
             )}
 
-            <div className="flex justify-end gap-5">
-                <button
-                    onClick={() => setShowDeleteBox(true)}
-                    className="p-2 bg-red-600 text-lg text-white rounded-full"
-                >
-                    <MdDelete />
-                </button>
-
-                <Link
-                    href={`/my-tasks?edit=${task._id}`}
-                    className="p-2 rounded-full bg-blue-600 text-white"
-                >
-                    <FaEdit />
-                </Link>
-            </div>
+            {/* ── DELETE CONFIRM DIALOG ── */}
             {showDeleteBox && (
                 <div
-                    className="fixed z-50 inset-0 bg-black/50"
+                    className="fixed z-50 inset-0 bg-black/40"
                     onClick={() => setShowDeleteBox(false)}
                 >
                     <div
                         onClick={(e) => e.stopPropagation()}
-                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-sm p-4"
+                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-slate-200 rounded-[4px] w-80 p-5"
                     >
-                        <p className="font-md tracking-wide">
-                            Do you want to delete this task ?
+                        <p className="text-[14px] font-semibold text-slate-800">
+                            Delete task?
+                        </p>
+                        <p className="text-[13px] text-slate-500 mt-1">
+                            This action cannot be undone.
                         </p>
 
-                        <div className="flex justify-end gap-5">
+                        <div className="flex justify-end gap-2 mt-6">
+                            <button
+                                onClick={() => setShowDeleteBox(false)}
+                                className="border border-slate-200 text-slate-700 px-4 py-1.5 text-[13px] rounded-[4px] hover:bg-slate-50 transition-colors"
+                            >
+                                Cancel
+                            </button>
                             <button
                                 onClick={() => {
                                     setShowDeleteBox(false);
                                     onDelete(task._id, task.reporter._id);
                                 }}
-                                className="bg-gray-200 text-black px-4 py-2 rounded-lg mt-8 "
+                                className="bg-red-600 text-white px-4 py-1.5 text-[13px] rounded-[4px] hover:bg-red-700 transition-colors"
                             >
-                                Yes
-                            </button>
-
-                            <button
-                                onClick={() => setShowDeleteBox(false)}
-                                className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-8 "
-                            >
-                                No
+                                Delete
                             </button>
                         </div>
                     </div>
