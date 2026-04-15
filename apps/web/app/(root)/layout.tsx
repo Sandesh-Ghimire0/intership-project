@@ -7,6 +7,7 @@ import Sidebar from "@/features/shared/components/Sidebar";
 // import UserAvatar from "@/features/shared/components/UserAvatar";
 import { FiSearch, FiBell } from "react-icons/fi";
 import { GrTask } from "react-icons/gr";
+import { Link2 } from "lucide-react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -62,13 +63,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         />
                     </div>
 
-                    {/* Right: bell + user */}
+                    {/* Right: bell*/}
                     <div className="flex items-center gap-4">
-                        <button className="text-slate-400 hover:text-slate-600 transition-colors">
+                        <Link href="/activity/my" className="text-slate-400 hover:text-slate-600 transition-colors">
                             <FiBell size={18} />
-                        </button>
+                        </Link>
                         <div className="h-5 w-px bg-slate-200" />
-                        {/* <UserAvatar /> */}
                     </div>
                 </header>
 

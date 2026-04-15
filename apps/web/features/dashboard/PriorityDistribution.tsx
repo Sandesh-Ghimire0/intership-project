@@ -26,7 +26,7 @@ const PriorityDistribution = ({ rawData }: PriorityProps) => {
           rawData.medium || 0,
           rawData.low || 0
         ],
-        backgroundColor: ['#ef4444', '#379dd4', '#eab308', '#14b8a6'],
+        backgroundColor: ['#FCA5A5', '#93C5FD', '#FCD34D', '#6EE7B7'],
         borderWidth: 0,
         hoverOffset: 4,
       },

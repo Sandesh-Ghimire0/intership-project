@@ -43,9 +43,9 @@ const StatusDistribution = ({ rawData }: StatusProps) => {
         ],
         // Different colors for each status bar
         backgroundColor: [
-          '#94a3b8', // Slate for Todo
-          '#eab308', // Yellow for In Progress
-          '#22c55e', // Green for Done
+          '#CBD5E1', // Slate for Todo 
+          '#FCD34D', // Yellow for In Progress
+          '#6EE7B7', // Green for Done
         ],
         borderRadius: 8, // Rounds the top of the bars
         borderSkipped: false,

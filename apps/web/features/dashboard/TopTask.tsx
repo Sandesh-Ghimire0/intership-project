@@ -32,12 +32,12 @@ const TopTask = ({ data }: any) => {
                                 <span
                                     className={`${
                                         task.priority === "low"
-                                            ? "bg-green-400 px-4 py-1 rounded text-green-950"
+                                            ? "bg-emerald-200 px-4 py-1 rounded text-emerald-800"
                                             : task.priority === "medium"
-                                              ? "bg-orange-400 px-4 py-1 rounded text-oragne-950"
+                                              ? "bg-amber-200 px-4 py-1 rounded text-amber-800"
                                               : task.priority === "high"
-                                                ? "bg-sky-400 px-4 py-1 rounded text-blue-950"
-                                                : "bg-red-400 px-4 py-1 rounded text-red-950"
+                                                ? "bg-blue-200 px-4 py-1 rounded text-blue-800"
+                                                : "bg-red-200 px-4 py-1 rounded text-red-800"
                                     }`}
                                 >
                                     {task.priority}
