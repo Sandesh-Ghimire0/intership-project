@@ -1,10 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IFormData } from "../task.type";
 import Link from "next/link";
-import { validateAssignee } from "@/features/users/user.api";
+import {
+    fetchUserSuggestions,
+    validateAssignee,
+} from "@/features/users/user.api";
 import { ITask, Priority, Status } from "@/features/shared/types/type";
+import { useDebounce } from "@/features/shared/store/useDebounce";
 
 interface TaskFormProps {
     formData: IFormData;
@@ -28,7 +32,33 @@ const TaskForm = ({
     onUpdate,
 }: TaskFormProps) => {
     const [assigneeName, setAssigneeName] = useState("");
+    const debouncedAssigneeName = useDebounce(assigneeName);
+    const [users, setUsers] = useState([]);
     const [assingeeError, setAssigneeError] = useState(initialAssigneeError);
+
+    const userSuggestions = async (text: string) => {
+        try {
+            const data = await fetchUserSuggestions(text);
+            if (data.success) {
+                setUsers(data.data);
+            }
+        } catch (error) {
+            console.log("Failed to fetch suggestions", error);
+        }
+    };
+
+    const handleSelectSuggestion = (username: string) => {
+        setAssigneeName(username);
+        setUsers([]); // Clear suggestions after selection
+    };
+
+    useEffect(() => {
+        if (debouncedAssigneeName.trim().length > 0) {
+            userSuggestions(debouncedAssigneeName);
+        } else {
+            setUsers([]);
+        }
+    }, [debouncedAssigneeName]);
 
     // Add assignee locally
     const addAssignee = async () => {
@@ -226,25 +256,46 @@ const TaskForm = ({
                         Assignees
                     </p>
 
-                    <div className="flex flex-col gap-2">
-                        <div>
+                    <div className="flex flex-col gap-2 relative">
+                        {" "}
+                        {/* Added relative for dropdown positioning */}
+                        <div className="flex items-center">
                             <input
                                 type="text"
-                                placeholder="Username"
+                                placeholder="Username..."
                                 className="border rounded px-2 py-1 w-1/2"
                                 value={assigneeName}
                                 onChange={(e) =>
                                     setAssigneeName(e.target.value)
                                 }
+                                autoComplete="off"
                             />
                             <button
                                 type="button"
                                 onClick={addAssignee}
-                                className="text-sm text-blue-600 ml-2"
+                                className="text-sm text-blue-600 ml-2 font-semibold"
                             >
-                                + Add Assignee
+                                + Add
                             </button>
                         </div>
+                        {/* SUGGESTIONS DROPDOWN */}
+                        {users?.length > 0 && (
+                            <ul className="absolute top-10 z-10 w-1/2 bg-white border border-gray-200 rounded shadow-lg max-h-40 overflow-y-auto">
+                                {users?.map((user: any) => (
+                                    <li
+                                        key={user._id}
+                                        className="px-3 py-2 hover:bg-blue-50 cursor-pointer text-sm border-b last:border-none"
+                                        onClick={() =>
+                                            handleSelectSuggestion(
+                                                user.username,
+                                            )
+                                        }
+                                    >
+                                        {user.username}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                         <div>
                             {assingeeError.doesNotExist && (
                                 <p className="text-red-500 text-sm">
@@ -264,19 +315,24 @@ const TaskForm = ({
                         </div>
                     </div>
 
-                    <ul className="mt-2 text-sm">
-                        {formData.assignees.map((a: any, i: any) => (
-                            <li key={i}>
-                                • {a?.username}{" "}
-                                <span
+                    {/* Selected Assignees List */}
+                    <div className="flex flex-wrap gap-2 mt-3">
+                        {formData.assignees.map((a: any) => (
+                            <div
+                                key={a._id}
+                                className="flex items-center bg-gray-100 px-2 py-1 rounded-full text-xs"
+                            >
+                                <span>{a?.username}</span>
+                                <button
+                                    type="button"
                                     onClick={() => removeAssignee(a._id)}
-                                    className="text-red-500 cursor-pointer text-[12px]"
+                                    className="ml-2 text-red-500 hover:text-red-700 font-bold"
                                 >
-                                    Remove
-                                </span>
-                            </li>
+                                    ✕
+                                </button>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
 
                 <div className="flex gap-3">

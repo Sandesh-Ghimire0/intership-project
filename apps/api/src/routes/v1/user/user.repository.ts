@@ -21,6 +21,13 @@ class UserRepository {
         const user = await User.findOne({ email }).select("+password");
         return user;
     }
+
+    async findAllUsername(name: string) {
+        const users = await User.find({
+            username: { $regex: name, $options: "i" },
+        }).select("_id username");
+        return users;
+    }
 }
 
 export const userRepository = new UserRepository();

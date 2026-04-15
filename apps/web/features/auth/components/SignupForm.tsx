@@ -8,12 +8,21 @@ const SignupForm = () => {
     const router = useRouter();
 
     const [existMsg, setExistMsg] = useState({ username: "", email: "" });
+    const [passError, setPassError] = useState('')
 
     const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
         const data = Object.fromEntries(formData);
+
+        if(data.oldPassword !== data.password){
+            setPassError("passwords do not match")
+            return 
+        }
+
+        delete data.oldPassword
+        setPassError("")
 
         try {
             const result = await signupUser(data);
@@ -87,38 +96,74 @@ const SignupForm = () => {
                 </div>
             </div>
 
-            <div className="flex gap-3">
-                <div>
-                    <label className="block text-sm font-semibold text-slate-800 mb-1">
-                        Password
-                    </label>
-                    <input
-                        type="text"
-                        name="password"
-                        minLength={7}
-                        maxLength={20}
-                        placeholder="Create a password"
-                        className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
-                        required
-                    />
-                    <p className="text-xs text-slate-400 mt-2">
-                        Must be at least 7 characters
-                    </p>
+            <div className="">
+                <div className="flex gap-3">
+                    <div>
+                        <label className="block text-sm font-semibold text-slate-800 mb-1">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            name="password"
+                            minLength={7}
+                            maxLength={20}
+                            placeholder="Create a password"
+                            className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
+                            required
+                        />
+                        <p className="text-xs text-slate-400 mt-2">
+                            Must be at least 7 characters
+                        </p>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-semibold text-slate-800 mb-1">
+                            Confirm Password
+                        </label>
+                        <input
+                            type="password"
+                            name="oldPassword"
+                            minLength={7}
+                            maxLength={20}
+                            className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
+                            required
+                        />
+                        {passError && <p className="text-xs text-red-400 mt-2">{passError}</p> }
+                    </div>
                 </div>
 
                 <div>
                     <label className="block text-sm font-semibold text-slate-800 mb-1">
                         Role
                     </label>
-                    <input
-                        type="text"
+                    <select
                         name="role"
-                        minLength={3}
-                        maxLength={50}
-                        placeholder="Your role at work"
-                        className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
+                        className="w-full border border-slate-200 rounded-lg px-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-slate-300 appearance-none"
                         required
-                    />
+                        defaultValue=""
+                    >
+                        <option value="" disabled>
+                            Select your role
+                        </option>
+                        <option value="frontend_developer">
+                            Frontend Developer
+                        </option>
+                        <option value="backend_developer">
+                            Backend Developer
+                        </option>
+                        <option value="fullstack_developer">
+                            Full Stack Developer
+                        </option>
+                        <option value="ui_ux_designer">UI/UX Designer</option>
+                        <option value="devops_engineer">DevOps Engineer</option>
+                        <option value="qa_engineer">QA Engineer</option>
+                        <option value="data_scientist">Data Scientist</option>
+                        <option value="project_manager">Project Manager</option>
+                        <option value="mobile_developer">
+                            Mobile App Developer
+                        </option>
+                        <option value="cloud_architect">Cloud Architect</option>
+                    </select>
                 </div>
             </div>
 

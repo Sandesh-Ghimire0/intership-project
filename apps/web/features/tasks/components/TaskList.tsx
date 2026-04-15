@@ -37,7 +37,7 @@ const TaskList = ({
                         >
                             <div
                                 onClick={(e) => e.stopPropagation()}
-                                className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-slate-200 rounded-[4px] w-80 p-5"
+                                className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-slate-200 rounded-sm w-80 p-5"
                             >
                                 <p className="text-[14px] font-semibold text-slate-800">
                                     Access Forbidden
@@ -48,7 +48,7 @@ const TaskList = ({
                                 <div className="flex justify-end mt-6">
                                     <button
                                         onClick={() => setIsAuthorized(true)}
-                                        className="bg-blue-600 text-white px-4 py-1.5 text-[13px] rounded-[4px] hover:bg-blue-700 transition-colors"
+                                        className="bg-blue-600 text-white px-4 py-1.5 text-[13px] rounded-sm hover:bg-blue-700 transition-colors"
                                     >
                                         OK
                                     </button>

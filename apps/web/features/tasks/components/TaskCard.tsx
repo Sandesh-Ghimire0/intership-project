@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuthStore } from "@/features/shared/store/useAuthStore";
 import { ITask } from "@/features/shared/types/type";
 import Link from "next/link";
 import { useState } from "react";
@@ -33,10 +34,10 @@ function priorityClasses(priority: string) {
 
 const TaskCard = ({ task, onDelete }: TasksProps) => {
     const [showDeleteBox, setShowDeleteBox] = useState(false);
+    const { user } = useAuthStore();
 
     return (
         <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-5 flex flex-col gap-3 hover:border-blue-400 hover:shadow-md transition-all duration-200">
-
             {/* ── HEADER: badges + action icons ── */}
             <div className="flex justify-between items-start">
                 <div className="flex gap-2 flex-wrap">
@@ -52,22 +53,24 @@ const TaskCard = ({ task, onDelete }: TasksProps) => {
                     </span>
                 </div>
 
-                <div className="flex gap-1.5 shrink-0">
-                    <Link
-                        href={`/my-tasks?edit=${task._id}`}
-                        className="border border-slate-200 p-1.5 rounded-[4px] text-slate-500 hover:bg-slate-50 hover:text-blue-600 hover:border-blue-500 transition-colors duration-150"
-                        title="Edit task"
-                    >
-                        <FaEdit size={13} />
-                    </Link>
-                    <button
-                        onClick={() => setShowDeleteBox(true)}
-                        className="border border-slate-200 p-1.5 rounded-[4px] text-slate-500 hover:bg-slate-50 hover:text-red-600 hover:border-red-400 transition-colors duration-150"
-                        title="Delete task"
-                    >
-                        <MdDelete size={14} />
-                    </button>
-                </div>
+                {user?.username === task.reporter.username && (
+                    <div className="flex gap-1.5 shrink-0">
+                        <Link
+                            href={`/my-tasks?edit=${task._id}`}
+                            className="border border-slate-200 p-1.5 rounded-sm text-slate-500 hover:bg-slate-50 hover:text-blue-600 hover:border-blue-500 transition-colors duration-150"
+                            title="Edit task"
+                        >
+                            <FaEdit size={13} />
+                        </Link>
+                        <button
+                            onClick={() => setShowDeleteBox(true)}
+                            className="border border-slate-200 p-1.5 rounded-sm text-slate-500 hover:bg-slate-50 hover:text-red-600 hover:border-red-400 transition-colors duration-150"
+                            title="Delete task"
+                        >
+                            <MdDelete size={14} />
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* ── TITLE ── */}
@@ -87,14 +90,20 @@ const TaskCard = ({ task, onDelete }: TasksProps) => {
                 {/* Reporter */}
                 {task.reporter && (
                     <div>
-                        <p className="text-slate-400 font-medium mb-0.5">Reporter</p>
-                        <p className="text-slate-600 font-medium">{task.reporter.username}</p>
+                        <p className="text-slate-400 font-medium mb-0.5">
+                            Reporter
+                        </p>
+                        <p className="text-slate-600 font-medium">
+                            {task.reporter.username}
+                        </p>
                     </div>
                 )}
 
                 {/* Due Date */}
                 <div>
-                    <p className="text-slate-400 font-medium mb-0.5">Due Date</p>
+                    <p className="text-slate-400 font-medium mb-0.5">
+                        Due Date
+                    </p>
                     <p className="text-slate-600 font-medium">
                         {new Date(task.dueDate).toLocaleDateString()}
                     </p>
@@ -103,9 +112,13 @@ const TaskCard = ({ task, onDelete }: TasksProps) => {
                 {/* Assignees — full width */}
                 {task.assignees?.length > 0 && (
                     <div className="col-span-2">
-                        <p className="text-slate-400 font-medium mb-0.5">Assignees</p>
+                        <p className="text-slate-400 font-medium mb-0.5">
+                            Assignees
+                        </p>
                         <p className="text-slate-600 font-medium">
-                            {task.assignees.map((a: any) => a.username).join(", ")}
+                            {task.assignees
+                                .map((a: any) => a.username)
+                                .join(", ")}
                         </p>
                     </div>
                 )}
@@ -115,10 +128,16 @@ const TaskCard = ({ task, onDelete }: TasksProps) => {
             {(task.createdAt || task.updatedAt) && (
                 <div className="flex justify-between text-[11px] text-slate-400 border-t border-slate-100 pt-3 mt-auto">
                     {task.createdAt && (
-                        <span>Created: {new Date(task.createdAt).toLocaleDateString()}</span>
+                        <span>
+                            Created:{" "}
+                            {new Date(task.createdAt).toLocaleDateString()}
+                        </span>
                     )}
                     {task.updatedAt && (
-                        <span>Updated: {new Date(task.updatedAt).toLocaleDateString()}</span>
+                        <span>
+                            Updated:{" "}
+                            {new Date(task.updatedAt).toLocaleDateString()}
+                        </span>
                     )}
                 </div>
             )}
@@ -131,7 +150,7 @@ const TaskCard = ({ task, onDelete }: TasksProps) => {
                 >
                     <div
                         onClick={(e) => e.stopPropagation()}
-                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-slate-200 rounded-[4px] w-80 p-5"
+                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-slate-200 rounded-sm w-80 p-5"
                     >
                         <p className="text-[14px] font-semibold text-slate-800">
                             Delete task?
@@ -143,7 +162,7 @@ const TaskCard = ({ task, onDelete }: TasksProps) => {
                         <div className="flex justify-end gap-2 mt-6">
                             <button
                                 onClick={() => setShowDeleteBox(false)}
-                                className="border border-slate-200 text-slate-700 px-4 py-1.5 text-[13px] rounded-[4px] hover:bg-slate-50 transition-colors"
+                                className="border border-slate-200 text-slate-700 px-4 py-1.5 text-[13px] rounded-sm hover:bg-slate-50 transition-colors"
                             >
                                 Cancel
                             </button>
@@ -152,7 +171,7 @@ const TaskCard = ({ task, onDelete }: TasksProps) => {
                                     setShowDeleteBox(false);
                                     onDelete(task._id, task.reporter._id);
                                 }}
-                                className="bg-red-600 text-white px-4 py-1.5 text-[13px] rounded-[4px] hover:bg-red-700 transition-colors"
+                                className="bg-red-600 text-white px-4 py-1.5 text-[13px] rounded-sm hover:bg-red-700 transition-colors"
                             >
                                 Delete
                             </button>

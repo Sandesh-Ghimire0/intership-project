@@ -69,7 +69,6 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
     };
 
     const handleDelete = async (id: string, reporterId: string) => {
-        // prevents network call when user is not authorized for delete
         if (user?._id !== reporterId) {
             setIsAuthorized(false);
             return;
@@ -95,7 +94,6 @@ const TaskContainer = ({ initialTasks }: TaskContainerProps) => {
     };
 
     const handleUpdate = async (taskData: any) => {
-        // prevents network call when user is not authorized for update
         if (user?._id !== taskData.reporter._id) {
             setIsAuthorized(false);
             return;

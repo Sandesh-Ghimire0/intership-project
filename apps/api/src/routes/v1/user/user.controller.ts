@@ -3,10 +3,11 @@ import { asyncHandler } from "../shared/utils/asyncHandler.js";
 import { ApiResponse } from "../shared/utils/apiResponse.js";
 import { ApiError } from "../shared/utils/apiError.js";
 
-import { fetchAssigneeByUsername } from "./user.service.js";
+import { fetchAssigneeByUsername, fetchUserByName } from "./user.service.js";
 
 const validateAssingee = asyncHandler(async (req: Request, res: Response) => {
-    const { username } = req.params;
+    // const { username } = req.params;
+    const { username } = req.query;
 
     if (!username) {
         throw new ApiError(400, "Assignee username is required");
@@ -24,4 +25,24 @@ const validateAssingee = asyncHandler(async (req: Request, res: Response) => {
         );
 });
 
-export { validateAssingee };
+const fetchUsername = asyncHandler(async (req, res) => {
+    const { username } = req.query;
+
+    if (!username) {
+        throw new ApiError(400, "Username is required");
+    }
+
+    const users = await fetchUserByName(username as string);
+    if (!users) {
+        throw new ApiError(
+            400,
+            "Something went wrong while fetching the username",
+        );
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, users, "username fetched successfully"));
+});
+
+export { validateAssingee, fetchUsername };
