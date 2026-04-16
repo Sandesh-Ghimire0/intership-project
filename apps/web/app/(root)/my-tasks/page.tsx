@@ -24,7 +24,7 @@ const MyTasks = async () => {
                 <h2 className="text-[22px] font-bold text-slate-800">My Tasks</h2>
                 <Link
                     href="/my-tasks?create=true"
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-semibold px-4 py-2 rounded-[4px] transition-colors duration-150"
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-semibold px-4 py-2 rounded-sm transition-colors duration-150"
                 >
                     + Create Task
                 </Link>

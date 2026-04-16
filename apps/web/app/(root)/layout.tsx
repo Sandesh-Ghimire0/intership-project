@@ -8,6 +8,7 @@ import Sidebar from "@/features/shared/components/Sidebar";
 import { FiSearch, FiBell } from "react-icons/fi";
 import { GrTask } from "react-icons/gr";
 import { Link2 } from "lucide-react";
+import SearchBar from "@/features/search/SearchBar";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -54,14 +55,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <header className="h-14 border-b border-slate-200 flex items-center justify-between px-6 bg-white sticky top-0 z-40">
 
                     {/* Search */}
-                    <div className="relative w-full max-w-sm">
-                        <FiSearch className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" size={15} />
-                        <input
-                            type="text"
-                            placeholder="Search tasks..."
-                            className="w-full bg-slate-50 border border-slate-200 rounded-md pl-8 pr-3 py-1.5 text-[13px] text-slate-700 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-colors"
-                        />
-                    </div>
+                    <SearchBar />
 
                     {/* Right: bell*/}
                     <div className="flex items-center gap-4">

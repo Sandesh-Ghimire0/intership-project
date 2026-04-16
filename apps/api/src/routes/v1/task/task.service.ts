@@ -1,4 +1,6 @@
 import { ITask } from "../shared/types/type.js";
+import { User } from "../user/user.model.js";
+import { Task } from "./task.model.js";
 import { taskrepository } from "./task.repository.js";
 
 class TaskService {

@@ -29,7 +29,7 @@ const fetchTask = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const fetchMyTasks = asyncHandler(async (req, res) => {
-    const { _id } = ( req as any).user;
+    const { _id } = (req as any).user;
 
     if (!_id) {
         throw new ApiError(400, "userId is required");
@@ -80,5 +80,7 @@ const updateTask = asyncHandler(async (req: Request, res: Response) => {
         .status(200)
         .json(new ApiResponse(200, updatedTask, "task updated successfully"));
 });
+
+
 
 export { createTask, fetchTask, deleteTask, updateTask, fetchMyTasks };
