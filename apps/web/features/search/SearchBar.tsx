@@ -24,7 +24,7 @@ const SearchBar = () => {
             />
             <input
                 type="text"
-                placeholder="Search tasks..."
+                placeholder="Search tasks by keyword, username..."
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 onKeyDown={handleSearch}

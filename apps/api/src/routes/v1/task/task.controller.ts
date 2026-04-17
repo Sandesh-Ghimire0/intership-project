@@ -81,6 +81,32 @@ const updateTask = asyncHandler(async (req: Request, res: Response) => {
         .json(new ApiResponse(200, updatedTask, "task updated successfully"));
 });
 
+const autoAssignTask = asyncHandler(async (req: Request, res: Response) => {
+    const { description } = req.body;
 
+    if (!description) {
+        throw new ApiError(400, "Description is required");
+    }
 
-export { createTask, fetchTask, deleteTask, updateTask, fetchMyTasks };
+    const assignees = await taskService.assignTaskUsingLLM(description);
+
+    if (!assignees) {
+        throw new ApiError(
+            400,
+            "something went wrong while auto assinging users",
+        );
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, assignees, "Auto assign successfull"));
+});
+
+export {
+    createTask,
+    fetchTask,
+    deleteTask,
+    updateTask,
+    fetchMyTasks,
+    autoAssignTask,
+};

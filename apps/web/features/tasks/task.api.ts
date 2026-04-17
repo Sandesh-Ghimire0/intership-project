@@ -63,3 +63,12 @@ export const updateTask = async (id: string, taskData: any) => {
         return error.response;
     }
 };
+
+export const autoAssignTask = async (description: string) => {
+    try {
+        const res = await taskURL.post("/auto-assign", { description });
+        return res
+    } catch (error) {
+        console.log("ERROR :: auto assign ", error);
+    }
+};

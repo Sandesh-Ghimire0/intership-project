@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Real-Time Task",
+  title: "Collab Task",
   description: "Real-Time Task Management App",
 };
 

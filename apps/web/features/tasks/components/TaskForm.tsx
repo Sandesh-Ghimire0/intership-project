@@ -7,8 +7,9 @@ import {
     fetchUserSuggestions,
     validateAssignee,
 } from "@/features/users/user.api";
-import { ITask, Priority, Status } from "@/features/shared/types/type";
+import { Priority, Status } from "@/features/shared/types/type";
 import { useDebounce } from "@/features/shared/hooks/useDebounce";
+import { autoAssignTask } from "../task.api";
 
 interface TaskFormProps {
     formData: IFormData;
@@ -36,6 +37,8 @@ const TaskForm = ({
     const [users, setUsers] = useState([]);
     const [assingeeError, setAssigneeError] = useState(initialAssigneeError);
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const userSuggestions = async (text: string) => {
         try {
             const data = await fetchUserSuggestions(text);
@@ -50,6 +53,37 @@ const TaskForm = ({
     const handleSelectSuggestion = (username: string) => {
         setAssigneeName(username);
         setUsers([]); // Clear suggestions after selection
+    };
+
+    const handleAutoAssign = async () => {
+        if (!formData.description) return;
+        setIsLoading(true);
+
+        try {
+            const res = await autoAssignTask(formData.description);
+
+            if (res?.status === 200) {
+                const incomingAssignees = res.data.data;
+
+                // include only the new person
+                setFormData((prev: any) => {
+                    const existingIds = prev.assignees.map((a: any) => a._id);
+                    const uniqueNewAssignees = incomingAssignees.filter(
+                        (newPerson: any) =>
+                            !existingIds.includes(newPerson._id),
+                    );
+
+                    return {
+                        ...prev,
+                        assignees: [...prev.assignees, ...uniqueNewAssignees],
+                    };
+                });
+            }
+        } catch (error) {
+            console.log("Error : while auto assign", error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -259,11 +293,12 @@ const TaskForm = ({
                     <div className="flex flex-col gap-2 relative">
                         {" "}
                         {/* Added relative for dropdown positioning */}
-                        <div className="flex items-center">
+                        <div className="flex items-center gap-2">
                             <input
                                 type="text"
                                 placeholder="Username..."
-                                className="border rounded px-2 py-1 w-1/2"
+                                className="border rounded-lg px-4 py-2.5 
+                                    text-gray-900"
                                 value={assigneeName}
                                 onChange={(e) =>
                                     setAssigneeName(e.target.value)
@@ -273,9 +308,32 @@ const TaskForm = ({
                             <button
                                 type="button"
                                 onClick={addAssignee}
-                                className="text-sm text-blue-600 ml-2 font-semibold"
+                                className="text-sm text-blue-600 font-semibold px-1 hover:underline"
                             >
                                 + Add
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={handleAutoAssign}
+                                disabled={isLoading}
+                                className={`ml-2 px-3 py-1 rounded text-sm font-medium border transition-all flex items-center gap-2
+                                        ${
+                                            isLoading
+                                                ? "bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed"
+                                                : "bg-white text-slate-700 border-slate-300 hover:border-indigo-400 hover:text-indigo-600"
+                                        }`}
+                            >
+                                {isLoading ? (
+                                    <>
+                                        <div className="w-3 h-3 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin"></div>
+                                        Assigning...
+                                    </>
+                                ) : (
+                                    <>
+                                        Auto assign
+                                    </>
+                                )}
                             </button>
                         </div>
                         {/* SUGGESTIONS DROPDOWN */}

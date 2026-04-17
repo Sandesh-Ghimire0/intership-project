@@ -10,7 +10,7 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-class AssistantService  {
+class AssistantService {
     async query(userId: string, question: string) {
         // Fetch context about tasks and users
         const tasks = await Task.find({}); // Limit context for token usage
@@ -26,7 +26,8 @@ class AssistantService  {
             messages: [
                 {
                     role: "system",
-                    content: "You are a helpful assistant for a task management system. Use the provided context to answer user queries. If the context doesn't contain the answer, answer based on general knowledge but mention you don't have the specific data.",
+                    content:
+                        "You are a helpful assistant for a task management system. Use the provided context to answer user queries. If the context doesn't contain the answer, answer based on general knowledge but mention you don't have the specific data.",
                 },
                 {
                     role: "user",
@@ -35,7 +36,9 @@ class AssistantService  {
             ],
         });
 
-        const answer = response.choices?.[0]?.message?.content || "I couldn't generate an answer.";
+        const answer =
+            response.choices?.[0]?.message?.content ||
+            "I couldn't generate an answer.";
 
         // Save to database
         const assistantLog = await Assistant.create({
@@ -50,6 +53,6 @@ class AssistantService  {
     async fetchHistory(userId: string) {
         return await Assistant.find({ userId }).sort({ createdAt: 1 });
     }
-};
+}
 
 export default new AssistantService();

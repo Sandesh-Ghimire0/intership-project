@@ -7,9 +7,22 @@ class UserRepository {
         return createdUser;
     }
 
+    async findAll(){
+        const users = await User.find()
+        return users
+    }
+
     async findUserById(id: string) {
         const user = await User.findById(id);
         return user;
+    }
+
+    async findByIds(ids: string[]){
+        const users = await User.find({
+            _id:{$in: ids}
+        })
+
+        return users
     }
 
     async findUserByName(username: string) {

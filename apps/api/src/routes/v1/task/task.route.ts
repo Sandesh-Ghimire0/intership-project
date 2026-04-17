@@ -5,6 +5,7 @@ import {
     createTask,
     updateTask,
     fetchMyTasks,
+    autoAssignTask,
 } from "./task.controller.js";
 import { validate } from "../shared/middlewares/validate.middleware.js";
 import {
@@ -36,5 +37,6 @@ taskRouter
         updateTask,
     );
 taskRouter.route("/my").get(verifyJWT, fetchMyTasks);
+taskRouter.route("/auto-assign").post(verifyJWT, autoAssignTask)
 
 export default taskRouter;
