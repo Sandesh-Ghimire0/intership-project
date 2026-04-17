@@ -4,7 +4,7 @@ const taskBody = z.object({
     title: z
         .string({ error: "Title must be string" })
         .min(4, "minimum title length is 4")
-        .max(50, "maximum title length is 50"),
+        .max(100, "maximum title length is 100"),
 
     description: z
         .string({ error: "Description must be string" })

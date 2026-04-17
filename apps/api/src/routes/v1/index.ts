@@ -6,6 +6,8 @@ import activityRouter from "./activity/activity.route.js";
 import dashboardRouter from "./dashboard/dashboard.route.js";
 import searchRouter from "./search/search.route.js";
 
+import assistantRouter from "./assistant/assistant.route.js";
+
 const v1Router: Router = Router();
 
 v1Router.use("/tasks", taskRouter);
@@ -13,6 +15,7 @@ v1Router.use("/users", userRouter);
 v1Router.use("/auth", authRouter);
 v1Router.use("/activity", activityRouter);
 v1Router.use("/dashboard", dashboardRouter);
-v1Router.use("/search", searchRouter)
+v1Router.use("/search", searchRouter);
+v1Router.use("/assistant", assistantRouter);
 
 export default v1Router;

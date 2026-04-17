@@ -4,11 +4,11 @@ import AuthGuard from "@/features/shared/components/AuthGuard";
 import SocketProvider from "@/features/shared/components/SocketProvider";
 import Logout from "@/features/auth/components/Logout";
 import Sidebar from "@/features/shared/components/Sidebar";
-// import UserAvatar from "@/features/shared/components/UserAvatar";
 import { FiSearch, FiBell } from "react-icons/fi";
 import { GrTask } from "react-icons/gr";
-import { Link2 } from "lucide-react";
 import SearchBar from "@/features/search/SearchBar";
+import AssistantToggle from "@/features/assistant/components/AssistantToggle";
+import AssistantDrawer from "@/features/assistant/components/AssistantDrawer";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -57,12 +57,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     {/* Search */}
                     <SearchBar />
 
-                    {/* Right: bell*/}
+                    {/* Right: bell + assistant toggle*/}
                     <div className="flex items-center gap-4">
                         <Link href="/activity/my" className="text-slate-400 hover:text-slate-600 transition-colors">
                             <FiBell size={18} />
                         </Link>
                         <div className="h-5 w-px bg-slate-200" />
+                        <AssistantToggle />
                     </div>
                 </header>
 
@@ -72,6 +73,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         <main className="flex-1 bg-slate-50 p-8">
                             {children}
                         </main>
+                        <AssistantDrawer />
                     </SocketProvider>
                 </AuthGuard>
             </div>
