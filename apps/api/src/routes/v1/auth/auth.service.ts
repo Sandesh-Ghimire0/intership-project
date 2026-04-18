@@ -52,6 +52,11 @@ class AuthService {
 
         return { user: userResponse, accessToken };
     }
+
+    async getMyDatabyId(id: string){
+        const user = await userRepository.findUserById(id)
+        return user
+    }
 }
 
 export const authService = new AuthService();

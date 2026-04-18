@@ -44,3 +44,10 @@ export async function logoutAction() {
     cookieStore.delete("accessToken");
     return { success: true };
 }
+
+export async function googleLoginAction(token: string) {
+    const cookieStore = await cookies();
+    cookieStore.set("accessToken", token);
+
+    return { success: true };
+}

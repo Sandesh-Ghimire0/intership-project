@@ -7,9 +7,9 @@ class UserRepository {
         return createdUser;
     }
 
-    async findAll(){
-        const users = await User.find()
-        return users
+    async findAll() {
+        const users = await User.find();
+        return users;
     }
 
     async findUserById(id: string) {
@@ -17,12 +17,17 @@ class UserRepository {
         return user;
     }
 
-    async findByIds(ids: string[]){
-        const users = await User.find({
-            _id:{$in: ids}
-        })
+    async findByGoogleId(id: string) {
+        const user = await User.find({ googleId: id });
+        return user;
+    }
 
-        return users
+    async findByIds(ids: string[]) {
+        const users = await User.find({
+            _id: { $in: ids },
+        });
+
+        return users;
     }
 
     async findUserByName(username: string) {

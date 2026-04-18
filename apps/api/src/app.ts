@@ -1,6 +1,7 @@
 import express, { Request, Response, Express } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import passport from "./routes/v1/auth/auth.middleware.js";
 
 export const app: Express = express();
 
@@ -12,6 +13,7 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+app.use(passport.initialize());
 
 app.get("/health", (req: Request, res: Response) => {
     res.json({ status: "ok" });

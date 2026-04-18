@@ -3,6 +3,7 @@ import { asyncHandler } from "../shared/utils/asyncHandler.js";
 import { authService } from "./auth.service.js";
 import { ApiError } from "../shared/utils/apiError.js";
 import { ApiResponse } from "../shared/utils/apiResponse.js";
+import { User } from "../user/user.model.js";
 
 const signup = asyncHandler(async (req, res) => {
     const data = req.body;
@@ -45,6 +46,33 @@ const login = asyncHandler(async (req, res) => {
         );
 });
 
+const gooleLogin = asyncHandler((req, res) => {
+    const { token, user } = (req as any).user;
+
+    const userString = JSON.stringify(user);
+    const encodedUser = encodeURIComponent(userString);
+
+    return res
+        .cookie("accessToken", token, {
+            httpOnly: true,
+        })
+        .redirect(`${process.env.FRONTEND_URL}/callback?token=${token}&user=${userString}`)
+});
+
+const fetchMyData = asyncHandler(async (req, res)=>{
+    const {_id} = ( req as any).user
+    
+    if(!_id){
+        throw new ApiError(400, "_id is required")
+    }
+    const user = await authService.getMyDatabyId(_id as string)
+    if(!user){
+        throw new ApiError(400, "Failed to fetch my profile data")
+    }
+
+    return res.status(200).json(new ApiResponse(200, user, "My data fetched successfylly"))
+})
+
 const logout = asyncHandler(async (req, res) => {
     return res
         .status(200)
@@ -52,4 +80,4 @@ const logout = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, {}, "User logged out successfully !!!"));
 });
 
-export { signup, login, logout };
+export { signup, login, logout, gooleLogin, fetchMyData };

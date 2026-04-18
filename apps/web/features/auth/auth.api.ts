@@ -16,3 +16,14 @@ export const signupUser = async (data: Partial<IUser>) => {
         };
     }
 };
+
+export const fetchMyData = async () => {
+    try {
+        const res = await axios.get(`${API_URL}/api/v1/auth/me`, {
+            withCredentials: true,
+        });
+        return res;
+    } catch (error) {
+        console.log("ERROR :: Failed to fetch my data ", error);
+    }
+};

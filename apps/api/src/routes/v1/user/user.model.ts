@@ -20,17 +20,22 @@ const userSchema = new mongoose.Schema<IUser>(
             lowercase: true,
             trim: true,
         },
+        googleId: {
+            type: String,
+            unique: true,
+        },
         password: {
             type: String,
-            required: true,
+            // required: true,
             select: false,
         },
         role: {
             type: String,
-            required: true,
+            default: "",
         },
         description: {
             type: String,
+            default: "",
         },
     },
     { timestamps: true },
@@ -59,7 +64,6 @@ userSchema.methods.generateAccessToken = function (): string {
         {
             _id: this._id,
             username: this.username,
-            role: this.role,
         },
         process.env.ACCESS_TOKEN_SECRET as Secret,
         {

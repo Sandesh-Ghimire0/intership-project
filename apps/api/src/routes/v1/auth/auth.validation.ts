@@ -17,9 +17,10 @@ export const signupSchema = z.object({
         role: z
             .string()
             .min(3, "length of role should be at least 3")
-            .max(50, "length of role cannot be more than 50"),
+            .max(50, "length of role cannot be more than 50")
+            .optional(),
 
-        description: z.string().min(3).max(100),
+        description: z.string().min(3).max(100).optional(),
     }),
 });
 

@@ -18,7 +18,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
         } else {
             setIsVerified(true);
         }
-    }, [user, hasHydrated]);
+    }, [user, hasHydrated, router]);
 
     if (!isVerified) {
         return (

@@ -15,6 +15,7 @@ export interface IUser {
     _id: string;
     username: string;
     email: string;
+    googleId: string;
     password: string;
     role: string;
     description?: string;
