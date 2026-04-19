@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <div className="pt-10">
             {/* Header */}
-           <div className="flex justify-between mb-8">
+           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
              <div>
                 <h1 className="text-2xl font-bold text-gray-900">
                     Activity Log
@@ -15,7 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     Track the latest changes in your project
                 </p>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center self-start sm:self-auto">
                 <Link
                     href="/activity/my"
                     className="border border-blue-600 px-3 py-2 rounded-l-full"

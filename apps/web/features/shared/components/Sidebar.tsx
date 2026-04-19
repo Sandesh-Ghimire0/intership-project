@@ -15,7 +15,11 @@ const NAV_LINKS = [
     { name: "Activity",   href: "/activity/my",   icon: <FiActivity size={17} /> },
 ];
 
-const Sidebar = () => {
+interface SidebarProps {
+    onItemClick?: () => void;
+}
+
+const Sidebar = ({ onItemClick }: SidebarProps) => {
     const pathname = usePathname();
 
     return (
@@ -32,6 +36,7 @@ const Sidebar = () => {
                                         ? "bg-blue-50 text-blue-600 font-semibold"
                                         : "text-slate-500 hover:bg-slate-50 hover:text-blue-600"
                                 }`}
+                                onClick={onItemClick}
                             >
                                 <span className={isActive ? "text-blue-600" : "text-slate-400"}>
                                     {link.icon}

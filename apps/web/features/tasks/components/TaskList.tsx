@@ -22,7 +22,7 @@ const TaskList = ({
             {tasks.length === 0 ? (
                 <p className="text-[13px] text-slate-500">No tasks found.</p>
             ) : (
-                <div className="grid gap-4 lg:grid-cols-3 md:grid-cols-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {tasks?.map((task: ITask) => (
                         <TaskCard
                             key={task._id}

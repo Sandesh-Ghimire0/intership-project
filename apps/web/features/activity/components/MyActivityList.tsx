@@ -19,7 +19,7 @@ const MyActivityList = ({ initialData }: { initialData: IActivity[] }) => {
 
                 {/* Log List */}
                 <div>
-                    <ul className="grid grid-cols-2 gap-1">
+                    <ul className="grid grid-cols-1 lg:grid-cols-2 gap-1">
                         {myActivities.map((log: IActivity) => (
                             <ActivityItem key={log._id} log={log} />
                         ))}

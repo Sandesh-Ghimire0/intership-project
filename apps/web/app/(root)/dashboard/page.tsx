@@ -23,17 +23,27 @@ const Dashboard = async () => {
     }
 
     return (
-        <div>
-            <Stats data={res.data.stats} />
-
-            <div className="flex mt-5 gap-3">
-                <PriorityDistribution rawData={res.data.priorityDistribution} />
-                <StatusDistribution rawData={res.data.statusDistribution} />
+        <div className="space-y-6">
+            <div>
+                <Stats data={res.data.stats} />
             </div>
 
-            <div className="flex items-start mt-5 gap-3">
-                <TopTask data={res.data.topPriorityTasks} />
-                <RecentActivity data={res.data.recentActivity} />
+            <div className="flex flex-col lg:flex-row gap-6">
+                <div className="flex-1 min-w-0">
+                    <PriorityDistribution rawData={res.data.priorityDistribution} />
+                </div>
+                <div className="flex-1 min-w-0">
+                    <StatusDistribution rawData={res.data.statusDistribution} />
+                </div>
+            </div>
+
+            <div className="flex flex-col xl:flex-row items-start gap-6">
+                <div className="w-full xl:flex-1 min-w-0">
+                    <TopTask data={res.data.topPriorityTasks} />
+                </div>
+                <div className="w-full xl:w-96 shrink-0">
+                    <RecentActivity data={res.data.recentActivity} />
+                </div>
             </div>
         </div>
     );

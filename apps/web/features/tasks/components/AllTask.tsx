@@ -33,11 +33,11 @@ const AllTask = ({ initialTasks }: AllTaskProps) => {
             {initialTasks.length === 0 ? (
                 <p className="text-[13px] text-slate-500">No tasks found.</p>
             ) : (
-                <div className="grid gap-4 lg:grid-cols-3 md:grid-cols-2 items-start">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-start">
                     {initialTasks?.map((task: ITask) => (
                         <div
                             key={task._id}
-                            className="bg-white border border-slate-200 rounded-xl shadow-sm p-5 flex flex-col gap-3 h-fit hover:border-blue-400 hover:shadow-md transition-all duration-200"
+                            className="bg-white border border-slate-200 rounded-xl shadow-sm p-4 sm:p-5 flex flex-col gap-3 h-fit hover:border-blue-400 hover:shadow-md transition-all duration-200"
                         >
                             {/* ── HEADER: badges + show/hide ── */}
                             <div className="flex justify-between items-start">

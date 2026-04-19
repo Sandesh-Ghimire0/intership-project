@@ -37,7 +37,7 @@ const TaskCard = ({ task, onDelete }: TasksProps) => {
     const { user } = useAuthStore();
 
     return (
-        <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-5 flex flex-col gap-3 hover:border-blue-400 hover:shadow-md transition-all duration-200">
+        <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-4 sm:p-5 flex flex-col gap-3 hover:border-blue-400 hover:shadow-md transition-all duration-200">
             {/* ── HEADER: badges + action icons ── */}
             <div className="flex justify-between items-start">
                 <div className="flex gap-2 flex-wrap">
@@ -150,7 +150,7 @@ const TaskCard = ({ task, onDelete }: TasksProps) => {
                 >
                     <div
                         onClick={(e) => e.stopPropagation()}
-                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-slate-200 rounded-sm w-80 p-5"
+                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-slate-200 rounded-sm w-[calc(100%-2rem)] max-w-sm p-5 sm:p-6"
                     >
                         <p className="text-[14px] font-semibold text-slate-800">
                             Delete task?

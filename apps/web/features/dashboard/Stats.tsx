@@ -4,7 +4,7 @@ import { CircleCheckBig, ClipboardClock, LayoutList, List } from "lucide-react";
 
 const Stats = ({data}: any) => {
     return (
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-5">
             <div className="bg-white px-6 py-3 text-start rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
                 <div className="text-2xl p-3 bg-slate-50 rounded-lg">
                     <List />

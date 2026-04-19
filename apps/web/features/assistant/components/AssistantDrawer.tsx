@@ -88,7 +88,7 @@ const AssistantDrawer = () => {
             />
 
             {/* Drawer */}
-            <div className="fixed top-0 right-0 h-screen w-2xl bg-white shadow-2xl z-[101] flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-300">
+            <div className="fixed top-0 right-0 h-screen w-full sm:w-2xl bg-white shadow-2xl z-[101] flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-300">
 
                 {/* Header */}
                 <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-white text-slate-800">

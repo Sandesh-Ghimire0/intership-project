@@ -167,7 +167,7 @@ const TaskForm = ({
         setAssigneeError(initialAssigneeError);
     };
     return (
-        <div className="bg-white p-6 rounded-xl shadow fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3xl">
+        <div className="bg-white p-5 sm:p-6 rounded-xl shadow-xl fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%-2rem)] sm:w-[500px] lg:w-3xl max-h-[90vh] overflow-y-auto z-50">
             <h2 className="text-lg font-semibold mb-4">
                 {action === "edit" ? "Edit" : "Create"} Task
             </h2>
@@ -212,7 +212,7 @@ const TaskForm = ({
                     />
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                     <div className="flex-1">
                         <div className="block text-sm font-medium text-gray-700 mb-1">
                             Status:
@@ -293,7 +293,7 @@ const TaskForm = ({
                     <div className="flex flex-col gap-2 relative">
                         {" "}
                         {/* Added relative for dropdown positioning */}
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                             <input
                                 type="text"
                                 placeholder="Username..."
@@ -393,7 +393,7 @@ const TaskForm = ({
                     </div>
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                     <Link
                         href="/my-tasks"
                         className="w-full bg-gray-600 text-white py-2 rounded hover:bg-gray-700 text-center "

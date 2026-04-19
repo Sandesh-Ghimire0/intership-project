@@ -1,6 +1,6 @@
 const AllTaskCardSkeleton = () => {
     return (
-        <div className="rounded-lg py-4 px-5 bg-white shadow-sm flex flex-col justify-between gap-3 animate-pulse">
+        <div className="rounded-xl p-4 sm:p-5 bg-white border border-slate-200 shadow-sm flex flex-col justify-between gap-3 animate-pulse">
             {/* STATUS & PRIORITY BADGES SKELETON */}
             <div className="flex justify-between items-center mt-3">
                 <div className="flex gap-2">
