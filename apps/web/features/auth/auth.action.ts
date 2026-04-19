@@ -39,6 +39,7 @@ export async function logoutAction() {
         });
     } catch (error) {
         console.error("Backend logout failed, proceeding with local cleanup");
+        throw error
     }
 
     cookieStore.delete("accessToken");

@@ -41,7 +41,7 @@ const Dashboard = async () => {
                 <div className="w-full xl:flex-1 min-w-0">
                     <TopTask data={res.data.topPriorityTasks} />
                 </div>
-                <div className="w-full xl:w-96 shrink-0">
+                <div className="w-full xl:flex-1 shrink-0">
                     <RecentActivity data={res.data.recentActivity} />
                 </div>
             </div>

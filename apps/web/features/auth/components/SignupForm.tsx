@@ -44,15 +44,19 @@ const SignupForm = () => {
     };
 
     return (
-        <form onSubmit={onSubmit} className="space-y-5 mt-5">
-            <div className="flex gap-3">
-                <div>
-                    <div>
+        <div className="w-full">
+            <header className="mb-10 lg:mb-8">
+                <h2 className="text-2xl font-black tracking-tight text-slate-900 uppercase mb-2">Create Account</h2>
+            </header>
+
+            <form onSubmit={onSubmit} className="space-y-6">
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex-1">
                         <label
                             htmlFor="fullname"
-                            className="block text-sm font-semibold text-slate-800 mb-1"
+                            className="text-[11px] font-bold uppercase tracking-wider text-slate-500"
                         >
-                            Name
+                            Username
                         </label>
                         <input
                             id="fullname"
@@ -60,46 +64,36 @@ const SignupForm = () => {
                             minLength={3}
                             maxLength={30}
                             type="text"
-                            placeholder="Create a username"
-                            className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
+                            className="w-full bg-white border border-slate-200 text-slate-900 text-sm px-4 py-3 rounded-none focus:outline-none focus:border-blue-600 transition-colors mt-1.5"
                             required
                         />
-                    </div>
-                    <div>
                         {existMsg.username && (
-                            <span className="text-red-600">
+                            <p className="text-red-600 text-[11px] font-bold uppercase mt-1">
                                 {existMsg.username}
-                            </span>
+                            </p>
                         )}
                     </div>
-                </div>
-                <div>
-                    <div>
-                        <label className="block text-sm font-semibold text-slate-800 mb-1">
+                    <div className="flex-1">
+                        <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                             Email
                         </label>
                         <input
                             type="email"
                             name="email"
-                            placeholder="Your work email"
-                            className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
+                            className="w-full bg-white border border-slate-200 text-slate-900 text-sm px-4 py-3 rounded-none focus:outline-none focus:border-blue-600 transition-colors mt-1.5"
                             required
                         />
-                    </div>
-                    <div>
                         {existMsg.email && (
-                            <span className="text-red-600">
+                            <p className="text-red-600 text-[11px] font-bold uppercase mt-1">
                                 {existMsg.email}
-                            </span>
+                            </p>
                         )}
                     </div>
                 </div>
-            </div>
 
-            <div className="">
-                <div className="flex gap-3">
-                    <div>
-                        <label className="block text-sm font-semibold text-slate-800 mb-1">
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex-1">
+                        <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                             Password
                         </label>
                         <input
@@ -107,17 +101,16 @@ const SignupForm = () => {
                             name="password"
                             minLength={7}
                             maxLength={20}
-                            placeholder="Create a password"
-                            className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
+                            className="w-full bg-white border border-slate-200 text-slate-900 text-sm px-4 py-3 rounded-none focus:outline-none focus:border-blue-600 transition-colors mt-1.5"
                             required
                         />
-                        <p className="text-xs text-slate-400 mt-2">
-                            Must be at least 7 characters
+                        <p className="text-[10px] text-slate-400 mt-1 uppercase font-bold tracking-tighter">
+                            Min 7 characters
                         </p>
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-semibold text-slate-800 mb-1">
+                    <div className="flex-1">
+                        <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                             Confirm Password
                         </label>
                         <input
@@ -125,67 +118,60 @@ const SignupForm = () => {
                             name="oldPassword"
                             minLength={7}
                             maxLength={20}
-                            className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
+                            className="w-full bg-white border border-slate-200 text-slate-900 text-sm px-4 py-3 rounded-none focus:outline-none focus:border-blue-600 transition-colors mt-1.5"
                             required
                         />
-                        {passError && <p className="text-xs text-red-400 mt-2">{passError}</p> }
+                        {passError && <p className="text-[11px] text-red-400 font-bold uppercase mt-1">{passError}</p> }
                     </div>
                 </div>
 
                 <div>
-                    <label className="block text-sm font-semibold text-slate-800 mb-1">
-                        Role
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                        Job Role
                     </label>
                     <select
                         name="role"
-                        className="w-full border border-slate-200 rounded-lg px-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-slate-300 appearance-none"
+                        className="w-full border border-slate-200 text-slate-900 text-sm px-4 py-3 bg-white rounded-none focus:outline-none focus:border-blue-600 appearance-none mt-1.5"
                         required
                         defaultValue=""
                     >
-                        <option value="" disabled>
-                            Select your role
-                        </option>
-                        <option value="frontend_developer">
-                            Frontend Developer
-                        </option>
-                        <option value="backend_developer">
-                            Backend Developer
-                        </option>
-                        <option value="fullstack_developer">
-                            Full Stack Developer
-                        </option>
+                        <option value="" disabled>Select your role</option>
+                        <option value="frontend_developer">Frontend Developer</option>
+                        <option value="backend_developer">Backend Developer</option>
+                        <option value="fullstack_developer">Full Stack Developer</option>
                         <option value="ui_ux_designer">UI/UX Designer</option>
                         <option value="devops_engineer">DevOps Engineer</option>
                         <option value="qa_engineer">QA Engineer</option>
                         <option value="data_scientist">Data Scientist</option>
                         <option value="project_manager">Project Manager</option>
-                        <option value="mobile_developer">
-                            Mobile App Developer
-                        </option>
+                        <option value="mobile_developer">Mobile App Developer</option>
                         <option value="cloud_architect">Cloud Architect</option>
                     </select>
                 </div>
-            </div>
 
-            <div>
-                <label className="block text-sm font-semibold text-slate-800 mb-1">
-                    Description
-                </label>
-                <textarea
-                    rows={5}
-                    name="description"
-                    minLength={3}
-                    maxLength={100}
-                    placeholder="Description of your role"
-                    className="w-full border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-300"
-                    required
-                />
-            </div>
+                <div>
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                        Professional Description
+                    </label>
+                    <textarea
+                        rows={3}
+                        name="description"
+                        minLength={3}
+                        maxLength={100}
+                        placeholder="Brief overview of your focus area..."
+                        className="w-full bg-white border border-slate-200 text-slate-900 text-sm px-4 py-3 rounded-none focus:outline-none focus:border-blue-600 transition-colors mt-1.5 resize-none"
+                        required
+                    />
+                </div>
 
-            <button className="w-full bg-slate-900 text-white py-3 rounded-lg font-semibold hover:bg-slate-800 transition-colors mt-4">
-                Create Account
-            </button>
-        </form>
+                <button 
+                    type="submit"
+                    className="w-full bg-gradient-to-br from-blue-600 to-blue-800 text-white py-4 font-bold text-sm uppercase tracking-widest active:scale-[0.99] transition-all hover:shadow-lg hover:shadow-blue-100"
+                >
+                    Create Account
+                </button>
+            </form>
+        </div>
     );
 };
 

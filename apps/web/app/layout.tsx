@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Collab Task",
-  description: "Real-Time Task Management App",
+  description: "Collaborative Task Management App",
 };
 
 export default function RootLayout({

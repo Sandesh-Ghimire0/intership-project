@@ -39,7 +39,6 @@ passport.use(
 
                 const token = user.generateAccessToken();
 
-                // Just return the user you already have
                 return done(null, { user, token });
             } catch (error) {
                 console.log("oauth middleware error ", error);
