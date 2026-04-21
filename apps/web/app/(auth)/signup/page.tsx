@@ -46,13 +46,13 @@ const Signup = () => {
 
                 {/* Decorative Layer */}
                 <div className="absolute right-0 bottom-0 w-3/4 h-3/4 opacity-20 mix-blend-overlay pointer-events-none">
-                    <div className="w-full h-full bg-gradient-to-tl from-white/20 to-transparent"></div>
+                    <div className="w-full h-full bg-linear-to-tl from-white/20 to-transparent"></div>
                 </div>
             </section>
 
             {/* Right Side: Signup Form */}
             <section className="w-full lg:w-1/2 h-full bg-white flex flex-col items-center justify-center p-8 md:p-16 relative overflow-y-auto">
-                <div className="w-full max-w-[500px] flex flex-col py-10 lg:py-0">
+                <div className="w-full max-w-125 flex flex-col py-10 lg:py-0">
                     <SignupForm />
 
                     <footer className="mt-8 text-center">

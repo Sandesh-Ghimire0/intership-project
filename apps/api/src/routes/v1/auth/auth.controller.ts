@@ -3,7 +3,6 @@ import { asyncHandler } from "../shared/utils/asyncHandler.js";
 import { authService } from "./auth.service.js";
 import { ApiError } from "../shared/utils/apiError.js";
 import { ApiResponse } from "../shared/utils/apiResponse.js";
-import { User } from "../user/user.model.js";
 
 const signup = asyncHandler(async (req, res) => {
     const data = req.body;

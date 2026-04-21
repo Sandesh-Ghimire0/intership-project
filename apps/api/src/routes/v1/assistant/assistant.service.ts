@@ -12,8 +12,7 @@ const openai = new OpenAI({
 
 class AssistantService {
     async query(userId: string, question: string) {
-        // Fetch context about tasks and users
-        const tasks = await Task.find({}); // Limit context for token usage
+        const tasks = await Task.find({}); 
         const users = await User.find({}, { password: 0 });
 
         const context = `

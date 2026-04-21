@@ -8,7 +8,6 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export async function loginAction(data: { email: string; password: string }) {
     try {
         const res = await axios.post(`${API_URL}/api/v1/auth/login`, data);
-        console.log(res);
         const { user, accessToken } = res.data.data;
 
         const cookieStore = await cookies();

@@ -9,10 +9,10 @@ import { FaTasks } from "react-icons/fa";
 import { FiActivity, FiSettings } from "react-icons/fi";
 
 const NAV_LINKS = [
-    { name: "Dashboard",  href: "/dashboard",    icon: <MdDashboard size={18} /> },
-    { name: "Tasks",      href: "/tasks",         icon: <GrTasks size={17} /> },
-    { name: "My Tasks",   href: "/my-tasks",      icon: <FaTasks size={17} /> },
-    { name: "Activity",   href: "/activity/my",   icon: <FiActivity size={17} /> },
+    { name: "Dashboard", href: "/dashboard", icon: <MdDashboard size={18} /> },
+    { name: "Tasks", href: "/tasks", icon: <GrTasks size={17} /> },
+    { name: "My Tasks", href: "/my-tasks", icon: <FaTasks size={17} /> },
+    { name: "Activity", href: "/activity/my", icon: <FiActivity size={17} /> },
 ];
 
 interface SidebarProps {
@@ -38,7 +38,13 @@ const Sidebar = ({ onItemClick }: SidebarProps) => {
                                 }`}
                                 onClick={onItemClick}
                             >
-                                <span className={isActive ? "text-blue-600" : "text-slate-400"}>
+                                <span
+                                    className={
+                                        isActive
+                                            ? "text-blue-600"
+                                            : "text-slate-400"
+                                    }
+                                >
                                     {link.icon}
                                 </span>
                                 {link.name}
