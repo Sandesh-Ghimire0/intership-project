@@ -48,14 +48,11 @@ const login = asyncHandler(async (req, res) => {
 const gooleLogin = asyncHandler((req, res) => {
     const { token, user } = (req as any).user;
 
-    const userString = JSON.stringify(user);
-    const encodedUser = encodeURIComponent(userString);
-
     return res
         .cookie("accessToken", token, {
             httpOnly: true,
         })
-        .redirect(`${process.env.FRONTEND_URL}/callback?token=${token}&user=${userString}`)
+        .redirect(`${process.env.FRONTEND_URL}/callback?token=${token}`)
 });
 
 const fetchMyData = asyncHandler(async (req, res)=>{

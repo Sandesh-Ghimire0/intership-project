@@ -8,7 +8,13 @@ import remarkGfm from "remark-gfm";
 import Markdown from "react-markdown";
 
 const AssistantDrawer = () => {
-    const { isOpen, toggleAssistant, messages, addMessage, setMessages, clearMessages } = useAssistantStore();
+    const {
+        isOpen,
+        toggleAssistant,
+        messages,
+        addMessage,
+        setMessages,
+    } = useAssistantStore();
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isFetchingHistory, setIsFetchingHistory] = useState(false);
@@ -20,7 +26,7 @@ const AssistantDrawer = () => {
                 setIsFetchingHistory(true);
                 try {
                     const response = await fetchAssistantHistory();
-                    if (response?.success && Array.isArray(response.data)) {
+                    if (response.success && Array.isArray(response.data)) {
                         const historyMessages: any[] = [];
                         response.data.forEach((item: any) => {
                             historyMessages.push({
@@ -65,13 +71,31 @@ const AssistantDrawer = () => {
 
         try {
             const response = await queryAssistant(userQuestion);
-            if (response?.success) {
-                addMessage({ role: "assistant", content: response.data.answer });
+            if (response.data?.success) {
+                addMessage({
+                    role: "assistant",
+                    content: response.data.data.answer,
+                });
             } else {
-                addMessage({ role: "assistant", content: "Sorry, I encountered an error. Please try again." });
+                if (response.status === 429) {
+                    addMessage({
+                        role: "assistant",
+                        content: "⚠️ Too many requests !!!",
+                    });
+                } else {
+                    addMessage({
+                        role: "assistant",
+                        content:
+                            "Sorry, I encountered an error. Please try again.",
+                    });
+                }
             }
         } catch (error) {
-            addMessage({ role: "assistant", content: "Something went wrong. Please check your connection." });
+            console.log(error);
+            addMessage({
+                role: "assistant",
+                content: "Something went wrong. Please check your connection.",
+            });
         } finally {
             setIsLoading(false);
         }
@@ -83,13 +107,12 @@ const AssistantDrawer = () => {
         <>
             {/* Backdrop */}
             <div
-                className="fixed inset-0 bg-black/50  z-[100] transition-opacity"
+                className="fixed inset-0 bg-black/50  z-100 transition-opacity"
                 onClick={toggleAssistant}
             />
 
             {/* Drawer */}
-            <div className="fixed top-0 right-0 h-screen w-full sm:w-2xl bg-white shadow-2xl z-[101] flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-300">
-
+            <div className="fixed top-0 right-0 h-screen w-full sm:w-2xl bg-white shadow-2xl z-101 flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-300">
                 {/* Header */}
                 <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-white text-slate-800">
                     <div className="flex items-center gap-3">
@@ -97,18 +120,15 @@ const AssistantDrawer = () => {
                             <Bot className="text-white" size={20} />
                         </div>
                         <div>
-                            <h3 className="font-bold text-[15px] leading-tight">AI Assistant</h3>
-                            <p className="text-[12px] text-slate-400">Online & Ready to help</p>
+                            <h3 className="font-bold text-[15px] leading-tight">
+                                AI Assistant
+                            </h3>
+                            <p className="text-[12px] text-slate-400">
+                                Online & Ready to help
+                            </p>
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
-                        <button
-                            onClick={clearMessages}
-                            className="p-1.5 text-slate-400 hover:text-red-500 transition-colors rounded-lg hover:bg-slate-50"
-                            title="Clear Chat"
-                        >
-                            <Trash2 size={16} />
-                        </button>
                         <button
                             onClick={toggleAssistant}
                             className="p-1.5 text-slate-400 hover:text-slate-600 transition-colors rounded-lg hover:bg-slate-50"
@@ -125,7 +145,10 @@ const AssistantDrawer = () => {
                 >
                     {isFetchingHistory && (
                         <div className="flex justify-center p-4">
-                            <Loader2 size={24} className="animate-spin text-blue-500" />
+                            <Loader2
+                                size={24}
+                                className="animate-spin text-blue-500"
+                            />
                         </div>
                     )}
 
@@ -134,9 +157,12 @@ const AssistantDrawer = () => {
                             <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-4 border border-slate-100">
                                 <Bot className="text-blue-500" size={32} />
                             </div>
-                            <h4 className="font-semibold text-slate-800 mb-1">Welcome!</h4>
+                            <h4 className="font-semibold text-slate-800 mb-1">
+                                Welcome!
+                            </h4>
                             <p className="text-sm text-slate-500">
-                                Ask me anything about your tasks, users, or general operations. I'm here to help!
+                                Ask me anything about your tasks, users, or
+                                general operations. I'm here to help!
                             </p>
                         </div>
                     )}
@@ -146,15 +172,29 @@ const AssistantDrawer = () => {
                             key={msg.id}
                             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                         >
-                            <div className={`flex gap-2 max-w-[85%] ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
-                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow-sm ${msg.role === "user" ? "bg-slate-200 text-slate-600" : "bg-blue-100 text-blue-600"
-                                    }`}>
-                                    {msg.role === "user" ? <User size={14} /> : <Bot size={14} />}
+                            <div
+                                className={`flex gap-2 max-w-[85%] ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
+                            >
+                                <div
+                                    className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow-sm ${
+                                        msg.role === "user"
+                                            ? "bg-slate-200 text-slate-600"
+                                            : "bg-blue-100 text-blue-600"
+                                    }`}
+                                >
+                                    {msg.role === "user" ? (
+                                        <User size={14} />
+                                    ) : (
+                                        <Bot size={14} />
+                                    )}
                                 </div>
-                                <div className={`prose p-3 rounded-2xl text-[14px] leading-relaxed shadow-sm ${msg.role === "user"
-                                    ? "bg-blue-600 text-white rounded-tr-none"
-                                    : "bg-white text-slate-700 border border-slate-100 rounded-tl-none"
-                                    }`}>
+                                <div
+                                    className={`prose p-3 rounded-2xl text-[14px] leading-relaxed shadow-sm ${
+                                        msg.role === "user"
+                                            ? "bg-blue-600 text-white rounded-tr-none"
+                                            : "bg-white text-slate-700 border border-slate-100 rounded-tl-none"
+                                    }`}
+                                >
                                     <Markdown remarkPlugins={[remarkGfm]}>
                                         {msg.content}
                                     </Markdown>
@@ -164,14 +204,22 @@ const AssistantDrawer = () => {
                     ))}
 
                     {isLoading && (
-                        <div className="flex justify-start">
-                            <div className="flex gap-2 max-w-[85%]">
+                        <div className="flex justify-start mb-4">
+                            <div className="flex gap-2 max-w-[85%] w-full">
                                 <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 shadow-sm">
                                     <Bot size={14} />
                                 </div>
-                                <div className="p-3 rounded-2xl text-[14px] bg-white text-slate-700 border border-slate-100 rounded-tl-none flex items-center gap-2 shadow-sm">
-                                    <Loader2 size={16} className="animate-spin text-blue-500" />
-                                    <span>Please wait...</span>
+
+                                {/* Skeleton Content */}
+                                <div className="flex-1 space-y-2 p-3 rounded-2xl  rounded-tl-none shadow-sm">
+                                    {/* Line 1 - Full Width */}
+                                    <div className="h-3 bg-slate-300 rounded-full w-full animate-pulse" />
+
+                                    {/* Line 2 - 90% Width */}
+                                    <div className="h-3 bg-slate-300 rounded-full w-[90%] animate-pulse" />
+
+                                    {/* Line 3 - 60% Width (for a natural paragraph end) */}
+                                    <div className="h-3 bg-slate-300 rounded-full w-[60%] animate-pulse" />
                                 </div>
                             </div>
                         </div>
@@ -191,16 +239,17 @@ const AssistantDrawer = () => {
                                 }
                             }}
                             placeholder="Type your message..."
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 pr-12 text-[14px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none max-h-32 min-h-[50px]"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 pr-12 text-[14px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none max-h-32 min-h-12.5"
                             rows={1}
                         />
                         <button
                             onClick={handleSend}
                             disabled={!input.trim() || isLoading}
-                            className={`absolute right-2.5 bottom-2.5 p-1.5 rounded-lg transition-all ${input.trim() && !isLoading
-                                ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
-                                : "text-slate-300 bg-transparent"
-                                }`}
+                            className={`absolute right-2.5 bottom-2.5 p-1.5 rounded-lg transition-all ${
+                                input.trim() && !isLoading
+                                    ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
+                                    : "text-slate-300 bg-transparent"
+                            }`}
                         >
                             <Send size={18} />
                         </button>

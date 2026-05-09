@@ -8,10 +8,10 @@ const assistantURL = axios.create({
 export const queryAssistant = async (question: string) => {
     try {
         const res = await assistantURL.post(`/query`, { question });
-        return res.data;
+        return res;
     } catch (error: any) {
         console.log("ERROR :: querying assistant", error);
-        return error.response?.data;
+        return error.response;
     }
 };
 

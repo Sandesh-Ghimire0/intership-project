@@ -35,7 +35,7 @@ const SocketProvider = ({ children }: { children: React.ReactNode }) => {
             socket.off("activity", handleActivity);
             socket.disconnect();
         };
-    }, [user]);
+    }, [user, socket]);
 
     return <>{children}</>;
 };

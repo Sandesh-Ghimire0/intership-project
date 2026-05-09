@@ -82,7 +82,7 @@ const LoginForm = () => {
                 </div>
 
                 {errMsg && (
-                    <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-none text-[12px] font-bold uppercase tracking-wider">
+                    <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-none text-[12px] font-bold tracking-wider">
                         {errMsg}
                     </div>
                 )}

@@ -166,7 +166,7 @@ const SignupForm = () => {
 
                 <button 
                     type="submit"
-                    className="w-full bg-gradient-to-br from-blue-600 to-blue-800 text-white py-4 font-bold text-sm uppercase tracking-widest active:scale-[0.99] transition-all hover:shadow-lg hover:shadow-blue-100"
+                    className="w-full bg-linear-to-br from-blue-600 to-blue-800 text-white py-4 font-bold text-sm uppercase tracking-widest active:scale-[0.99] transition-all hover:shadow-lg hover:shadow-blue-100"
                 >
                     Create Account
                 </button>
