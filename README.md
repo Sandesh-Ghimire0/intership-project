@@ -8,7 +8,7 @@
 
 - [Description](#-description)
 - [Key Features](#-key-features)
-- [Tech Stack](#-tech-stack)
+- [Tech Stack](#tech-stack)
 - [Screenshots](#-screenshots)
 
 ---
