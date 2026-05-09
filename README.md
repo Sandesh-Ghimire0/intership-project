@@ -10,7 +10,6 @@
 - [Key Features](#-key-features)
 - [Tech Stack](#-tech-stack)
 - [Screenshots](#-screenshots)
-- [Getting Started](#-getting-started)
 
 ---
 
